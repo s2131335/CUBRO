@@ -7,16 +7,28 @@ module.exports = {
         .withMessage('Name is required, max 10 letters'),
         body('email')
         .isEmail()
-        .withMessage('Please provide a valid email'),
+        .withMessage('EmailNotValid'),
+        // body('password')
+        // .custom(value => {
+        //     const regex = /^\S{8,12}$/
+        //     const result = value.match(regex)
+        //     if (!result) {
+        //         throw new Error("PasswordTooShort")
+        //     }
+        //     return true
+        // }),
+        // body('password2')
+        // .custom((value, { req }) => {
+        //     if (value !== req.body.password) {
+        //     throw new Error('TwoPasswordNotMatch')
+        //   }
+        //   return true
+        // })
+    ],
+    password:[
         body('password')
-        .custom(value => {
-            const regex = /^\S{8,12}$/
-            const result = value.match(regex)
-            if (!result) {
-                throw new Error("PasswordTooShort")
-            }
-            return true
-        }),
+        .isLength({ min: 1})
+        .withMessage('PasswordTooShort'),
         body('password2')
         .custom((value, { req }) => {
             if (value !== req.body.password) {

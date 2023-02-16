@@ -71,6 +71,6 @@ module.exports.showAdmins = async function(req, res, next){
 }
 
 module.exports.showAllUsers = async function(req, res, next){
-  let Users = await userService.findAllUserByFilter();
+  let users = await userService.findAllUserByFilter();
   res.status(200).json(users);
 }

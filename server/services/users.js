@@ -15,7 +15,7 @@ module.exports.addUser = async function (userData) {
     }
 }
 
-module.exports.findOneByFields = async function (fields){
+module.exports.findOneByFilter = async function (fields){
     try
     {
         let user = await Users.findOne(fields);
@@ -40,5 +40,21 @@ module.exports.findAllUserByFilter = async function (filter={}){
     {
         console.log(err);
         return null;
+    }
+}
+module.exports.findUserAndUpdate = async function (filter,update){
+    try
+    {
+        console.log(update);
+        await Users.findOneAndUpdate(filter,update);
+        // let users = await Users.findOne(filter);
+        // return users;
+        return null;
+
+    }
+    catch (err)
+    {
+        console.log(err);
+        return err;
     }
 }

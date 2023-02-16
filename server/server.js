@@ -1,20 +1,40 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-// var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let logger = require('morgan');
+const passport = require('passport')
+require('dotenv').config({ path: `${__dirname}/.env` });
 
-var usersRouter = require('./routes/users');
+// Routers
+let usersRouter = require('./routes/users');
+let testingRouter = require('./routes/testing');
 
-var app = express();
+//
+let app = express();
+
+
+
+const bodyParser = require('body-parser')
+const session = require('express-session')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(session({
+  secret: process.env.SECRET,
+  resave: 'false',
+  saveUninitialized: 'false'
+}))
+
+//Passport
+app.use(passport.initialize())
+app.use(passport.session())
+require('./config/passport')(passport)
+//
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('api/users', usersRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/testing', testingRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -24,8 +44,9 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // render the error page
+  console.log(err)
   res.status(err.status || 500);
-  res.render('error');
+  res.send('error');
 });
 
 module.exports = app;

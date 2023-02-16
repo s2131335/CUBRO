@@ -1,9 +1,19 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const validation = require('../middlewares/validations/userValidation');
+const {addUser,login,logout,showTutors} = require('../controllers/users');
+const checkAuth = require('../middlewares/auth');
+const Auth = require('../middlewares/auth');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.post('/login', login);
+
+router.post('/register',validation.register,addUser);
+
+router.get('/logout',Auth.checkAuth(Auth.TUTOR),logout);
+
+router.get('/show-tutors',Auth.checkAuth(),showTutors)
+
+
+
 
 module.exports = router;

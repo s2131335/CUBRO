@@ -11,7 +11,7 @@ module.exports = passport => {
     passReqToCallback: true
   }, async (req, email, password, done) => {
 
-        let user = await userService.findOneByFields({ email: email });
+        let user = await userService.findOneByFilter({ email: email });
         if (!user) {
             return done(null, false,"UserNotFound")
         }
@@ -31,7 +31,7 @@ module.exports = passport => {
 
   passport.deserializeUser(async (_id, done) => {
     // console.log("deserial"+_id);
-    let user = await userService.findOneByFields({_id});
+    let user = await userService.findOneByFilter({_id});
     done(null, user);
   })
 }

@@ -28,5 +28,15 @@ module.exports = {
         status:500,
         code: 1004,
         message: "Password Incorrect"
+    },
+    EmailNotValid:{
+        status:500,
+        code: 1005,
+        message: "Email Not Valid"
+    },
+    FailToSendMail:{
+        status:500,
+        code:1006,
+        message:"Fail to send email"
     }
 }

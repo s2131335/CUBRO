@@ -1,142 +1,140 @@
-const userService = require('../services/users');
-const error = require('../utils/errors')
-const passport = require('passport');
-const Auth = require('../middlewares/auth');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
-const {sendMail} = require('../utils/sendMail');
-
-
+const userService = require("../services/users");
+const error = require("../utils/errors");
+const passport = require("passport");
+const Auth = require("../middlewares/auth");
+const { validationResult } = require("express-validator");
+const Email = require("../utils/sendMail");
+const Token = require("../utils/tokenUtil");
 
 module.exports.login = function (req, res, next) {
-    if (req.isAuthenticated()) return res.status(200).send("Login");
-  
-    passport.authenticate('local', function (err, user, info) {
-      if (err) {
-        return next(err);
-      }
-      // if no user is returned by passport
-      if (!user) {
-        return res.send(error[info]);
-      }
-  
-      // login
-      req.logIn(user, function (err) {
-        if (err) {
-          return next(err);
-        }
-        // console.log(req.user);
-        return res.status(200).send('Login');
-      });
-    })(req, res, next);
-}
+	// If user already logged in
+	if (req.isAuthenticated()) return res.status(200).send("Login");
 
-module.exports.addUser = async function (req,res){
-    let err = validationResult(req);
-    // console.log(err);
-    if (err.errors.length !== 0)
-    {   
-      let validatorError = error[err.errors[0].msg];
-      if (validatorError)
-        return res.status(validatorError.status).send(validatorError);
-      else return res.status(error.Unknown.status).send(err.errors[0].msg);
-    }
+	passport.authenticate("local", function (err, user, info) {
+		if (err) {
+			return next(err);
+		}
+		// if no user is returned by passport
+		if (!user) {
+			return res.send(error[info]);
+		}
 
-    let userData = req.body;
-    delete userData.password2;
-    try 
-    {
-        await userService.addUser(userData);
-    }
-    catch (err)
-    {
-      if (error[err])   // if error contain the catched error, send the error
-            return res.status(error[err].status).send(error[err]);
-        // else send UnknownError
-        return res.status(error.Unknown.status).send(err);
-    }
-    res.status(200).send('ok');
+		// login
+		req.logIn(user, function (err) {
+			if (err) {
+				return next(err);
+			}
+			// console.log(req.user);
+			return res.status(200).send("Login");
+		});
+	})(req, res, next);
+};
 
-}
+module.exports.addUser = async function (req, res) {
+	let err = validationResult(req);
+	// console.log(err);
+	if (!err.isEmpty()) {
+		let validatorError = error[err.errors[0].msg];
+		if (validatorError)
+			return res.status(validatorError.status).send(validatorError);
+		else return res.status(error.Unknown.status).send(err.errors[0].msg);
+	}
 
-module.exports.logout = function(req, res, next){
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.send('Logout');
-    });
-}
+	let userData = req.body;
+	try {
+		await userService.addUser(userData);
+	} catch (err) {
+		// if error contain the catched error, send the error
+		return res.status(error[err].status).send(error[err]);
+	}
+	res.status(200).send("ok");
+};
 
-module.exports.showTutors = async function(req, res, next){
-  let tutors = await userService.findAllUserByFilter({"role":Auth.TUTOR});
-  res.status(200).json(tutors);
-}
+module.exports.logout = function (req, res, next) {
+	req.logout(function (err) {
+		if (err) {
+			return next(err);
+		}
+		res.send("Logout");
+	});
+};
 
-module.exports.showAdmins = async function(req, res, next){
-  let admins = await userService.findAllUserByFilter({"role":Auth.ADMIN});
-  res.status(200).json(admins);
-}
+module.exports.showStudents = async function (req, res, next) {
+	let students = await userService.findAllUserByFilter({ role: Auth.STUDENT });
+	res.status(200).json(students);
+};
 
-module.exports.showAllUsers = async function(req, res, next){
-  let users = await userService.findAllUserByFilter();
-  res.status(200).json(users);
-}
+module.exports.showAdmins = async function (req, res, next) {
+	let admins = await userService.findAllUserByFilter({ role: Auth.ADMIN });
+	res.status(200).json(admins);
+};
 
-module.exports.updatePassword = async function(req, res, next){
-  let err = validationResult(req);
-  if (err.errors.length !== 0)
-  {  
-    // console.log(err);
-    let validatorError = error[err.errors[0].msg];
-    if (validatorError)
-      return res.status(validatorError.status).send(validatorError);
-    else return res.status(error.Unknown.status).send(err.errors[0].msg);
-  }
-  // let id = (!req.body.id)? req.user._id: req.body.id;
-  let hash = await bcrypt.hash(req.body.password,10);
-  let users = await userService.findUserAndUpdate({"_id":req.user._id},{"password": hash });
-  res.status(307).redirect('logout');
-}
+module.exports.showAllUsers = async function (req, res, next) {
+	let users = await userService.findAllUserByFilter();
+	res.status(200).json(users);
+};
 
-module.exports.addRoles = async function(req, res, next){
-  let roles = req.body.id;
-  roles.push(req.body.newRole);
-  let users = await userService.findUserAndUpdate({"_id":req.user._id},{"role":newRole});
-  res.status(307).redirect('logout');
-  
-}
+module.exports.changePassword = async function (req, res, next) {
+	let err = validationResult(req);
+	if (!err.isEmpty()) {
+		// console.log(err);
+		let validatorError = error[err.errors[0].msg];
+		if (validatorError)
+			return res.status(validatorError.status).send(validatorError);
+		else return res.status(error.Unknown.status).send(err.errors[0].msg);
+	}
+	try {
+		await userService.updatePassword(req.user.id, password);
+	} catch (err) {
+		return res.status(error[err].status).send(error[err]);
+	}
+	res.status(307).redirect("logout");
+};
 
-module.exports.forget = async function (req,res){
-  let email = req.body.email;
-  let user = await userService.findOneByFilter({email});
-  if(!user)
-    return res.status(error.UserNotFound.status).send(error.UserNotFound);
+module.exports.addRoles = async function (req, res, next) {
+	try {
+		await userService.findUserAndUpdate(
+			{ _id: req.body.id },
+			{ role: req.body.roles }
+		);
+	} catch (err) {
+		return res.status(error[err].status).send(error[err]);
+	}
+	res.status(200).send("ok");
+};
 
-    const token = jwt.sign({_id: user._id}, 'resetkey', {expiresIn: '10m'});
-    // console.log(token);
-    let err = await userService.findUserAndUpdate({id: user._id},{resetlink: token});
-    if (err) 
-      return res.status(500).send(err);
+module.exports.forgetPassword = async function (req, res) {
+	let email = req.body.email;
+	let user = await userService.findUserByFilter({ email });
+	if (!user)
+		return res.status(error.UserNotFound.status).send(error.UserNotFound);
 
+	const token = Token.getToken(Token.MODE_FORGET, user._id);
+	// console.log(token);
+	try {
+		await userService.findUserAndUpdate({ id: user._id }, { token: token });
+		await Email.sendMail(email, { mode: Email.MODE_RESET, payload: token });
+	} catch (err) {
+		return res.status(error[err].status).send(error[err]);
+	}
+	res.status(200).send("ok");
+};
 
+module.exports.resetPassword = async function (req, res) {
+	const reqToken = req.params.token;
+	if (!reqToken) {
+		return res.status(error.TokenInvalid.status).send(error.TokenInvalid);
+	}
 
-    try
-    {
-      await sendMail(email,{"mode":"resetpw","payload":token});
-    }
-    catch(err)
-    {
-      console.log(err)
-      return res.status(error.FailToSendMail.status).send(error.FailToSendMail);
-    }
-
-  return res.status(200).send("ok");
-
-    
-
-
-
-
-  
-  
-}
+	const token = Token.verifyToken(reqToken);
+	const user = await userService.findUserByFilter({ id: token._id });
+	if (user.token !== reqToken) {
+		return res.status(error.TokenInvalid.status).send(error.TokenInvalid);
+	}
+	try {
+		await userService.updatePassword(user.id, req.body.password);
+	} catch (err) {
+		return res.status(error[err].status).send(error[err]);
+	}
+	res.status(200).send("ok");
+};

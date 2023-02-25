@@ -9,8 +9,14 @@ module.exports.getToken = function (mode, data) {
 };
 
 module.exports.verifyToken = function (mode, token) {
-	switch (mode) {
-		case this.MODE_FORGET:
-			return jwt.verify(token, "resetkey");
+	// console.log("🚀 ~ file: tokenUtil.js:12 ~ token:", token);
+	try {
+		switch (mode) {
+			case this.MODE_FORGET:
+				return jwt.verify(token, "resetkey");
+		}
+	} catch (error) {
+		console.log("🚀 ~ file: tokenUtil.js:19 ~ error:", error);
+		throw "TokenInvalid";
 	}
 };

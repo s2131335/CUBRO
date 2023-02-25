@@ -17,7 +17,7 @@ router.post("/login", login);
 
 router.post("/register", validation.register, validation.password, addUser);
 
-router.get("/logout", Auth.checkAuth(Auth.TUTOR), logout);
+router.post("/logout", Auth.checkAuth(Auth.TUTOR), logout);
 
 router.post(
 	"/update-password",
@@ -26,7 +26,7 @@ router.post(
 	changePassword
 );
 
-router.get("/show-tutors", Auth.checkAuth(Auth.ADMIN), showStudents);
+router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);
 
 router.post("/add-roles", Auth.checkAuth(Auth.ADMIN), addRoles);
 

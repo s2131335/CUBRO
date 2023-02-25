@@ -32,11 +32,11 @@ module.exports.sendMail = async function (recipient, data) {
 				// TODO: Verify email
 				break;
 		}
+		return await transport.sendMail(content);
 	} catch (err) {
 		console.log("🚀 ~ file: sendMail.js:36 ~ err:", err);
 		throw "FailToSendMail";
 	}
-	return await transport.sendMail(content);
 };
 
 module.exports.MODE_RESET = 1;

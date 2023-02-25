@@ -51,6 +51,7 @@ module.exports.addUser = async function (req, res) {
 };
 
 module.exports.logout = function (req, res, next) {
+	// console.log("there");
 	req.logout(function (err) {
 		if (err) {
 			return next(err);
@@ -84,11 +85,11 @@ module.exports.changePassword = async function (req, res, next) {
 		else return res.status(error.Unknown.status).send(err.errors[0].msg);
 	}
 	try {
-		await userService.updatePassword(req.user.id, password);
+		await userService.updatePassword(req.user.id, req.body.password);
 	} catch (err) {
 		return res.status(error[err].status).send(error[err]);
 	}
-	res.status(307).redirect("logout");
+	res.redirect(307, "logout");
 };
 
 module.exports.addRoles = async function (req, res, next) {
@@ -112,9 +113,10 @@ module.exports.forgetPassword = async function (req, res) {
 	const token = Token.getToken(Token.MODE_FORGET, user._id);
 	// console.log(token);
 	try {
-		await userService.findUserAndUpdate({ id: user._id }, { token: token });
 		await Email.sendMail(email, { mode: Email.MODE_RESET, payload: token });
+		await userService.findUserAndUpdate({ _id: user._id }, { token: token });
 	} catch (err) {
+		console.log("🚀 ~ file: users.js:119 ~ err:", err);
 		return res.status(error[err].status).send(error[err]);
 	}
 	res.status(200).send("ok");
@@ -122,18 +124,18 @@ module.exports.forgetPassword = async function (req, res) {
 
 module.exports.resetPassword = async function (req, res) {
 	const reqToken = req.params.token;
-	if (!reqToken) {
-		return res.status(error.TokenInvalid.status).send(error.TokenInvalid);
-	}
-
-	const token = Token.verifyToken(reqToken);
-	const user = await userService.findUserByFilter({ id: token._id });
-	if (user.token !== reqToken) {
-		return res.status(error.TokenInvalid.status).send(error.TokenInvalid);
-	}
 	try {
+		const token = Token.verifyToken(Token.MODE_FORGET, reqToken);
+		console.log("🚀 ~ file: users.js:129 ~ token:", token);
+		const user = await userService.findUserByFilter({ _id: token._id });
+		console.log("🚀 ~ file: users.js:131 ~ user:", user);
+		if (!user || user.token !== reqToken) {
+			return res.status(error.TokenInvalid.status).send(error.TokenInvalid);
+		}
 		await userService.updatePassword(user.id, req.body.password);
+		await userService.findUserAndUpdate(user.id, { token: "" });
 	} catch (err) {
+		console.log("🚀 ~ file: users.js:136 ~ err:", err);
 		return res.status(error[err].status).send(error[err]);
 	}
 	res.status(200).send("ok");

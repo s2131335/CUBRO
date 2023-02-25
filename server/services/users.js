@@ -8,9 +8,8 @@ module.exports.addUser = async function (userData) {
 		userData.password = await bcrypt.hash(userData.password, 10);
 		await Users.create(userData);
 	} catch (err) {
-		if (err.code === 11000) return "EmailExist";
+		if (err.code === 11000) throw "EmailExist";
 		else {
-			console.log("🚀 ~ file: users.js:11 ~ err:", err);
 			throw "Unknown";
 		}
 	}
@@ -21,7 +20,7 @@ module.exports.updatePassword = async function (id, password) {
 		let hash = await bcrypt.hash(password, 10);
 		let user = await Users.findOneAndUpdate({ _id: id }, { password: hash });
 	} catch (err) {
-		console.log("🚀 ~ file: users.js:20 ~ err:", err);
+		// console.log("🚀 ~ file: users.js:20 ~ err:", err);
 		throw "DatabaseUpdate";
 	}
 };
@@ -47,7 +46,7 @@ module.exports.findAllUserByFilter = async function (filter = {}) {
 };
 module.exports.findUserAndUpdate = async function (filter, update) {
 	try {
-		console.log(update);
+		// console.log(update);
 		await Users.findOneAndUpdate(filter, update);
 		return null;
 	} catch (err) {

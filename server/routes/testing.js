@@ -1,8 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {generateTutor} = require('../controllers/testing');
+const { generateStudent } = require("../controllers/testing");
 
-router.get('/gen-tutor/:no',generateTutor);
+router.get("/gen-student/:no", generateStudent);
 
 module.exports = router;
-

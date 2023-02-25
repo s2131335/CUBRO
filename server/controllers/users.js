@@ -1,7 +1,7 @@
 const userService = require("../services/users");
 const error = require("../utils/errors");
 const passport = require("passport");
-const Auth = require("../middlewares/auth");
+const Auth = require("../middleware/auth");
 const { validationResult } = require("express-validator");
 const Email = require("../utils/sendMail");
 const Token = require("../utils/tokenUtil");

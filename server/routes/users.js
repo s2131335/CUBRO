@@ -1,18 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const validation = require("../middlewares/validations/userValidation");
+const validation = require("../middleware/validations/userValidation");
 const {
 	addUser,
 	login,
 	logout,
-	showTutors,
-	updatePassword,
+	showStudents,
+	changePassword,
 	addRoles,
-	forget,
 	resetPassword,
+	forgetPassword,
 } = require("../controllers/users");
-const checkAuth = require("../middlewares/auth");
-const Auth = require("../middlewares/auth");
+const Auth = require("../middleware/auth");
 
 router.post("/login", login);
 
@@ -24,14 +23,14 @@ router.post(
 	"/update-password",
 	Auth.checkAuth(),
 	validation.password,
-	updatePassword
+	changePassword
 );
 
-router.get("/show-tutors", Auth.checkAuth(Auth.ADMIN), showTutors);
+router.get("/show-tutors", Auth.checkAuth(Auth.ADMIN), showStudents);
 
 router.post("/add-roles", Auth.checkAuth(Auth.ADMIN), addRoles);
 
-router.post("/forget", forget);
+router.post("/forget", forgetPassword);
 
 router.post("/reset-password/:token", resetPassword);
 

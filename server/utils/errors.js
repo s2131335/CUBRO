@@ -2,7 +2,7 @@ module.exports = {
 	Unknown: {
 		status: 500,
 		code: 4000,
-		message: "something wrong",
+		message: "Something Wrong",
 	},
 	EmailExist: {
 		status: 500,

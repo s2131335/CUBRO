@@ -21,7 +21,7 @@ const userSchema = new Schema(
 		role: {
 			type: Array,
 			of: String,
-			default: ["Student"],
+			default: ["STUDENT"],
 		},
 		createTime: {
 			type: Date,
@@ -33,6 +33,10 @@ const userSchema = new Schema(
 		contactNumber: {
 			type: Number,
 			required: true,
+		},
+		activated: {
+			type: Boolean,
+			default: false,
 		},
 		token: {
 			type: String,

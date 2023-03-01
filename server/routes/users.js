@@ -10,6 +10,7 @@ const {
 	addRoles,
 	resetPassword,
 	forgetPassword,
+	activateAccount,
 } = require("../controllers/users");
 const Auth = require("../middleware/auth");
 
@@ -17,7 +18,7 @@ router.post("/login", login);
 
 router.post("/register", validation.register, validation.password, addUser);
 
-router.post("/logout", Auth.checkAuth(Auth.TUTOR), logout);
+router.post("/logout", Auth.checkAuth(Auth.STUDENT), logout);
 
 router.post(
 	"/update-password",
@@ -33,5 +34,7 @@ router.post("/add-roles", Auth.checkAuth(Auth.ADMIN), addRoles);
 router.post("/forget", forgetPassword);
 
 router.post("/reset-password/:token", resetPassword);
+
+router.get("/activate-account/:token", activateAccount);
 
 module.exports = router;

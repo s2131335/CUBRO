@@ -6,7 +6,7 @@ const Users = require("../database/models/users");
 module.exports.addUser = async function (userData) {
 	try {
 		userData.password = await bcrypt.hash(userData.password, 10);
-		await Users.create(userData);
+		return await Users.create(userData);
 	} catch (err) {
 		if (err.code === 11000) throw "EmailExist";
 		else {

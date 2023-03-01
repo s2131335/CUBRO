@@ -15,11 +15,17 @@ module.exports.login = function (req, res, next) {
 			return next(err);
 		}
 		// if no user is returned by passport
+		if (info && !(info.message in error)) {
+			console.log("🚀 ~ file: users.js:19 ~ info:", info);
+			return res.status(error.Unknown.status).send(error.Unknown);
+		}
 		if (!user) {
-			return res.send(error[info]);
+			// console.log(info.message);
+			return res.status(error[info.message].status).send(error[info.message]);
 		}
 
 		// login
+		// save user into session
 		req.logIn(user, function (err) {
 			if (err) {
 				return next(err);
@@ -34,15 +40,25 @@ module.exports.addUser = async function (req, res) {
 	let err = validationResult(req);
 	// console.log(err);
 	if (!err.isEmpty()) {
-		let validatorError = error[err.errors[0].msg];
-		if (validatorError)
-			return res.status(validatorError.status).send(validatorError);
-		else return res.status(error.Unknown.status).send(err.errors[0].msg);
+		console.log("🚀 ~ file: users.js:43 ~ err:", err);
+		let e = error[err.errors[0].msg];
+
+		if (error[e]) return res.status(error[e].status).send(error[e]);
+		else
+			return res
+				.status(error.ValidatorError.status)
+				.send(error.overrideError("ValidatorError", err.errors[0].msg));
 	}
 
 	let userData = req.body;
+	// console.log(token);
 	try {
-		await userService.addUser(userData);
+		let user = await userService.addUser(userData);
+		let token = await Token.getToken(user._id, Token.MODE_ACTIVATE);
+		await Email.sendMail(userData.email, {
+			mode: Email.MODE_ACTIVATE,
+			payload: token,
+		});
 	} catch (err) {
 		// if error contain the catched error, send the error
 		return res.status(error[err].status).send(error[err]);
@@ -50,8 +66,21 @@ module.exports.addUser = async function (req, res) {
 	res.status(200).send("ok");
 };
 
+module.exports.activateAccount = async function activateAccount(req, res) {
+	const reqToken = req.params.token;
+	try {
+		let userId = await Token.verifyUserToken(reqToken, Token.MODE_ACTIVATE);
+		await userService.findUserAndUpdate({ _id: userId }, { activated: true });
+	} catch (err) {
+		console.log("🚀 ~ file: users.js:136 ~ err:", err);
+		return res.status(error[err].status).send(error[err]);
+	}
+	res.status(200).send("ok");
+};
+
 module.exports.logout = function (req, res, next) {
 	// console.log("there");
+	console.log(error.ValidatorError);
 	req.logout(function (err) {
 		if (err) {
 			return next(err);
@@ -106,11 +135,15 @@ module.exports.addRoles = async function (req, res, next) {
 
 module.exports.forgetPassword = async function (req, res) {
 	let email = req.body.email;
-	let user = await userService.findUserByFilter({ email });
+	let user = userService.findUserByFilter({ email });
 	if (!user)
 		return res.status(error.UserNotFound.status).send(error.UserNotFound);
+	if (!user.activated)
+		return res
+			.status(error.AccountNotActivated.status)
+			.send(error.AccountNotActivated);
 
-	const token = Token.getToken(Token.MODE_FORGET, user._id);
+	const token = await Token.getToken(Token.MODE_FORGET, user._id);
 	// console.log(token);
 	try {
 		await Email.sendMail(email, { mode: Email.MODE_RESET, payload: token });
@@ -125,15 +158,8 @@ module.exports.forgetPassword = async function (req, res) {
 module.exports.resetPassword = async function (req, res) {
 	const reqToken = req.params.token;
 	try {
-		const token = Token.verifyToken(Token.MODE_FORGET, reqToken);
-		console.log("🚀 ~ file: users.js:129 ~ token:", token);
-		const user = await userService.findUserByFilter({ _id: token._id });
-		console.log("🚀 ~ file: users.js:131 ~ user:", user);
-		if (!user || user.token !== reqToken) {
-			return res.status(error.TokenInvalid.status).send(error.TokenInvalid);
-		}
-		await userService.updatePassword(user.id, req.body.password);
-		await userService.findUserAndUpdate(user.id, { token: "" });
+		const userId = Token.verifyUserToken(reqToken, Token.MODE_FORGET);
+		await userService.updatePassword(userId, req.body.password);
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:136 ~ err:", err);
 		return res.status(error[err].status).send(error[err]);

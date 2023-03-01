@@ -4,6 +4,11 @@ module.exports = {
 		code: 4000,
 		message: "Something Wrong",
 	},
+	ValidatorError: {
+		status: 500,
+		code: 1009,
+		message: "Validator Error",
+	},
 	EmailExist: {
 		status: 500,
 		code: 1000,
@@ -34,6 +39,11 @@ module.exports = {
 		code: 1005,
 		message: "Email Not Valid",
 	},
+	AccountNotActivated: {
+		status: 400,
+		code: 1009,
+		message: "Account Not Activated",
+	},
 	FailToSendMail: {
 		status: 500,
 		code: 1006,
@@ -49,4 +59,12 @@ module.exports = {
 		code: 1008,
 		message: "Update not success",
 	},
+};
+
+module.exports.overrideError = function overrideError(error, message) {
+	return {
+		status: this[error].status,
+		code: this[error].code,
+		message: message,
+	};
 };

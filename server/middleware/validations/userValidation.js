@@ -3,9 +3,11 @@ const { body } = require("express-validator");
 module.exports = {
 	register: [
 		body("fullName")
-			.isLength({ min: 1, max: 10 })
-			.withMessage("Name is required, max 10 letters"),
+			.isLength({ min: 1 })
+			.withMessage("Name is required")
+			.escape(),
 		body("email").isEmail().withMessage("EmailNotValid"),
+		body("nickname").isLength({ max: 20 }).escape(),
 	],
 	password: [
 		body("password").isLength({ min: 1 }).withMessage("PasswordTooShort"),

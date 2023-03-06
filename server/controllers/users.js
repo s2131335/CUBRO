@@ -74,6 +74,7 @@ module.exports.addUser = async function (req, res) {
 	} catch (err) {
 		return res.status(err.status).send(err);
 	}
+	res.status(200).send("ok");
 };
 
 module.exports.activateAccount = async function activateAccount(req, res) {

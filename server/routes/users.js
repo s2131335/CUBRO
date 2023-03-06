@@ -7,7 +7,7 @@ const {
 	logout,
 	showStudents,
 	changePassword,
-	addRoles,
+	modRoles,
 	resetPassword,
 	forgetPassword,
 	activateAccount,
@@ -32,7 +32,7 @@ router.post(
 
 router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);
 
-router.post("/add-roles", Auth.checkAuth(Auth.ADMIN), addRoles);
+router.post("/modify-role", Auth.checkAuth(Auth.ADMIN), modRoles);
 
 router.post("/forget", forgetPassword);
 

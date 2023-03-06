@@ -141,10 +141,11 @@ module.exports.changePassword = async function (req, res, next) {
 	res.redirect(307, "logout");
 };
 
-module.exports.addRoles = async function (req, res, next) {
+module.exports.modRoles = async function (req, res, next) {
 	try {
+		console.log(req.body.role);
 		await userService.findUserAndUpdate(
-			{ _id: req.body.id },
+			{ _id: req.body._id },
 			{ role: req.body.role }
 		);
 	} catch (err) {

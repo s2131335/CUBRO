@@ -50,8 +50,8 @@ module.exports.findAllUserByFilter = async function (filter = {}) {
 };
 module.exports.findUserAndUpdate = async function (filter, update) {
 	try {
-		// console.log(update);
 		await Users.findOneAndUpdate(filter, update);
+
 		return null;
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:55 ~ err:", err);

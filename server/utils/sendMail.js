@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const error = require("../utils/errors");
 
 const transport = nodemailer.createTransport({
 	host: "smtp.gmail.com",
@@ -41,7 +42,7 @@ module.exports.sendMail = async function (recipient, data) {
 		return await transport.sendMail(content);
 	} catch (err) {
 		console.log("🚀 ~ file: sendMail.js:36 ~ err:", err);
-		throw "FailToSendMail";
+		throw error.FailToSendMail;
 	}
 };
 

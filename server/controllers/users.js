@@ -21,7 +21,9 @@ module.exports.login = function (req, res, next) {
 		}
 		if (!user) {
 			// console.log(info.message);
-			return res.status(error[info.message].status).send(error[info.message]);
+			return res
+				.status(error[info.message].status)
+				.send(error[info.message]);
 		}
 
 		// login
@@ -40,14 +42,10 @@ module.exports.addUser = async function (req, res) {
 	let err = validationResult(req);
 	// console.log(err);
 	if (!err.isEmpty()) {
-		console.log("🚀 ~ file: users.js:43 ~ err:", err);
-		let e = error[err.errors[0].msg];
+		let validatorError = err.errors[0].msg;
+		console.log("🚀 ~ file: users.js:46 ~ validatorError:", validatorError);
 
-		if (error[e]) return res.status(error[e].status).send(error[e]);
-		else
-			return res
-				.status(error.ValidatorError.status)
-				.send(error.overrideError("ValidatorError", err.errors[0].msg));
+		return res.status(validatorError.status).send(validatorError);
 	}
 
 	let userData = req.body;
@@ -70,10 +68,13 @@ module.exports.activateAccount = async function activateAccount(req, res) {
 	const reqToken = req.params.token;
 	try {
 		let userId = await Token.verifyUserToken(reqToken, Token.MODE_ACTIVATE);
-		await userService.findUserAndUpdate({ _id: userId }, { activated: true });
+		await userService.findUserAndUpdate(
+			{ _id: userId },
+			{ activated: true }
+		);
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:136 ~ err:", err);
-		return res.status(error[err].status).send(error[err]);
+		return res.status(err.status).send(err);
 	}
 	res.status(200).send("ok");
 };
@@ -90,7 +91,9 @@ module.exports.logout = function (req, res, next) {
 };
 
 module.exports.showStudents = async function (req, res, next) {
-	let students = await userService.findAllUserByFilter({ role: Auth.STUDENT });
+	let students = await userService.findAllUserByFilter({
+		role: Auth.STUDENT,
+	});
 	res.status(200).json(students);
 };
 
@@ -108,15 +111,19 @@ module.exports.changePassword = async function (req, res, next) {
 	let err = validationResult(req);
 	if (!err.isEmpty()) {
 		// console.log(err);
-		let validatorError = error[err.errors[0].msg];
+		let validatorError = err.errors[0].msg;
+		console.log(
+			"🚀 ~ file: users.js:119 ~ validatorError:",
+			validatorError
+		);
+
 		if (validatorError)
 			return res.status(validatorError.status).send(validatorError);
-		else return res.status(error.Unknown.status).send(err.errors[0].msg);
 	}
 	try {
 		await userService.updatePassword(req.user.id, req.body.password);
 	} catch (err) {
-		return res.status(error[err].status).send(error[err]);
+		return res.status(err.status).send(err);
 	}
 	res.redirect(307, "logout");
 };
@@ -128,7 +135,7 @@ module.exports.addRoles = async function (req, res, next) {
 			{ role: req.body.roles }
 		);
 	} catch (err) {
-		return res.status(error[err].status).send(error[err]);
+		return res.status(err.status).send(err);
 	}
 	res.status(200).send("ok");
 };
@@ -148,10 +155,13 @@ module.exports.forgetPassword = async function (req, res) {
 	// console.log(token);
 	try {
 		await Email.sendMail(email, { mode: Email.MODE_RESET, payload: token });
-		await userService.findUserAndUpdate({ _id: user._id }, { token: token });
+		await userService.findUserAndUpdate(
+			{ _id: user._id },
+			{ token: token }
+		);
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:119 ~ err:", err);
-		return res.status(error[err].status).send(error[err]);
+		return res.status(err.status).send(err);
 	}
 	res.status(200).send("ok");
 };
@@ -163,7 +173,7 @@ module.exports.resetPassword = async function (req, res) {
 		await userService.updatePassword(userId, req.body.password);
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:136 ~ err:", err);
-		return res.status(error[err].status).send(error[err]);
+		return res.status(err.status).send(err);
 	}
 	res.status(200).send("ok");
 };

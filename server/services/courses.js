@@ -1,4 +1,5 @@
 const { tutorial, lecture } = require("../database/models/courses");
+const error = require("../utils/errors");
 
 module.exports.addLesson = async function addLesson(lesson, type) {
 	try {
@@ -7,6 +8,6 @@ module.exports.addLesson = async function addLesson(lesson, type) {
 		} else await lecture.create(lesson);
 		return null;
 	} catch (err) {
-		throw "DatabaseUpdate";
+		throw error.DatabaseUpdate;
 	}
 };

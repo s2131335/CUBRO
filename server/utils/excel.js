@@ -52,10 +52,12 @@ module.exports.parseExcel = function parseExcel(
 		CourseFile = readJSON(path.join(__dirname, "../courses.json"));
 	} catch (err) {
 		if (err.code === "ENOENT") CourseFile = {};
-		console.log("🚀 ~ file: excel.js:14 ~ err:", err);
+		console.log("Create courses.json");
 	}
 
-	let workbook = XLSX.readFile(path.join(__dirname, "../uploads/" + filename));
+	let workbook = XLSX.readFile(
+		path.join(__dirname, "../uploads/" + filename)
+	);
 	let name = workbook.SheetNames[0];
 	let worksheet = workbook.Sheets[name];
 	let rowNum = XLSX.utils.decode_range(worksheet["!ref"]).e.r;
@@ -83,7 +85,11 @@ module.exports.parseExcel = function parseExcel(
 
 		// Key example: CSCI3100L1
 		CourseFile[key] = hashValue;
-		course["meetings"] = getDate(course.courseCode, course.dates, course.time);
+		course["meetings"] = getDate(
+			course.courseCode,
+			course.dates,
+			course.time
+		);
 		delete course.time;
 		delete course.dates;
 		courses.push(course);

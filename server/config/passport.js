@@ -23,7 +23,9 @@ module.exports = (passport) => {
 					return done(null, false, { message: "PasswordIncorrect" });
 				}
 				if (!user.activated) {
-					return done(null, false, { message: "AccountNotActivated" });
+					return done(null, false, {
+						message: "AccountNotActivated",
+					});
 				}
 				// if password matched
 				return done(null, user);

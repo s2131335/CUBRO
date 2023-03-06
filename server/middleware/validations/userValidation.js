@@ -1,16 +1,18 @@
 const { body } = require("express-validator");
-
+const error = require("../../utils/errors");
 module.exports = {
 	register: [
 		body("fullName")
 			.isLength({ min: 1 })
-			.withMessage("Name is required")
+			.withMessage(error.NameNotValid)
 			.escape(),
-		body("email").isEmail().withMessage("EmailNotValid"),
+		body("email").isEmail().withMessage(error.EmailNotValid),
 		body("nickname").isLength({ max: 20 }).escape(),
 	],
 	password: [
-		body("password").isLength({ min: 1 }).withMessage("PasswordTooShort"),
+		body("password")
+			.isLength({ min: 1 })
+			.withMessage(error.PasswordTooShort),
 	],
 	// body('password')
 	// .custom(value => {

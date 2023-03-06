@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const Users = require("../database/models/users");
+const error = require("../utils/errors");
 
 // Update operations need to inform user if failed.
 // While Fetch data don't need
@@ -8,9 +9,9 @@ module.exports.addUser = async function (userData) {
 		userData.password = await bcrypt.hash(userData.password, 10);
 		return await Users.create(userData);
 	} catch (err) {
-		if (err.code === 11000) throw "EmailExist";
+		if (err.code === 11000) throw error.EmailExist;
 		else {
-			throw "Unknown";
+			throw error.Unknown;
 		}
 	}
 };
@@ -18,10 +19,13 @@ module.exports.addUser = async function (userData) {
 module.exports.updatePassword = async function (id, password) {
 	try {
 		let hash = await bcrypt.hash(password, 10);
-		let user = await Users.findOneAndUpdate({ _id: id }, { password: hash });
+		let user = await Users.findOneAndUpdate(
+			{ _id: id },
+			{ password: hash }
+		);
 	} catch (err) {
 		// console.log("🚀 ~ file: users.js:20 ~ err:", err);
-		throw "DatabaseUpdate";
+		throw error.DatabaseUpdate;
 	}
 };
 
@@ -51,6 +55,6 @@ module.exports.findUserAndUpdate = async function (filter, update) {
 		return null;
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:55 ~ err:", err);
-		throw "DatabaseUpdate";
+		throw error.DatabaseUpdate;
 	}
 };

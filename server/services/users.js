@@ -1,30 +1,56 @@
-const bcrypt = require('bcrypt');
-const Users = require('../database/models/users');
+const bcrypt = require("bcrypt");
+const Users = require("../database/models/users");
 
+// Update operations need to inform user if failed.
+// While Fetch data don't need
 module.exports.addUser = async function (userData) {
-    try
-    {
-        let user = await Users.create(userData);
-        user.password = await bcrypt.hash(userData.password,10);
-        await user.save();
+	try {
+		userData.password = await bcrypt.hash(userData.password, 10);
+		return await Users.create(userData);
+	} catch (err) {
+		if (err.code === 11000) throw "EmailExist";
+		else {
+			throw "Unknown";
+		}
+	}
+};
 
-    }
-    catch (err)
-    {   
-        throw err;
-    }
-}
+module.exports.updatePassword = async function (id, password) {
+	try {
+		let hash = await bcrypt.hash(password, 10);
+		let user = await Users.findOneAndUpdate({ _id: id }, { password: hash });
+	} catch (err) {
+		// console.log("🚀 ~ file: users.js:20 ~ err:", err);
+		throw "DatabaseUpdate";
+	}
+};
 
-module.exports.findOneByFields = async function (feilds){
-    try
-    {
-        let user = await Users.findOne(feilds);
-        return user;
+module.exports.findUserByFilter = async function (fields) {
+	try {
+		let user = await Users.findOne(fields);
+		return user;
+	} catch (err) {
+		console.log("🚀 ~ file: users.js:31 ~ err:", err);
+		return null;
+	}
+};
 
-    }
-    catch (err)
-    {
-        console.log(err);
-        return null;
-    }
-}
+module.exports.findAllUserByFilter = async function (filter = {}) {
+	try {
+		let users = await Users.find(filter);
+		return users;
+	} catch (err) {
+		console.log("🚀 ~ file: users.js:41 ~ err:", err);
+		return null;
+	}
+};
+module.exports.findUserAndUpdate = async function (filter, update) {
+	try {
+		// console.log(update);
+		await Users.findOneAndUpdate(filter, update);
+		return null;
+	} catch (err) {
+		console.log("🚀 ~ file: users.js:55 ~ err:", err);
+		throw "DatabaseUpdate";
+	}
+};

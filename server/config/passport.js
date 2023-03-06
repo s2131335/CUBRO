@@ -42,3 +42,10 @@ module.exports = (passport) => {
 		done(null, user);
 	});
 };
+
+  passport.deserializeUser(async (_id, done) => {
+    // console.log("deserial"+_id);
+    let user = await userService.findOneByFields({_id});
+    done(null, user);
+  })
+}

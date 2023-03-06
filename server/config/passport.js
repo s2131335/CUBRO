@@ -32,14 +32,13 @@ module.exports = (passport) => {
 	);
 
 	passport.serializeUser((user, done) => {
-		// console.log("serial");
+		console.log("serial");
 		done(null, user._id);
 	});
 
 	passport.deserializeUser(async (_id, done) => {
-		// console.log("deserial" + _id);
+		console.log("deserial" + _id);
 		let user = await userService.findUserByFilter({ _id });
 		done(null, user);
 	});
 };
-

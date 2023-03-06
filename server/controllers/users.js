@@ -8,7 +8,7 @@ const Token = require("../utils/tokenUtil");
 
 module.exports.login = function (req, res, next) {
 	// If user already logged in
-	if (req.isAuthenticated()) return res.status(200).send("Login");
+	if (req.isAuthenticated()) return res.status(201).send("Login");
 
 	passport.authenticate("local", function (err, user, info) {
 		if (err) {
@@ -16,7 +16,7 @@ module.exports.login = function (req, res, next) {
 		}
 		// if no user is returned by passport
 		if (info && !(info.message in error)) {
-			console.log("🚀 ~ file: users.js:19 ~ info:", info);
+			// console.log("🚀 ~ file: users.js:19 ~ info:", info);
 			return res.status(error.Unknown.status).send(error.Unknown);
 		}
 		if (!user) {
@@ -144,7 +144,6 @@ module.exports.forgetPassword = async function (req, res) {
 			.status(error.AccountNotActivated.status)
 			.send(error.AccountNotActivated);
 
-			
 	const token = await Token.getToken(user._id, Token.MODE_FORGET);
 	// console.log(token);
 	try {
@@ -156,7 +155,6 @@ module.exports.forgetPassword = async function (req, res) {
 	}
 	res.status(200).send("ok");
 };
-
 
 module.exports.resetPassword = async function (req, res) {
 	const reqToken = req.params.token;

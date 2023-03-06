@@ -68,7 +68,9 @@ module.exports.parseExcel = function parseExcel(
 		let course = {};
 		for (let j = 0; j < HEADERS.length; j++) {
 			let s = `${intToChar(charToInt("A") + j)}${i + 2}`;
-			course[HEADERS[j]] = worksheet[s].v;
+			let value = worksheet[s].v;
+			if (typeof value == "string") value = value.replaceAll(" ", "");
+			course[HEADERS[j]] = value;
 		}
 
 		let hashValue = hash(course);

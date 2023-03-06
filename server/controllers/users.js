@@ -36,7 +36,7 @@ module.exports.login = function (req, res, next) {
 	})(req, res, next);
 };
 
-module.exports.addUser = async function (req, res) {
+module.exports.register = async function (req, res) {
 	let err = validationResult(req);
 	// console.log(err);
 	if (!err.isEmpty()) {
@@ -56,11 +56,24 @@ module.exports.addUser = async function (req, res) {
 			payload: token,
 		});
 	} catch (err) {
-		// if error contain the catched error, send the error
-		return res.status(error[err].status).send(error[err]);
+		return res.status(err.status).send(err);
 	}
 
 	res.status(200).send("ok");
+};
+
+module.exports.addUser = async function (req, res) {
+	let userData = req.body;
+	try {
+		let user = await userService.addUser(userData);
+		let token = await Token.getToken(user._id, Token.MODE_ACTIVATE);
+		await Email.sendMail(userData.email, {
+			mode: Email.MODE_ACTIVATE,
+			payload: token,
+		});
+	} catch (err) {
+		return res.status(err.status).send(err);
+	}
 };
 
 module.exports.activateAccount = async function activateAccount(req, res) {
@@ -131,7 +144,7 @@ module.exports.addRoles = async function (req, res, next) {
 	try {
 		await userService.findUserAndUpdate(
 			{ _id: req.body.id },
-			{ role: req.body.roles }
+			{ role: req.body.role }
 		);
 	} catch (err) {
 		return res.status(err.status).send(err);

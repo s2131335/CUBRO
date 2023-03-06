@@ -13,4 +13,6 @@ module.exports.ADMIN = "ADMIN";
 
 module.exports.STUDENT = "STUDENT";
 
+module.exports.TUTOR = "TUTOR";
+
 module.exports.ALL = "ALL";

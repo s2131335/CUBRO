@@ -8,6 +8,7 @@ require("dotenv").config({ path: `${__dirname}/.env` });
 // Routers
 let usersRouter = require("./routes/users");
 let testingRouter = require("./routes/testing");
+let coursesRouter = require("./routes/courses");
 
 //
 let app = express();
@@ -20,6 +21,11 @@ app.use(
 		secret: process.env.SECRET,
 		resave: "false",
 		saveUninitialized: "false",
+		cookie: {
+			maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+			secure: true,
+			httpOnly: true,
+		},
 	})
 );
 
@@ -34,6 +40,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/users", usersRouter);
+app.use("/api/courses", coursesRouter);
 app.use("/api/testing", testingRouter);
 
 // catch 404 and forward to error handler

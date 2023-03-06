@@ -5,7 +5,7 @@
  */
 
 let app = require("../server");
-let debug = require("debug")("askidea:server");
+let debug = require("debug")("CUBRO:server");
 let http = require("http");
 require("dotenv").config({ path: `${__dirname}/../.env` });
 

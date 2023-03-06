@@ -2,15 +2,15 @@ const express = require("express");
 const router = express.Router();
 const validation = require("../middleware/validations/userValidation");
 const {
-	addUser,
-	login,
-	logout,
-	showStudents,
-	changePassword,
-	addRoles,
-	resetPassword,
-	forgetPassword,
-	activateAccount,
+    addUser,
+    login,
+    logout,
+    showStudents,
+    changePassword,
+    addRoles,
+    resetPassword,
+    forgetPassword,
+    activateAccount,
 } = require("../controllers/users");
 const Auth = require("../middleware/auth");
 
@@ -18,13 +18,13 @@ router.post("/login", login);
 
 router.post("/register", validation.register, validation.password, addUser);
 
-router.post("/logout", Auth.checkAuth(Auth.STUDENT), logout);
+router.post("/logout", logout);
 
 router.post(
-	"/update-password",
-	Auth.checkAuth(),
-	validation.password,
-	changePassword
+    "/update-password",
+    Auth.checkAuth(),
+    validation.password,
+    changePassword
 );
 
 router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);

@@ -45,7 +45,7 @@ module.exports.verifyUserToken = async function verifyUserToken(
 ) {
 	let user, token;
 	try {
-		token = this.verifyToken(reqToken, this.MODE_ACTIVATE);
+		token = this.verifyToken(reqToken, mode);
 		console.log("🚀 ~ file: users.js:129 ~ token:", token);
 		user = await userService.findUserByFilter({ _id: token._id });
 		if (!user || user.token !== reqToken) {

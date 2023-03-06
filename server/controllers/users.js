@@ -135,15 +135,17 @@ module.exports.addRoles = async function (req, res, next) {
 
 module.exports.forgetPassword = async function (req, res) {
 	let email = req.body.email;
-	let user = userService.findUserByFilter({ email });
+	let user = await userService.findUserByFilter({ email });
 	if (!user)
 		return res.status(error.UserNotFound.status).send(error.UserNotFound);
+
 	if (!user.activated)
 		return res
 			.status(error.AccountNotActivated.status)
 			.send(error.AccountNotActivated);
 
-	const token = await Token.getToken(Token.MODE_FORGET, user._id);
+			
+	const token = await Token.getToken(user._id, Token.MODE_FORGET);
 	// console.log(token);
 	try {
 		await Email.sendMail(email, { mode: Email.MODE_RESET, payload: token });
@@ -155,10 +157,11 @@ module.exports.forgetPassword = async function (req, res) {
 	res.status(200).send("ok");
 };
 
+
 module.exports.resetPassword = async function (req, res) {
 	const reqToken = req.params.token;
 	try {
-		const userId = Token.verifyUserToken(reqToken, Token.MODE_FORGET);
+		const userId = await Token.verifyUserToken(reqToken, Token.MODE_FORGET);
 		await userService.updatePassword(userId, req.body.password);
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:136 ~ err:", err);

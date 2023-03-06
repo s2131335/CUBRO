@@ -53,15 +53,56 @@ npm start
 
 This is the router for managing users. The following are a list of apis that can be used for acheiving the desired functions. One can simply append the header of each section to the end of `api/users` to get the full api. The list of apis are as follows:
 
--   [`/register`](#register)
--   [`/activate-account/:token`](#activate-accounttoken)
--   [`/login`](#login)
--   [`/logout`](#logout)
--   [`/update-password`](#update-password)
--   [`/show-students`](#show-students-admin-only)
--   [`/add-roles`](#add-roles-admin-only)
--   [`/forget`](#forget)
--   [`/reset-password/:token`](#reset-passwordtoken)
+-   [CUBRO Backend](#cubro-backend)
+    -   [Quick Start](#quick-start)
+    -   [`/api/users`](#apiusers)
+        -   [`/register`](#register)
+            -   [Request](#request)
+            -   [POST body](#post-body)
+        -   [`/activate-account/:token`](#activate-accounttoken)
+            -   [Request](#request-1)
+        -   [`/login`](#login)
+            -   [Request](#request-2)
+            -   [POST body](#post-body-1)
+        -   [`/logout`](#logout)
+            -   [Request](#request-3)
+        -   [`/update-password`](#update-password)
+            -   [Request](#request-4)
+            -   [POST body](#post-body-2)
+        -   [`/show-students` \[Admin only\]](#show-students-admin-only)
+            -   [Request](#request-5)
+        -   [`/add-user` \[Admin only\]](#add-user-admin-only)
+            -   [Request](#request-6)
+            -   [POST body](#post-body-3)
+        -   [`/add-roles` \[Admin only\]](#add-roles-admin-only)
+            -   [Request](#request-7)
+            -   [POST body](#post-body-4)
+        -   [`/forget`](#forget)
+            -   [Request](#request-8)
+            -   [POST body](#post-body-5)
+        -   [`/reset-password/:token`](#reset-passwordtoken)
+            -   [Request](#request-9)
+            -   [POST body](#post-body-6)
+    -   [`/api/testing`](#apitesting)
+        -   [`/gen-students/:no`](#gen-studentsno)
+            -   [Request](#request-10)
+    -   [`/api/courses`](#apicourses)
+        -   [`import-courses` \[Admin only\]](#import-courses-admin-only)
+            -   [Request](#request-11)
+            -   [POST body](#post-body-7)
+    -   [Custom Error Documentation](#custom-error-documentation)
+        -   [`Unknown`](#unknown)
+        -   [`ValidatorError`](#validatorerror)
+        -   [`EmailExist`](#emailexist)
+        -   [`PasswordTooShort`](#passwordtooshort)
+        -   [`UserNotFound`](#usernotfound)
+        -   [`PasswordIncorrect`](#passwordincorrect)
+        -   [`EmailNotValid`](#emailnotvalid)
+        -   [`NameNotValid`](#namenotvalid)
+        -   [`AccountNotActivated`](#accountnotactivated)
+        -   [`FailToSendMail`](#failtosendmail)
+        -   [`TokenInvalid`](#tokeninvalid)
+        -   [`DatabaseUpdate`](#databaseupdate)
 
 </ul>
 
@@ -147,6 +188,26 @@ This is the api for listing all users with the role of "STUDENT".
 | ---- | -------------------- | ---------------------------------------- |
 | GET  | JSON with status 200 | Please refer to the error documentation. |
 
+### `/add-user` [Admin only]
+
+This is the api for adding new users, including Tutors, Students, and Admins
+
+#### Request
+
+| Type | On Success                | On Error                                 |
+| ---- | ------------------------- | ---------------------------------------- |
+| POST | Send "ok" with status 200 | Please refer to the error documentation. |
+
+#### POST body
+
+| Field           | Required | Type            | Description                    |
+| --------------- | -------- | --------------- | ------------------------------ |
+| `fullName`      | True     | String          | The full name of the user      |
+| `nickname`      | False    | String          | The nickname of the user       |
+| `email`         | True     | String          | The email address of the user  |
+| `contactNumber` | True     | String          | The contact number of the user |
+| `role`          | True     | Array of String | The roles of the user          |
+
 ### `/add-roles` [Admin only]
 
 This is the api for admins to add permission roles to users.
@@ -159,10 +220,10 @@ This is the api for admins to add permission roles to users.
 
 #### POST body
 
-| Field   | Required | Type            | Description                      |
-| ------- | -------- | --------------- | -------------------------------- |
-| `_id`   | True     | String          | The id of the user to change     |
-| `roles` | True     | Array of String | The roles for the user to change |
+| Field  | Required | Type            | Description                      |
+| ------ | -------- | --------------- | -------------------------------- |
+| `_id`  | True     | String          | The id of the user to change     |
+| `role` | True     | Array of String | The roles for the user to change |
 
 ### `/forget`
 
@@ -211,3 +272,145 @@ This is the api for generating `no` of random fake students in the system, where
 | Type | On Success                                  | On Error                                 |
 | ---- | ------------------------------------------- | ---------------------------------------- |
 | GET  | Send "successfully generated `no` students" | Please refer to the error documentation. |
+
+## `/api/courses`
+
+This is the router for managing users. The following are a list of apis that can be used for acheiving the desired functions. One can simply append the header of each section to the end of `api/users` to get the full api.
+
+### `import-courses` [Admin only]
+
+This is the api for registering a new user.
+
+#### Request
+
+| Type | On Success                | On Error           |
+| ---- | ------------------------- | ------------------ |
+| POST | Send "ok" with status 200 | <ul><li></li></ul> |
+
+#### POST body
+
+| Field  | Required | Type      | Description              |
+| ------ | -------- | --------- | ------------------------ |
+| `file` | True     | .xls file | .xls file of course info |
+
+## Custom Error Documentation
+
+### `Unknown`
+
+```json
+Unknown: {
+    status: 500,
+    code: 4000,
+    message: "Something Wrong",
+}
+```
+
+### `ValidatorError`
+
+```json
+ValidatorError: {
+    status: 500,
+    code: 1000,
+    message: "Validator Error",
+}
+```
+
+### `EmailExist`
+
+```json
+EmailExist: {
+    status: 500,
+    code: 1001,
+    message: "Email has been used",
+}
+```
+
+### `PasswordTooShort`
+
+```json
+PasswordTooShort: {
+    status: 500,
+    code: 1002,
+    message: "Password Too Short",
+}
+```
+
+### `UserNotFound`
+
+```json
+UserNotFound: {
+    status: 500,
+    code: 1003,
+    message: "User Not Found",
+}
+```
+
+### `PasswordIncorrect`
+
+```json
+PasswordIncorrect: {
+    status: 500,
+    code: 1004,
+    message: "Password Incorrect",
+}
+```
+
+### `EmailNotValid`
+
+```json
+EmailNotValid: {
+    status: 500,
+    code: 1005,
+    message: "Email Not Valid",
+}
+```
+
+### `NameNotValid`
+
+```json
+NameNotValid: {
+    status: 500,
+    code: 1006,
+    message: "Name Not Valid",
+	}
+```
+
+### `AccountNotActivated`
+
+```json
+AccountNotActivated: {
+    status: 400,
+    code: 1009,
+    message: "Account Not Activated",
+}
+```
+
+### `FailToSendMail`
+
+```json
+FailToSendMail: {
+    status: 500,
+    code: 2001,
+    message: "Fail to send email",
+}
+```
+
+### `TokenInvalid`
+
+```json
+TokenInvalid: {
+    status: 401,
+    code: 3001,
+    message: "Token Invalid",
+}
+```
+
+### `DatabaseUpdate`
+
+```json
+DatabaseUpdate: {
+    status: 500,
+    code: 5001,
+    message: "Update not success",
+}
+```

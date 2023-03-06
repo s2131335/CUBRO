@@ -1,6 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
+const error = require("../utils/errors");
 // Include user model
 const userService = require("../services/users");
 
@@ -15,15 +16,19 @@ module.exports = (passport) => {
 			async (req, email, password, done) => {
 				let user = await userService.findUserByFilter({ email: email });
 				if (!user) {
-					return done(null, false, { message: "UserNotFound" });
+					return done(null, false, { error: error.UserNotFound });
 				}
 				// use bcrypt to check password correctness
 				const isMatched = await bcrypt.compare(password, user.password);
 				if (!isMatched) {
-					return done(null, false, { message: "PasswordIncorrect" });
+					return done(null, false, {
+						error: error.PasswordIncorrect,
+					});
 				}
 				if (!user.activated) {
-					return done(null, false, { message: "AccountNotActivated" });
+					return done(null, false, {
+						error: error.AccountNotActivated,
+					});
 				}
 				// if password matched
 				return done(null, user);

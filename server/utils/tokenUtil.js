@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const userService = require("../services/users");
+const error = require("../utils/errors");
+
 module.exports.MODE_FORGET = 1;
 module.exports.MODE_ACTIVATE = 2;
 
@@ -34,7 +36,7 @@ module.exports.verifyToken = function (reqToken, mode) {
 		}
 	} catch (error) {
 		console.log("🚀 ~ file: tokenUtil.js:19 ~ error:", error);
-		throw "TokenInvalid";
+		throw error.TokenInvalid;
 	}
 	return token;
 };
@@ -49,7 +51,7 @@ module.exports.verifyUserToken = async function verifyUserToken(
 		console.log("🚀 ~ file: users.js:129 ~ token:", token);
 		user = await userService.findUserByFilter({ _id: token._id });
 		if (!user || user.token !== reqToken) {
-			throw "TokenInvalid";
+			throw error.TokenInvalid;
 		}
 		await userService.findUserAndUpdate({ _id: user._id }, { token: "" });
 	} catch (err) {

@@ -1,0 +1,42 @@
+<%- include('./nav.ejs') %>
+
+<body>
+    <div class="container-fluid pt-5">
+        <div class="card" style="width: 18rem;">
+            <img src="/images/usericon.png" class="card-img-top">
+
+            <ul class="list-group list-group-light">
+                <li class="list-group-item text-center">
+                    <a>
+                        Full Name : 
+                        <%= profile.fullName %>
+                    </a>
+                </li>
+
+                <li class="list-group-item text-center">
+                    <a>
+                        Email :
+                        <%= profile.email %>
+                    </a>
+                </li>
+
+                <li class="list-group-item text-center">
+                    <a>
+                        Role :
+                        <%= profile.role %>
+                    </a>
+                </li>
+                <li class="list-group-item text-center">
+                    <a>
+                        Contact Number :
+                        <%= profile.contactNumber %>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+<script>
+    console.log(profile);
+</script>

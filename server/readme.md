@@ -3,6 +3,7 @@
 This is the official documentaion of the CUBRO backend server. There are 2 routes available, namely:
 
 -   [`/api/users`](#apiusers), for managing users
+-   [`/api/courses`](#apicourses), for dealing with courses
 -   [`/api/testing`](#apitesting), for generating testing database documents
 
 ## Quick Start
@@ -62,8 +63,6 @@ This is the router for managing users. The following are a list of apis that can
 -   [`/add-roles`](#add-roles-admin-only)
 -   [`/forget`](#forget)
 -   [`/reset-password/:token`](#reset-passwordtoken)
-
-</ul>
 
 ### `/register`
 
@@ -196,9 +195,75 @@ After getting the email from the method above, by using this api, users can rese
 | ---------- | -------- | ------ | ------------------------------ |
 | `password` | True     | String | The login password of the user |
 
+## `/api/courses`
+
+This is the api for dealing with courses, meant to use for both admins and users of this system. One can simply append the header of each section to the end of `api/courses` to get the full api. The list of apis are as follows:
+
+-   [`/browse`](#browse)
+-   [`/info/:id`](#infoid)
+-   [`/import-courses`](#import-courses-admin-only)
+
+### `/browse`
+
+This is for users to browse a list of courses based on a user defined filter. One can search for the courses by either the course ID or the course name.
+
+#### Request
+
+| Type | On Success                                       | On Error                                 |
+| ---- | ------------------------------------------------ | ---------------------------------------- |
+| GET  | JSON of list of filtered courses with status 200 | Please refer to the error documentation. |
+
+#### Query
+
+| Field        | Required | Type   | Description                    |
+| ------------ | -------- | ------ | ------------------------------ |
+| `courseCode` | False    | String | A substring of the course code |
+| `courseName` | False    | String | A substring of the course name |
+
+### `/info/:id`
+
+This is for users to get a more detailed information on the course in query by passing the course id in the `id` field.
+
+#### Request
+
+| Type | On Success                                    | On Error                                 |
+| ---- | --------------------------------------------- | ---------------------------------------- |
+| GET  | JSON of details of the course with status 200 | Please refer to the error documentation. |
+
+### `/import-courses` [Admin only]
+
+This api is for admins to import courses from an excel file, allowing an easy way to create courses in the system
+
+#### Request
+
+| Type | On Success                            | On Error                                 |
+| ---- | ------------------------------------- | ---------------------------------------- |
+| POST | Send "All successful" with status 200 | Please refer to the error documentation. |
+
+#### POST body
+
+| Field  | Required | Type | Description                           |
+| ------ | -------- | ---- | ------------------------------------- |
+| `file` | True     | File | The excel file containing the courses |
+
+#### Excel file format
+
+The excel file should contain a total 10 columns, namely:
+
+-   courseCode
+-   courseName
+-   type
+-   class
+-   venue
+-   instructor
+-   seat
+-   dates
+-   time
+-   description
+
 ## `/api/testing`
 
-This is the api route for generating test database documents. It is particularly useful for the testing phase of the system development. One can simply append the header of each section to the end of `api/users` to get the full api. The list of apis are as follows:
+This is the api route for generating test database documents. It is particularly useful for the testing phase of the system development. One can simply append the header of each section to the end of `api/testing` to get the full api. The list of apis are as follows:
 
 -   [`/gen-students/:no`](#gen-studentsno)
 

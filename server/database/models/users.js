@@ -7,9 +7,9 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		nickname: {
-			type: String,
-		},
+		// nickname: {
+		// 	type: String,
+		// },
 		email: {
 			type: String,
 			required: true,
@@ -23,13 +23,13 @@ const userSchema = new Schema(
 			of: String,
 			default: ["STUDENT"],
 		},
-		createTime: {
-			type: Date,
-			default: new Date(),
-		},
-		avatar: {
-			type: String,
-		},
+		// createTime: {
+		// 	type: Date,
+		// 	default: new Date(),
+		// },
+		// avatar: {
+		// 	type: String,
+		// },
 		contactNumber: {
 			type: Number,
 			required: true,

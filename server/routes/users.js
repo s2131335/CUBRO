@@ -12,6 +12,7 @@ const {
 	forgetPassword,
 	activateAccount,
 	addUser,
+	showUsers,
 } = require("../controllers/users");
 const Auth = require("../middleware/auth");
 
@@ -30,7 +31,9 @@ router.post(
 	changePassword
 );
 
-router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);
+// router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);
+
+router.post("/show-users", Auth.checkAuth(Auth.ADMIN), showUsers);
 
 router.post("/modify-role", Auth.checkAuth(Auth.ADMIN), modRoles);
 

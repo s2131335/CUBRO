@@ -191,3 +191,13 @@ module.exports.resetPassword = async function (req, res) {
 	}
 	res.status(200).send("ok");
 };
+
+module.exports.showUsers = async function (req, res) {
+	let filter = req.body.filter;
+	try {
+		let users = await userService.findAllUserByFilter(filter);
+		return res.status(200).json(users);
+	} catch (err) {
+		res.status(err.status).json(err);
+	}
+};

@@ -1,41 +1,36 @@
 <%- include('./nav.ejs') %>
 
 <body>
-    <div class="container-fluid pt-5">
-        <div class="card" style="width: 18rem;">
-            <img src="/images/usericon.png" class="card-img-top">
+    <div class="container-fluid pt-5 row">
+        <div class="col"></div>
+        <div class="col-2">
+            <div class="card shadow-0 justify-content-center">
+                <img
+                    src="/images/usericon.png"
+                    class="card-img-top"
+                    style="size: 10px"
+                />
 
-            <ul class="list-group list-group-light">
-                <li class="list-group-item text-center">
-                    <a>
-                        Full Name : 
-                        <%= profile.fullName %>
-                    </a>
-                </li>
+                <ul class="list-group list-group-light">
+                    <li class="list-group-item text-center">
+                        <a> Full Name : <%= profile.fullName %> </a>
+                    </li>
 
-                <li class="list-group-item text-center">
-                    <a>
-                        Email :
-                        <%= profile.email %>
-                    </a>
-                </li>
+                    <li class="list-group-item text-center">
+                        <a> Email : <%= profile.email %> </a>
+                    </li>
 
-                <li class="list-group-item text-center">
-                    <a>
-                        Role :
-                        <%= profile.role %>
-                    </a>
-                </li>
-                <li class="list-group-item text-center">
-                    <a>
-                        Contact Number :
-                        <%= profile.contactNumber %>
-                    </a>
-                </li>
-            </ul>
+                    <li class="list-group-item text-center">
+                        <a> Role : <%= profile.role %> </a>
+                    </li>
+                    <li class="list-group-item text-center">
+                        <a> Contact Number : <%= profile.contactNumber %> </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+        <div class="col"></div>
     </div>
-    
 </body>
 <script>
     console.log(profile);

@@ -72,7 +72,8 @@ module.exports.parseExcel = function parseExcel(
         for (let j = 0; j < HEADERS.length; j++) {
             let s = `${intToChar(charToInt("A") + j)}${i + 2}`;
             let value = worksheet[s].v;
-            if (typeof value == "string") value = value.replaceAll(" ", "");
+            if (!(j == 1 || j == 9) && typeof value == "string")
+                value = value.replaceAll(" ", "");
             course[HEADERS[j]] = value;
         }
 

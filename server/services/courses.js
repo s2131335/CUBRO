@@ -1,11 +1,18 @@
 const { Tutorial, Lecture, Course } = require("../database/models/courses");
 const error = require("../utils/errors");
 
-module.exports.addLesson = async function addLesson(lesson, type) {
+module.exports.upsertLesson = async function upsertLesson(lesson, type) {
 	try {
 		if (type === "T") {
-			await Tutorial.create(lesson);
-		} else await Lecture.create(lesson);
+			await Tutorial.updateOne(
+				{ courseCode: lesson.courseCode },
+				lesson,
+				{ upsert: true }
+			);
+		} else
+			await Lecture.updateOne({ courseCode: lesson.courseCode }, lesson, {
+				upsert: true,
+			});
 		return null;
 	} catch (err) {
 		throw error.DatabaseUpdate;

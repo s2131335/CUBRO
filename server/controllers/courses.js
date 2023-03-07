@@ -1,15 +1,15 @@
 const { parseExcel } = require("../utils/excel");
-const courseService = require("../services/courses");
-const { CourseIDNotValid } = require("../utils/errors");
+const error = require("../utils/errors");
 const { isValidObjectId } = require("mongoose");
 const registration = require("../database/models/registration");
 const Email = require("../utils/sendMail");
 const {
+	upsertLesson,
 	findAllCoursesByFilter,
 	findCourseByFilter,
 } = require("../services/courses");
 
-module.exports.importCourse = function importCourse(req, res) {
+module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;
 	let courses = parseExcel(filename);
 	if (courses.length === 0) return res.status(200).send("No update needed");
@@ -19,14 +19,14 @@ module.exports.importCourse = function importCourse(req, res) {
 		let type = course.type;
 		delete course.type;
 		try {
-			courseService.addLesson(course, type);
+			await upsertLesson(course, type);
 		} catch (err) {
 			failed.push(course.courseCode + type);
 			continue;
 		}
 	}
 	if (!(failed.length === 0)) {
-		if (failed.length === course.length)
+		if (failed.length === courses.length)
 			return res.status(500).send("All failed");
 		else return res.status(500).send(`failed:${failed}`);
 	}
@@ -56,7 +56,7 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 	try {
 		const cid = req.params.id;
 		if (!isValidObjectId(cid)) {
-			throw CourseIDNotValid;
+			throw error.CourseIDNotValid;
 		}
 		const c = await findCourseByFilter({ _id: cid });
 		res.status(200).json(c != null ? c : {});
@@ -82,7 +82,7 @@ async function checkCourseCollision(user, courses, selected) {
 module.exports.selectCourse = async function selectCourse(req, res) {
 	try {
 		const { select, courses } = req.body;
-		if (courses.length == 0) throw CourseIDNotValid;
+		if (courses.length == 0) throw error.CourseIDNotValid;
 		if (select) {
 			var courseCollision = checkCourseCollision(
 				req.user,

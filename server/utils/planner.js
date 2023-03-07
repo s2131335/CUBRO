@@ -3,7 +3,7 @@ const courses = [
 		courseCode: "csci3101",
 		day: 3,
 		start: "13:00",
-		end: "14:00",
+		end: "15:01",
 	},
 	{
 		courseCode: "csci3100",
@@ -40,7 +40,7 @@ function sortByTime(intervals) {
 	});
 }
 
-function separate(courses) {
+function dataExtract(courses) {
 	let dict = {};
 	let intervals = [];
 	for (let course of courses) {
@@ -60,8 +60,8 @@ function separate(courses) {
 	return { intervals, dict };
 }
 
-function check() {
-	let { intervals, dict } = separate(courses);
+function checkOneDay(courses) {
+	let { intervals, dict } = dataExtract(courses);
 	console.log("🚀 ~ file: planner.js:65 ~ check ~ dict:", dict);
 	sortByTime(intervals);
 	console.log("🚀 ~ file: planner.js:47 ~ check ~ courses:", intervals);
@@ -84,5 +84,19 @@ function check() {
 	return collisions;
 }
 
-let i = check();
-console.log(i);
+// input: array of meetings
+// output : array of clashed pairs
+
+module.exports.collisionDetection = function collisionDetection(courses) {
+	let allCollisions = [];
+	for (let i = 0; i < 7; i++) {
+		allCollisions = allCollisions.concat(
+			checkOneDay(
+				courses.filter((course) => {
+					return course.day === i;
+				})
+			)
+		);
+	}
+	return allCollisions;
+};

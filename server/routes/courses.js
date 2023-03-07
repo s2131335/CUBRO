@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {
-    browseCourse,
-    courseInfo,
-    selectCourse,
+	browseCourse,
+	courseInfo,
+	selectCourse,
 } = require("../controllers/courses");
 const upload = require("../middleware/upload");
 const { importCourse } = require("../controllers/courses");

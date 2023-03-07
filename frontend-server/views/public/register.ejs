@@ -5,153 +5,227 @@
         <div class="text-center text-primary" style="margin-top: 12%">
             <h1>Sign up now</h1>
         </div>
-        <!-- Name input -->
-        <div class="row justify-content-md-center" style="margin-top: 5%">
-            <div class="col"></div>
-            <div class="col-3">
-                <div class="form-outline mb-3 mt-3">
-                    <input id="firstname" class="form-control" required />
-                    <label class="form-label" for="firstname"
-                        >*First Name</label
+        <form>
+            <!-- Name input -->
+            <div class="row justify-content-md-center" style="margin-top: 5%">
+                <div class="col"></div>
+                <div class="col-3">
+                    <div class="form-outline mb-3 mt-3">
+                        <input
+                            id="firstname"
+                            class="form-control needs-validation"
+                        />
+                        <label class="form-label" for="firstname"
+                            >*First Name</label
+                        >
+                        <div class="invalid-feedback">Required</div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-outline mb-3 mt-3">
+                        <input
+                            type="lastame"
+                            id="lastname"
+                            class="form-control needs-validation"
+                        />
+                        <label class="form-label" for="lastname"
+                            >*Last Name</label
+                        >
+                        <div class="invalid-feedback">Required</div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <!-- Nickname and gender input -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+                <div class="col-3">
+                    <div class="form-outline mb-3 mt-3">
+                        <input
+                            type="nickname"
+                            id="nickname"
+                            class="form-control"
+                        />
+                        <label class="form-label" for="nickname"
+                            >Nickname</label
+                        >
+                    </div>
+                </div>
+                <div class="col-1">
+                    <label class="form-label mb-3 mt-4" for="gender"
+                        >Gender:</label
                     >
                 </div>
-            </div>
-            <div class="col-3">
-                <div class="form-outline mb-3 mt-3">
-                    <input
-                        type="lastname"
-                        id="lastname"
-                        class="form-control"
-                        required
-                    />
-                    <label class="form-label" for="lastname">*Last Name</label>
-                </div>
-            </div>
-            <div class="col"></div>
-        </div>
-
-        <!-- Nickname and gender input -->
-        <div class="row justify-content-md-center">
-            <div class="col"></div>
-            <div class="col-3">
-                <div class="form-outline mb-3 mt-3">
-                    <input type="nickname" id="nickname" class="form-control" />
-                    <label class="form-label" for="nickname">Nickname</label>
-                </div>
-            </div>
-            <div class="col-1">
-                <label class="form-label mb-3 mt-4" for="gender"
-                    >*Gender:</label
-                >
-            </div>
-            <div class="col-2">
-                <select
-                    class="form-select mb-3 mt-3"
-                    id="gender"
-                    name="gender"
-                    style="border-radius: 4px; height: 35.81px"
-                    required
-                >
-                    <option value="">None</option>
-                    <option value="male">M</option>
-                    <option value="female">F</option>
-                </select>
-            </div>
-            <div class="col"></div>
-        </div>
-
-        <!-- Email input -->
-        <div class="row justify-content-md-center">
-            <div class="col"></div>
-            <div class="col-6">
-                <div class="form-outline mb-3 mt-3">
-                    <input
-                        type="email"
-                        id="email"
-                        class="form-control"
-                        required
-                    />
-                    <label class="form-label" for="email">*Email address</label>
-                </div>
-            </div>
-            <div class="col"></div>
-        </div>
-
-        <!-- Password input -->
-        <div class="row justify-content-md-center">
-            <div class="col"></div>
-            <div class="col-6">
-                <div class="form-outline mb-3 mt-3">
-                    <input
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        required
-                    />
-                    <label class="form-label" for="password"
-                        >*Password must be at least 8 characters long</label
+                <div class="col-2">
+                    <select
+                        class="form-select mb-3 mt-3"
+                        id="gender"
+                        name="gender"
+                        style="border-radius: 4px; height: 35.81px"
                     >
+                        <option value="">None</option>
+                        <option value="male">M</option>
+                        <option value="female">F</option>
+                    </select>
                 </div>
+                <div class="col"></div>
             </div>
-            <div class="col"></div>
-        </div>
 
-        <!-- Password Validation input -->
-        <div class="row justify-content-md-center">
-            <div class="col"></div>
-            <div class="col-6">
-                <div class="form-outline mb-3 mt-3">
-                    <input
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        required
-                    />
-                    <label class="form-label" for="password"
-                        >*Confirm Password</label
-                    >
+            <!-- Email input -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+                <div class="col-6">
+                    <div class="form-outline mb-3 mt-3 needs-validation">
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control needs-validation"
+                        />
+                        <label class="form-label" for="email">*Email</label>
+                        <div class="invalid-feedback">
+                            Email format does not match
+                        </div>
+                    </div>
                 </div>
+                <div class="col"></div>
             </div>
-            <div class="col"></div>
-        </div>
 
-        <!-- Submit button -->
-        <div class="row justify-content-md-center">
             <!-- Password input -->
-            <div class="col"></div>
-            <div class="col-3">
-                <button
-                    type="button"
-                    class="btn btn-primary btn-block mb-4 mt-2"
-                >
-                    Sign up
-                </button>
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+                <div class="col-6">
+                    <div class="form-outline mb-3 mt-3">
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control needs-validation"
+                            autocomplete="off"
+                        />
+                        <label class="form-label" for="password"
+                            >*Password must be at least 8 characters long</label
+                        >
+                        <div class="invalid-feedback">Password invalid</div>
+                    </div>
+                </div>
+                <div class="col"></div>
             </div>
-            <div class="col"></div>
-        </div>
+
+            <!-- Password Validation input -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+                <div class="col-6">
+                    <div class="form-outline mb-4 mt-3">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            class="form-control needs-validation"
+                        />
+                        <label class="form-label" for="password"
+                            >*Confirm Password</label
+                        >
+                        <div class="invalid-feedback">
+                            Password does not match
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+                <div class="col-3">
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-block mb-4 mt-2"
+                        id="submitbutton"
+                    >
+                        Sign up
+                    </button>
+                </div>
+                <div class="col"></div>
+            </div>
+        </form>
     </div>
 </body>
 <!-- MDB -->
+
 <script
     type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
->
-
+></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (() => {
-    'use strict';
+        "use strict";
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation');
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll(".needs-validation");
+        document
+            .getElementById("submitbutton")
+            .addEventListener("click", () => {
+                console.log(forms);
+                const invalidArray = [];
+                const validArray = [];
+                for (let input of forms) {
+                    if (input.value == "") {
+                        invalidArray.push(input);
+                    }
+                }
+                for (let input of [
+                    document.getElementById("firstname"),
+                    document.getElementById("lastname"),
+                ]) {
+                    if (input.value != "") {
+                        validArray.push(input);
+                    }
+                }
+                if (
+                    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+                        document.getElementById("email").value
+                    )
+                ) {
+                    validArray.push(document.getElementById("email"));
+                } else {
+                    invalidArray.push(document.getElementById("email"));
+                }
+                if (document.getElementById("password").value.length < 8) {
+                    invalidArray.push(document.getElementById("password"));
+                } else {
+                    validArray.push(document.getElementById("password"));
+                }
+                if (
+                    document.getElementById("password").value !=
+                    document.getElementById("confirmPassword").value
+                ) {
+                    invalidArray.push(
+                        document.getElementById("confirmPassword")
+                    );
+                } else {
+                    validArray.push(document.getElementById("confirmPassword"));
+                }
+                for (let elements of invalidArray) {
+                    elements.classList.add("is-invalid");
+                }
+                for (let elements of validArray) {
+                    elements.classList.remove("is-invalid");
+                }
+            });
 
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms).forEach((form) => {
-        form.addEventListener('submit', (event) => {
-            form.checkValidity()
-            event.preventDefault();
-            event.stopPropagation();
-        form.classList.add('was-validated');
-        }, false);
-    });
+        //Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach((form) => {
+            form.addEventListener(
+                "submit",
+                (event) => {
+                    form.checkValidity();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form.classList.add("was-validated");
+                },
+                false
+            );
+        });
     })();
 </script>

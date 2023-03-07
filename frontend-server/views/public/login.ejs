@@ -114,7 +114,7 @@
     // Loop over them and prevent submission
     Array.prototype.slice.call(forms).forEach((form) => {
         form.addEventListener('submit', (event) => {
-            form.checkValidity()
+            form.checkValidity();
             event.preventDefault();
             event.stopPropagation();
         form.classList.add('was-validated');

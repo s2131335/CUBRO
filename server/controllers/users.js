@@ -194,8 +194,13 @@ module.exports.resetPassword = async function (req, res) {
 
 module.exports.showUsers = async function (req, res) {
 	let filter = req.body.filter;
+	let role = filter.role;
+	delete filter.role;
 	try {
 		let users = await userService.findAllUserByFilter(filter);
+		if (role) {
+			users = users.filter((user) => user.role.includes(role));
+		}
 		return res.status(200).json(users);
 	} catch (err) {
 		res.status(err.status).json(err);

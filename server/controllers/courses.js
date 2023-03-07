@@ -1,6 +1,8 @@
 const { parseExcel } = require("../utils/excel");
 const courseService = require("../services/courses");
 const { tutorial, lecture, course } = require("../database/models/courses");
+const { CourseIDNotValid } = require("../utils/errors");
+const { isValidObjectId } = require("mongoose");
 
 module.exports.importCourse = function importCourse(req, res) {
     let filename = req.file.originalname;
@@ -38,7 +40,21 @@ module.exports.browseCourse = async function browseCourse(req, res) {
         }
         console.log(filter);
         var result = await course.find(filter);
-        res.status(200).json(result);
+        res.status(200).json(result != null ? result : {});
+    } catch (err) {
+        console.error(err);
+        res.status(err.status).send(err);
+    }
+};
+
+module.exports.courseInfo = async function courseInfo(req, res) {
+    try {
+        const cid = req.params.id;
+        if (!isValidObjectId(cid)) {
+            throw CourseIDNotValid;
+        }
+        const c = await course.findOne({ _id: cid });
+        res.status(200).json(c != null ? c : {});
     } catch (err) {
         console.error(err);
         res.status(err.status).send(err);

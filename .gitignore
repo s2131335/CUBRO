@@ -5,3 +5,6 @@ frontend-server/node_modules
 .DS_Store
 .vscode
 doc
+
+// courses
+server/courses.json

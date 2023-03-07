@@ -64,10 +64,14 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 };
 
 // TODO
-function checkCourseCollision(user, courses, selected) {
+async function checkCourseCollision(user, courses, selected) {
     var collisions = [];
-    for (let course of courses) {
-        if (!isValidObjectId(course)) collisions.push(course);
+    for (let c of courses) {
+        if (!isValidObjectId(c)) collisions.push(c);
+        else {
+            var findCourse = await course.find({ _id: c });
+            if (!findCourse) collisions.push(c);
+        }
     }
     return collisions;
 }
@@ -103,7 +107,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
         }
         // send email to student if it is a course registration
         if (select == "true") {
-            courseList = await course.find({ _id: { $in: courses } });
+            let courseList = await course.find({ _id: { $in: courses } });
             await Email.sendMail(req.user.email, {
                 mode: Email.MODE_SELECT,
                 courses: courseList,

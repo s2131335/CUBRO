@@ -17,7 +17,7 @@
             </div>
             <div class="col">
             </div>
-        </div>
+    </div>
 
         <!-- Password input -->
         <div class="row justify-content-md-center">
@@ -42,7 +42,7 @@
                 <label class="form-check-label" for="rememberme"> Remember me </label>
             </div>
             <div class="col-2">
-                <a href="#!">Forgot password?</a>
+                <a class="btn btn-secondary" id="forget" href="./forget">Forget Password</a>
             </div>
             <div class="col">
             </div>
@@ -51,7 +51,6 @@
             <div class="col d-flex justify-content-center">
                 <!-- Checkbox -->
                 <div class="form-check">
-                
                 </div>
             </div>
         
@@ -64,16 +63,16 @@
                 <div class="col">
                 </div>
                 <div class="col-3">
-                    <button type="button" class="btn btn-primary btn-block mb-4" id="signin">Sign in</button>
+                    <a class="btn btn-primary btn-block mb-4" id="signin" href='/'>Sign in</a>
                 </div>
                 <div class="col">
                 </div>
             </div>
-
         
             <!-- Register buttons -->
             <div class="text-center">
-                <p>Not a member? <a href="#!">Register</a></p>
+                <p>Not a member?</p>
+                <a class="btn btn-secondary btn-block mb-4" id="register" href='./register'>Register</a>
             </div>
     </div>
 
@@ -81,6 +80,7 @@
 
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js">
+
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (() => {
     'use strict';
@@ -98,7 +98,8 @@
         }, false);
     });
     })();
-
+    
+    // Submit data to login
     $(document).ready(()=>{
         $("#signin").click(()=>{
             if($('#email').val() === '' || $('#password').val() == ''){

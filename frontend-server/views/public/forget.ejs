@@ -1,0 +1,36 @@
+<%- include('./head.ejs') %>
+
+<body>
+    <div class="container text-center">
+        <div class="text-center" style="margin-top: 5%;">
+            <h1>Password Recovery Email Will Be Sent</h1>
+        </div>
+        <!-- Email input -->
+        <div class="row justify-content-md-center" style="margin-top: 10%;">
+            <div class="col">
+            </div>
+            <div class="col-5">
+                <div class="form-outline mb-4">
+                    <input type="email" id="email" class="form-control" required/>
+                    <label class="form-label" for="email">Email Address</label>
+                </div>
+            </div>
+            <div class="col">
+            </div>
+    </div>
+
+    <!-- Submit button -->
+    <div class="row justify-content-md-center">
+        <div class="col">
+        </div>
+        <div class="col-3">
+            <a class="btn btn-primary btn-block mb-4" id="submit" href='/'>Send Recover Email</a>
+        </div>
+        <div class="col">
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js">
+
+</script>

@@ -1,0 +1,129 @@
+<%- include('./head.ejs') %>
+
+<body>
+    <div class="container text-center">
+        <div class="text-center" style="margin-top: 10%;">
+            <h1>Sign up now</h1>
+        </div>
+        <!-- Name input -->
+        <div class="row justify-content-md-center" style="margin-top: 5%;">
+            <div class="col">
+            </div>
+            <div class="col-3">
+                <div class="form-outline mb-3 mt-3">
+                    <input type="firstname" id="firstname" class="form-control" required/>
+                    <label class="form-label" for="firstname">*First Name</label>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-outline mb-3 mt-3">
+                    <input type="lastname" id="lastname" class="form-control" required/>
+                    <label class="form-label" for="lastname">*Last Name</label>
+                </div>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+        <!-- Nickname and gender input -->
+        <div class="row justify-content-md-center">
+            <div class="col">
+            </div>
+            <div class="col-3">
+                <div class="form-outline mb-3 mt-3">
+                    <input type="nickname" id="nickname" class="form-control" />
+                    <label class="form-label" for="nickname">Nickname</label>
+                </div>
+            </div>
+            <div class="col-1">
+                <label class="form-label mb-3 mt-4" for="gender">*Gender:</label>
+            </div> 
+            <div class="col-2">
+                <select class="form-select mb-3 mt-3" id="gender" name="gender" style="border-radius: 4px; height: 35.81px;" required>
+                    <option value="">None</option>
+                    <option value="male">M</option>
+                    <option value="female">F</option>
+                </select>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+        <!-- Email input -->
+        <div class="row justify-content-md-center">
+            <div class="col">
+            </div>
+            <div class="col-6">
+                <div class="form-outline mb-3 mt-3">
+                    <input type="email" id="email" class="form-control" required/>
+                    <label class="form-label" for="email">*Email address</label>
+                </div>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+        <!-- Password input -->
+        <div class="row justify-content-md-center">
+            <div class="col">
+            </div>
+            <div class="col-6">
+                <div class="form-outline mb-3 mt-3">
+                    <input type="password" id="password" class="form-control" required/>
+                    <label class="form-label" for="password">*Password must be at least 8 characters long</label>
+                </div>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+        <!-- Password Validation input -->
+        <div class="row justify-content-md-center">
+            <div class="col">
+            </div>
+            <div class="col-6">
+                <div class="form-outline mb-3 mt-3">
+                    <input type="password" id="password" class="form-control" required/>
+                    <label class="form-label" for="password">*Confirm Password</label>
+                </div>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="row justify-content-md-center">
+            <!-- Password input -->
+            <div class="col">
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-primary btn-block mb-4 mt-2">Sign up</button>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+    </div>
+
+</body>
+      <!-- MDB -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js">
+
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+    'use strict';
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation');
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms).forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            form.checkValidity()
+            event.preventDefault();
+            event.stopPropagation();
+        form.classList.add('was-validated');
+        }, false);
+    });
+    })();
+    
+</script>

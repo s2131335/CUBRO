@@ -69,7 +69,7 @@ This is the router for managing users. The following are a list of apis that can
         -   [`/update-password`](#update-password)
             -   [Request](#request-4)
             -   [POST body](#post-body-2)
-        -   [`/show-students` \[Admin only\]](#show-students-admin-only)
+        -   [`/show-users` \[Admin only\]](#show-users-admin-only)
             -   [Request](#request-5)
         -   [`/add-user` \[Admin only\]](#add-user-admin-only)
             -   [Request](#request-6)
@@ -103,6 +103,7 @@ This is the router for managing users. The following are a list of apis that can
         -   [`FailToSendMail`](#failtosendmail)
         -   [`TokenInvalid`](#tokeninvalid)
         -   [`DatabaseUpdate`](#databaseupdate)
+    -   [User Schema](#user-schema)
 
 </ul>
 
@@ -178,15 +179,28 @@ This is the api for users to change their own password after logging in.
 | ---------- | -------- | ------ | ------------------------------ |
 | `password` | True     | String | The login password of the user |
 
-### `/show-students` [Admin only]
+### `/show-users` [Admin only]
 
-This is the api for listing all users with the role of "STUDENT".
+This is the api for listing all users matches the filters
 
 #### Request
 
 | Type | On Success           | On Error                                 |
 | ---- | -------------------- | ---------------------------------------- |
-| GET  | JSON with status 200 | Please refer to the error documentation. |
+| POST | JSON with status 200 | Please refer to the error documentation. |
+
+POST body
+| Field | Required | Type | Description |  
+| --- | --- | --- | --- |  
+`filter` | True | Object | Filters that want to be matched. Details refer to user schema document|
+
+`filter` example:
+
+```json
+{
+	"role": "ADMIN"
+}
+```
 
 ### `/add-user` [Admin only]
 
@@ -414,3 +428,15 @@ DatabaseUpdate: {
     message: "Update not success",
 }
 ```
+
+## User Schema
+
+| Field           | Required | Unique | Type            | Default       | Description                         |
+| --------------- | -------- | ------ | --------------- | ------------- | ----------------------------------- |
+| `fullName`      | True     | False  | String          |               | Full name of user                   |
+| `email`         | True     | True   | String          |               | Email of user                       |
+| `password`      | True     | False  | String          |               | Hashed password of user             |
+| `role`          | True     | False  | Array of String | `["STUDENT"]` | Role of user. {TUTOR,STUDENT,ADMIN} |
+| `contactNumber` | True     | False  | Number          |               | Phone number of user                |
+| `activated`     | True     | False  | Boolean         | `false`       | Indicate if account is activated    |
+| `token`         | False    | False  | String          |               | Save jwt token for verification     |

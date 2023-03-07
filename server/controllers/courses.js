@@ -3,6 +3,7 @@ const courseService = require("../services/courses");
 const { tutorial, lecture, course } = require("../database/models/courses");
 const { CourseIDNotValid } = require("../utils/errors");
 const { isValidObjectId } = require("mongoose");
+const registration = require("../database/models/registration");
 
 module.exports.importCourse = function importCourse(req, res) {
     let filename = req.file.originalname;
@@ -55,6 +56,51 @@ module.exports.courseInfo = async function courseInfo(req, res) {
         }
         const c = await course.findOne({ _id: cid });
         res.status(200).json(c != null ? c : {});
+    } catch (err) {
+        console.error(err);
+        res.status(err.status).send(err);
+    }
+};
+
+// TODO
+function checkCourseCollision(user, courses, selected) {
+    var collisions = [];
+    for (let course of courses) {
+        if (!isValidObjectId(course)) collisions.push(course);
+    }
+    return collisions;
+}
+
+module.exports.selectCourse = async function selectCourse(req, res) {
+    try {
+        const { select, courses } = req.body;
+        if (courses.length == 0) throw CourseIDNotValid;
+        if (select) {
+            var courseCollision = checkCourseCollision(
+                req.user,
+                courses,
+                select
+            );
+            if (courseCollision.length != 0) {
+                return res.status(500).json(courseCollision);
+            }
+        }
+
+        for (let course of courses) {
+            await registration.replaceOne(
+                {
+                    courseID: course,
+                    studentID: req.user.id,
+                },
+                {
+                    courseID: course,
+                    studentID: req.user.id,
+                    selected: select,
+                },
+                { upsert: true }
+            );
+        }
+        res.status(200).send("ok");
     } catch (err) {
         console.error(err);
         res.status(err.status).send(err);

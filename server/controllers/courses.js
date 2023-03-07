@@ -4,6 +4,7 @@ const { tutorial, lecture, course } = require("../database/models/courses");
 const { CourseIDNotValid } = require("../utils/errors");
 const { isValidObjectId } = require("mongoose");
 const registration = require("../database/models/registration");
+const Email = require("../utils/sendMail");
 
 module.exports.importCourse = function importCourse(req, res) {
     let filename = req.file.originalname;
@@ -99,6 +100,14 @@ module.exports.selectCourse = async function selectCourse(req, res) {
                 },
                 { upsert: true }
             );
+        }
+        // send email to student if it is a course registration
+        if (select == "true") {
+            courseList = await course.find({ _id: { $in: courses } });
+            await Email.sendMail(req.user.email, {
+                mode: Email.MODE_SELECT,
+                courses: courseList,
+            });
         }
         res.status(200).send("ok");
     } catch (err) {

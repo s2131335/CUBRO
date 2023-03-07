@@ -1,6 +1,6 @@
 # CUBRO Backend
 
-This is the official documentaion of the CUBRO backend server. There are 2 routes available, namely:
+This is the official documentation of the CUBRO backend server. There are 3 routes available, namely:
 
 -   [`/api/users`](#apiusers), for managing users
 -   [`/api/courses`](#apicourses), for dealing with courses
@@ -8,7 +8,7 @@ This is the official documentaion of the CUBRO backend server. There are 2 route
 
 ## Quick Start
 
-1. Before starting the server, be sure to go to the right folder and install all dependecies:
+1. Before starting the server, be sure to go to the right folder and install all dependencies:
 
 ```
 npm i
@@ -41,7 +41,7 @@ SENDER_PASSWORD=<SERVICE_EMAIL_PASSWORD>
 | <SECRET_STRING>          | A random secret string that is used to encrypt your data            |
 | <ADMIN_DEFAULT_PASSWORD> | The default admin password for your system                          |
 | <DOMAIN_ADDRESS>         | The domain of your system, used for sending email                   |
-| <SERVICE_EMAIL_ADDRESS>  | The email addres of your service email                              |
+| <SERVICE_EMAIL_ADDRESS>  | The email address of your service email                             |
 | <SERVICE_EMAIL_PASSWORD> | The password, might also be the app password, of your service email |
 
 4. The server can now be started with:
@@ -50,9 +50,11 @@ SENDER_PASSWORD=<SERVICE_EMAIL_PASSWORD>
 npm start
 ```
 
+<!-- user api -->
+
 ## `/api/users`
 
-This is the router for managing users. The following are a list of apis that can be used for acheiving the desired functions. One can simply append the header of each section to the end of `api/users` to get the full api. The list of apis are as follows:
+This is the router for managing users. The following are a list of apis that can be used for achieving the desired functions. One can simply append the header of each section to the end of `api/users` to get the full api. The list of apis are as follows:
 
 -   [CUBRO Backend](#cubro-backend)
     -   [Quick Start](#quick-start)
@@ -127,7 +129,7 @@ This is the api for registering a new user. **_Note that there are constraints f
 
 ### `/activate-account/:token`
 
-After regsitering for an account, users are stilled forbidden from using the system unless their account has been activated. This api allows users to activate their own account.
+After registering for an account, users are stilled forbidden from using the system unless their account has been activated. This api allows users to activate their own account.
 
 #### Request
 
@@ -137,7 +139,7 @@ After regsitering for an account, users are stilled forbidden from using the sys
 
 ### `/login`
 
-This is the api for loggin into the system. Note that a user can only login if he/she has not logged in before.
+This is the api for logging into the system. Note that a user can only login if he/she has not logged in before.
 
 #### Request
 
@@ -270,6 +272,8 @@ After getting the email from the method above, by using this api, users can rese
 | ---------- | -------- | ------ | ------------------------------ |
 | `password` | True     | String | The login password of the user |
 
+<!-- courses api -->
+
 ## `/api/courses`
 
 This is the api for dealing with courses, meant to use for both admins and users of this system. One can simply append the header of each section to the end of `api/courses` to get the full api. The list of apis are as follows:
@@ -305,6 +309,23 @@ This is for users to get a more detailed information on the course in query by p
 | ---- | --------------------------------------------- | ---------------------------------------- |
 | GET  | JSON of details of the course with status 200 | Please refer to the error documentation. |
 
+### `/select`
+
+This api is for course selection and shopping cart addition.
+
+#### Request
+
+| Type | On Success                | On Error                                 |
+| ---- | ------------------------- | ---------------------------------------- |
+| POST | Send "ok" with status 200 | Please refer to the error documentation. |
+
+#### POST body
+
+| Field     | Required | Type           | Description                                                                               |
+| --------- | -------- | -------------- | ----------------------------------------------------------------------------------------- |
+| `select`  | True     | Boolean        | "true" indicates a course selection, whereas a "false" indicates a shopping cart addition |
+| `courses` | True     | List of String | A list of string containing course ID(s).                                                 |
+
 ### `/import-courses` [Admin only]
 
 This api is for admins to import courses from an excel file, allowing an easy way to create courses in the system
@@ -335,6 +356,8 @@ The excel file should contain a total 10 columns, namely:
 -   dates
 -   time
 -   description
+
+<!-- testing api -->
 
 ## `/api/testing`
 

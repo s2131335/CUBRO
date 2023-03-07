@@ -11,17 +11,20 @@
         <div class="row justify-content-md-center" style="margin-top: 5%">
             <div class="col"></div>
             <div class="col-5">
-                <div class="form-outline mb-4">
+                <div
+                    class="input-group form-outline"
+                    style="margin-bottom: 30px"
+                >
                     <input
                         type="email"
                         id="email"
-                        class="form-control"
-                        required
+                        class="form-control needs-validation"
                     />
 
                     <label class="form-label" for="email"
                         ><i class="fas fa-envelope"></i> Email</label
                     >
+                    <div class="invalid-feedback">Invalid email</div>
                 </div>
             </div>
 
@@ -34,7 +37,11 @@
 
             <div class="col-5">
                 <div class="input-group form-outline mb-4">
-                    <input type="password" class="form-control" />
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-control needs-validation"
+                    />
                     <label class="form-label" for="password"
                         ><i class="fas fa-key"></i> Password</label
                     >
@@ -44,6 +51,7 @@
                         href="./forget"
                         >Forgot?</a
                     >
+                    <div class="invalid-feedback">Invalid password</div>
                 </div>
             </div>
 
@@ -68,12 +76,12 @@
             </div>
             <!-- Submit button -->
             <div class="col-2">
-                <a
+                <button
                     class="btn btn-primary btn-block shadow-0 mb-4"
                     id="signin"
-                    href="/"
-                    >Sign in</a
                 >
+                    Sign in
+                </button>
             </div>
             <div class="col"></div>
         </div>
@@ -102,34 +110,67 @@
 <script
     type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
->
-
+></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (() => {
-    'use strict';
+        "use strict";
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation');
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll(".needs-validation");
 
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms).forEach((form) => {
-        form.addEventListener('submit', (event) => {
-            form.checkValidity();
-            event.preventDefault();
-            event.stopPropagation();
-        form.classList.add('was-validated');
-        }, false);
-    });
+        // Input Validation
+        document.getElementById("signin").addEventListener("click", () => {
+            console.log(forms);
+            const invalidArray = [];
+            const validArray = [];
+            for (let input of forms) {
+                if (input.value == "") {
+                    invalidArray.push(input);
+                }
+            }
+            if (document.getElementById("password").value != "") {
+                validArray.push(document.getElementById("password"));
+            }
+            if (
+                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+                    document.getElementById("email").value
+                )
+            ) {
+                validArray.push(document.getElementById("email"));
+            } else {
+                invalidArray.push(document.getElementById("email"));
+            }
+            for (let elements of invalidArray) {
+                elements.classList.add("is-invalid");
+            }
+            for (let elements of validArray) {
+                elements.classList.remove("is-invalid");
+            }
+        });
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach((form) => {
+            form.addEventListener(
+                "submit",
+                (event) => {
+                    form.checkValidity();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form.classList.add("was-validated");
+                },
+                false
+            );
+        });
     })();
 
     // Submit data to login
-    $(document).ready(()=>{
-        $("#signin").click(()=>{
-            if($('#email').val() === '' || $('#password').val() == ''){
+    $(document).ready(() => {
+        $("#signin").click(() => {
+            if ($("#email").val() === "" || $("#password").val() == "") {
                 return;
             }
-            var data={};
+            var data = {};
         });
-
     });
 </script>

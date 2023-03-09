@@ -30,6 +30,10 @@ const courseSchema = new Schema({
 			},
 		},
 	],
+	seat: {
+		// available seat
+		type: Number,
+	},
 });
 
 const Course = mongoose.model("course", courseSchema);
@@ -42,10 +46,6 @@ const Lecture = Course.discriminator(
 		},
 		description: {
 			type: String,
-		},
-		seat: {
-			// available seat
-			type: Number,
 		},
 	})
 );

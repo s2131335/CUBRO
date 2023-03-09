@@ -4,6 +4,7 @@ const {
 	browseCourse,
 	courseInfo,
 	selectCourse,
+	dropCourse,
 } = require("../controllers/courses");
 const upload = require("../middleware/upload");
 const { importCourse } = require("../controllers/courses");
@@ -17,6 +18,7 @@ router.post("/import-courses", upload, importCourse);
 router.get("/browse", Auth.checkAuth(), browseCourse);
 router.get("/info/:id", Auth.checkAuth(), courseInfo);
 router.post("/select", Auth.checkAuth(), selectCourse);
+router.post("/drop", Auth.checkAuth(), dropCourse);
 
 // router.get("/excel");
 

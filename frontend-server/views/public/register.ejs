@@ -5,15 +5,18 @@
         <div class="text-center text-primary" style="margin-top: 12%">
             <h1>Sign up now</h1>
         </div>
-        <form>
+        <form class="requires-validation" id="registerForm" novalidate>
             <!-- Name input -->
             <div class="row justify-content-md-center" style="margin-top: 5%">
                 <div class="col"></div>
                 <div class="col-3">
                     <div class="form-outline mb-3 mt-3">
                         <input
+                            type="text"
                             id="firstname"
                             class="form-control needs-validation"
+                            oninput="checkEmptyInput(this)"
+                            required
                         />
                         <label class="form-label" for="firstname"
                             >*First Name</label
@@ -24,9 +27,11 @@
                 <div class="col-3">
                     <div class="form-outline mb-3 mt-3">
                         <input
-                            type="lastname"
+                            type="text"
                             id="lastname"
                             class="form-control needs-validation"
+                            required
+                            oninput="checkEmptyInput(this)"
                         />
                         <label class="form-label" for="lastname"
                             >*Last Name</label
@@ -42,11 +47,7 @@
                 <div class="col"></div>
                 <div class="col-3">
                     <div class="form-outline mb-3 mt-3">
-                        <input
-                            type="nickname"
-                            id="nickname"
-                            class="form-control"
-                        />
+                        <input type="text" id="nickname" class="form-control" />
                         <label class="form-label" for="nickname"
                             >Nickname</label
                         >
@@ -61,7 +62,6 @@
                     <select
                         class="form-select mb-3 mt-3"
                         id="gender"
-                        name="gender"
                         style="border-radius: 4px; height: 35.81px"
                     >
                         <option value="">None</option>
@@ -81,6 +81,8 @@
                             type="email"
                             id="email"
                             class="form-control needs-validation"
+                            required
+                            oninput="checkEmailInput(this)"
                         />
                         <label class="form-label" for="email">*Email</label>
                         <div class="invalid-feedback">
@@ -101,9 +103,13 @@
                             id="password"
                             class="form-control needs-validation"
                             autocomplete="off"
+                            minlength="8"
+                            required
+                            oninput="checkPasswordConfirm()"
                         />
                         <label class="form-label" for="password"
-                            >*Password must be at least 8 characters long</label
+                            >*Password (must be at least 8 characters
+                            long)</label
                         >
                         <div class="invalid-feedback">Password invalid</div>
                     </div>
@@ -120,6 +126,9 @@
                             type="password"
                             id="confirmPassword"
                             class="form-control needs-validation"
+                            minlength="8"
+                            required
+                            oninput="checkPasswordConfirm()"
                         />
                         <label class="form-label" for="password"
                             >*Confirm Password</label
@@ -137,9 +146,10 @@
                 <div class="col"></div>
                 <div class="col-3">
                     <button
-                        type="button"
+                        type="submit"
                         class="btn btn-primary btn-block mb-4 mt-2"
                         id="submitbutton"
+                        onclick="submitInfo()"
                     >
                         Sign up
                     </button>
@@ -151,83 +161,160 @@
 </body>
 <!-- MDB -->
 
-<script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
-></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (() => {
+    (function () {
         "use strict";
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll(".needs-validation");
-
-        // Input Validation
-        document
-            .getElementById("submitbutton")
-            .addEventListener("click", () => {
-                console.log(forms);
-                const invalidArray = [];
-                const validArray = [];
-                for (let input of forms) {
-                    if (input.value == "") {
-                        invalidArray.push(input);
-                    }
-                }
-                for (let input of [
-                    document.getElementById("firstname"),
-                    document.getElementById("lastname"),
-                ]) {
-                    if (input.value != "") {
-                        validArray.push(input);
-                    }
-                }
-                if (
-                    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-                        document.getElementById("email").value
-                    )
-                ) {
-                    validArray.push(document.getElementById("email"));
-                } else {
-                    invalidArray.push(document.getElementById("email"));
-                }
-                if (document.getElementById("password").value.length < 8) {
-                    invalidArray.push(document.getElementById("password"));
-                } else {
-                    validArray.push(document.getElementById("password"));
-                }
-                if (
-                    document.getElementById("password").value !=
-                    document.getElementById("confirmPassword").value
-                ) {
-                    invalidArray.push(
-                        document.getElementById("confirmPassword")
-                    );
-                } else {
-                    validArray.push(document.getElementById("confirmPassword"));
-                }
-                for (let elements of invalidArray) {
-                    elements.classList.add("is-invalid");
-                }
-                for (let elements of validArray) {
-                    elements.classList.remove("is-invalid");
-                }
-            });
-
-        //Loop over them and prevent submission
-        Array.prototype.slice.call(forms).forEach((form) => {
+        const forms = document.querySelectorAll(".requires-validation");
+        Array.from(forms).forEach(function (form) {
             form.addEventListener(
                 "submit",
-                (event) => {
-                    form.checkValidity();
-                    event.preventDefault();
-                    event.stopPropagation();
+                function (event) {
+                    if (
+                        document.getElementById("confirmPassword").value !=
+                        document.getElementById("password").value
+                    ) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        const update = {
+                            fullName: "Loliko",
+                            nickname: "wowoko",
+                            email: document.getElementById("email").value,
+                            contactNumber: "98761234",
+                            password: document.getElementById("password").value,
+                        };
+
+                        const options = {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(update),
+                        };
+                        function submitInfo() {
+                            fetch(
+                                "http://127.0.0.1:5555/api/users/register",
+                                options
+                            ).then((data) => {
+                                console.log(data);
+                            });
+                        }
+                        submitInfo();
+                    }
+
                     form.classList.add("was-validated");
+                    checkEmailInput(document.getElementById("email"));
+                    //passwordConfirmCheck();
                 },
                 false
             );
         });
+        //(() => {
+        //"use strict";
+
+        // // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        // const forms = document.querySelectorAll(".needs-validation");
+
+        // // Input Validation
+        // document
+        //     .getElementById("submitbutton")
+        //     .addEventListener("click", () => {
+        //         console.log(forms);
+        //         const invalidArray = [];
+        //         const validArray = [];
+        //         for (let input of forms) {
+        //             if (input.value == "") {
+        //                 invalidArray.push(input);
+        //             }
+        //         }
+        //         for (let input of [
+        //             document.getElementById("firstname"),
+        //             document.getElementById("lastname"),
+        //         ]) {
+        //             if (input.value != "") {
+        //                 validArray.push(input);
+        //             }
+        //         }
+        //         if (
+        //             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+        //                 document.getElementById("email").value
+        //             )
+        //         ) {
+        //             validArray.push(document.getElementById("email"));
+        //         } else {
+        //             invalidArray.push(document.getElementById("email"));
+        //         }
+        //         if (document.getElementById("password").value.length < 8) {
+        //             invalidArray.push(document.getElementById("password"));
+        //         } else {
+        //             validArray.push(document.getElementById("password"));
+        //         }
+        //         if (
+        //             document.getElementById("password").value !=
+        //             document.getElementById("confirmPassword").value
+        //         ) {
+        //             invalidArray.push(
+        //                 document.getElementById("confirmPassword")
+        //             );
+        //         } else {
+        //             validArray.push(document.getElementById("confirmPassword"));
+        //         }
+        //         for (let elements of invalidArray) {
+        //             elements.classList.add("is-invalid");
+        //         }
+        //         for (let elements of validArray) {
+        //             elements.classList.remove("is-invalid");
+        //         }
+        //     });
     })();
+
+    function checkPasswordConfirm() {
+        if (
+            document.getElementById("password").value !=
+            document.getElementById("confirmPassword").value
+        ) {
+            document
+                .getElementById("confirmPassword")
+                .classList.remove("is-valid");
+            document
+                .getElementById("confirmPassword")
+                .classList.add("is-invalid");
+        } else {
+            document
+                .getElementById("confirmPassword")
+                .classList.remove("is-invalid");
+            document
+                .getElementById("confirmPassword")
+                .classList.add("is-valid");
+        }
+    }
+
+    function checkEmptyInput(input) {
+        if (input.value == "") {
+            input.classList.remove("is-valid");
+            input.classList.add("is-invalid");
+        } else {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+        }
+    }
+
+    function checkEmailInput(input) {
+        if (
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input.value) ==
+            0
+        ) {
+            input.classList.remove("is-valid");
+            input.classList.add("is-invalid");
+        } else {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+        }
+    }
 </script>

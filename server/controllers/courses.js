@@ -8,6 +8,8 @@ const {
 	findAllCoursesByFilter,
 	findCourseByFilter,
 } = require("../services/courses");
+const { checkCollision } = require("../utils/planner");
+const { Course } = require("../database/models/courses");
 
 module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;
@@ -75,6 +77,8 @@ async function checkCourseCollision(user, courses, selected) {
 			var findCourse = await findCourseByFilter({ _id: c });
 			if (!findCourse) collisions.push(c);
 		}
+		if (selected) {
+		}
 	}
 	return collisions;
 }
@@ -83,15 +87,15 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 	try {
 		const { select, courses } = req.body;
 		if (courses.length == 0) throw error.CourseIDNotValid;
-		if (select) {
-			var courseCollision = checkCourseCollision(
-				req.user,
-				courses,
-				select
-			);
-			if (courseCollision.length != 0) {
-				return res.status(500).json(courseCollision);
-			}
+		var toSelect = await Course.countDocuments({ _id: { $in: courses } });
+		console.log(toSelect);
+		if (toSelect != courses.length) {
+			throw error.CourseIDNotValid;
+		}
+		var collision = await checkCollision(req.user, courses);
+		console.log("collision:", collision);
+		if (collision.length != 0) {
+			return res.status(500).json(collision);
 		}
 
 		for (let course of courses) {
@@ -121,6 +125,39 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 		res.status(200).send("ok");
 	} catch (err) {
 		console.error(err);
-		res.status(err.status).send(err);
+		res.status(err.status || 500).send(err);
+	}
+};
+
+module.exports.dropCourse = async function dropCourse(req, res) {
+	try {
+		var { courses } = req.body;
+		for (var course of courses) {
+			if (!isValidObjectId(course)) throw error.CourseIDNotValid;
+		}
+		var toDrop = await registration
+			.find({
+				courseID: { $in: courses },
+				studentID: req.user._id,
+			})
+			.distinct("_id");
+		if (toDrop.length != courses.length) {
+			throw error.RegistrationNotValid;
+		}
+		await registration.deleteMany({
+			courseID: { $in: courses },
+			studentID: req.user._id,
+		});
+		let courseList = await findAllCoursesByFilter({
+			_id: { $in: courses },
+		});
+		await Email.sendMail(req.user.email, {
+			mode: Email.MODE_DROP,
+			courses: courseList,
+		});
+		res.status(200).send("ok");
+	} catch (err) {
+		console.error(err);
+		res.status(err.status || 500).send(err);
 	}
 };

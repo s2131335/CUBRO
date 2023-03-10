@@ -1,36 +1,59 @@
 <%- include('./head.ejs') %>
 
 <body>
-    <div class="container text-center">
-        <div class="text-center" style="margin-top: 5%;">
-            <h1>Password Recovery Email Will Be Sent</h1>
+    <div class="container text-center" style="width: 1000px">
+    <div class="text-center text-primary" style="margin-top: 15%">
+        <h1>Password recovery email will be sent</h1>
+    </div>
+    <!-- Email input -->
+    <div class="row justify-content-md-center" style="margin-top: 10%">
+        <div class="col"></div>
+        <div class="col-5">
+            <div class="form-outline" style="margin-bottom: 30px" >
+                <input type="email" id="email" class="form-control"/>
+                <label class="form-label" for="email"><i class="fas fa-envelope"></i> Email </label
+                    > 
+                    <div class="invalid-feedback">
+                        Email format does not match
+                    </div>
+            </div>
         </div>
-        <!-- Email input -->
-        <div class="row justify-content-md-center" style="margin-top: 10%;">
-            <div class="col">
-            </div>
-            <div class="col-5">
-                <div class="form-outline mb-4">
-                    <input type="email" id="email" class="form-control" required/>
-                    <label class="form-label" for="email">Email Address</label>
-                </div>
-            </div>
-            <div class="col">
-            </div>
+        <div class="col"></div>
     </div>
 
     <!-- Submit button -->
     <div class="row justify-content-md-center">
-        <div class="col">
-        </div>
+        <div class="col"></div>
         <div class="col-3">
-            <a class="btn btn-primary btn-block mb-4" id="submit" href='/'>Send Recover Email</a>
+            <button class="btn btn-primary btn-block mb-4" id="submit"
+                >Send Recover Email</button
+            >
         </div>
-        <div class="col">
-        </div>
+        <div class="col"></div>
     </div>
 </body>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js">
-
+<script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
+></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+document.getElementById("submit").addEventListener("click", () => {
+    console.log("hi")
+    const invalidArray = [];
+    const validArray = [];
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.getElementById("email").value)
+    ) {
+        validArray.push(document.getElementById("email"));
+    } else {
+        invalidArray.push(document.getElementById("email"));
+    }
+    for (let elements of invalidArray) {
+        elements.classList.add("is-invalid");
+    }
+    for (let elements of validArray) {
+        elements.classList.remove("is-invalid");
+    }
+    });
 </script>

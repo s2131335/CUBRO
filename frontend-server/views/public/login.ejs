@@ -1,114 +1,194 @@
 <%- include('./head.ejs') %>
 
 <body>
-    <div class="container text-center">
-        <div class="text-center" style="margin-top: 5%;">
-            <h1>CUBRO</h1>
+    <div class="container-fluid text-center" style="width: 1000px">
+        <div class="text-center text-primary" style="margin-top: 15%">
+            <h1>Welcome to</h1>
+            <h1 class="text-dark">CUBRO</h1>
         </div>
+
         <!-- Email input -->
-        <div class="row justify-content-md-center" style="margin-top: 10%;">
-            <div class="col">
-            </div>
-            <div class="col-5">
-                <div class="form-outline mb-4">
-                    <input type="email" id="email" class="form-control" required/>
-                    <label class="form-label" for="email">Email Address</label>
-                </div>
-            </div>
-            <div class="col">
-            </div>
-    </div>
+        <form class="requires-validation" novalidate>
+            <div class="row justify-content-md-center" style="margin-top: 5%">
+                <div class="col"></div>
+                <div class="col-5">
+                    <div
+                        class="input-group form-outline"
+                        style="margin-bottom: 30px"
+                    >
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control needs-validation"
+                            required
+                        />
 
-        <!-- Password input -->
-        <div class="row justify-content-md-center">
-            <div class="col">
-            </div>
-            <div class="col-5">
-                <div class="form-outline mb-4">
-                    <input type="password" id="password" class="form-control" required/>
-                    <label class="form-label" for="password">Password</label>
+                        <label class="form-label" for="email"
+                            ><i class="fas fa-envelope"></i> Email</label
+                        >
+                        <div class="invalid-feedback">Invalid email</div>
+                    </div>
                 </div>
-            </div>
-            <div class="col">
-            </div>
-        </div>
 
-        <!-- 2 column grid layout for inline styling -->
-        <div class="row justify-content-md-center">
-            <div class="col">
+                <div class="col"></div>
             </div>
-            <div class="col-2">
-                <input class="form-check-input" type="checkbox" value="" id="rememberme" checked />
-                <label class="form-check-label" for="rememberme"> Remember me </label>
-            </div>
-            <div class="col-2">
-                <a class="btn btn-secondary" id="forget" href="./forget">Forget Password</a>
-            </div>
-            <div class="col">
-            </div>
-        </div>
-            <div class="row mb-4">
-            <div class="col d-flex justify-content-center">
-                <!-- Checkbox -->
-                <div class="form-check">
-                </div>
-            </div>
-        
 
-            </div>
-        
-            <!-- Submit button -->
+            <!-- Password input -->
             <div class="row justify-content-md-center">
-                <!-- Password input -->
-                <div class="col">
+                <div class="col"></div>
+
+                <div class="col-5">
+                    <div class="input-group form-outline mb-4">
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control needs-validation"
+                            minlength="8"
+                            required
+                            formnovalidate
+                        />
+                        <label class="form-label" for="password"
+                            ><i class="fas fa-key"></i> Password</label
+                        >
+                        <div class="vr vr-blurry"></div>
+                        <a
+                            class="button text-muted shadow-0 pt-1 ps-3 pe-3"
+                            href="./forget"
+                            >Forgot?</a
+                        >
+                        <div class="invalid-feedback">Invalid password</div>
+                    </div>
                 </div>
-                <div class="col-3">
-                    <a class="btn btn-primary btn-block mb-4" id="signin" href='/'>Sign in</a>
-                </div>
-                <div class="col">
-                </div>
+
+                <div class="col"></div>
             </div>
-        
-            <!-- Register buttons -->
-            <div class="text-center">
-                <p>Not a member?</p>
-                <a class="btn btn-secondary btn-block mb-4" id="register" href='./register'>Register</a>
+
+            <!-- 2 column grid layout for inline styling -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+                <!-- Rememberme Checkbox -->
+                <div class="col-2 pt-1">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="rememberme"
+                    />
+                    <label class="form-check-label" for="rememberme">
+                        Remember me
+                    </label>
+                </div>
+                <!-- Submit button -->
+                <div class="col-2">
+                    <button
+                        class="btn btn-primary btn-block shadow-0 mb-4"
+                        id="signin"
+                    >
+                        Sign in
+                    </button>
+                </div>
+                <div class="col"></div>
             </div>
+        </form>
+        <!-- Register button -->
+        <div class="text-center">
+            <p class="mb-1">Not a member?</p>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <a
+                        class="btn btn-block btn-secondary"
+                        id="register"
+                        href="./register"
+                        >Register</a
+                    >
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
     </div>
 
-      <!-- MDB -->
-
+    <!-- MDB -->
 </body>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (() => {
-    'use strict';
+    (function () {
+        "use strict";
+        const forms = document.querySelectorAll(".requires-validation");
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener(
+                "submit",
+                function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation');
-
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms).forEach((form) => {
-        form.addEventListener('submit', (event) => {
-            form.checkValidity()
-            event.preventDefault();
-            event.stopPropagation();
-        form.classList.add('was-validated');
-        }, false);
-    });
+                    form.classList.add("was-validated");
+                },
+                false
+            );
+        });
     })();
-    
+    // (() => {
+    //     "use strict";
+
+    //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    //     const forms = document.querySelectorAll(".needs-validation");
+
+    //     // Input Validation
+    //     document.getElementById("signin").addEventListener("click", () => {
+    //         console.log(forms);
+    //         const invalidArray = [];
+    //         const validArray = [];
+    //         for (let input of forms) {
+    //             if (input.value == "") {
+    //                 invalidArray.push(input);
+    //             }
+    //         }
+    //         if (document.getElementById("password").value != "") {
+    //             validArray.push(document.getElementById("password"));
+    //         }
+    //         if (
+    //             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+    //                 document.getElementById("email").value
+    //             )
+    //         ) {
+    //             validArray.push(document.getElementById("email"));
+    //         } else {
+    //             invalidArray.push(document.getElementById("email"));
+    //         }
+    //         for (let elements of invalidArray) {
+    //             elements.classList.add("is-invalid");
+    //         }
+    //         for (let elements of validArray) {
+    //             elements.classList.remove("is-invalid");
+    //         }
+    //     });
+    //     // Loop over them and prevent submission
+    //     Array.prototype.slice.call(forms).forEach((form) => {
+    //         form.addEventListener(
+    //             "submit",
+    //             (event) => {
+    //                 form.checkValidity();
+    //                 event.preventDefault();
+    //                 event.stopPropagation();
+    //                 form.classList.add("was-validated");
+    //             },
+    //             false
+    //         );
+    //     });
+    // })();
+
     // Submit data to login
-    $(document).ready(()=>{
-        $("#signin").click(()=>{
-            if($('#email').val() === '' || $('#password').val() == ''){
+    $(document).ready(() => {
+        $("#signin").click(() => {
+            if ($("#email").val() === "" || $("#password").val() == "") {
                 return;
             }
-            var data={};
+            var data = {};
         });
-        
     });
-
-
 </script>

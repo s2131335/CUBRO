@@ -1,6 +1,11 @@
 <%- include('./head.ejs') %>
 
 <body>
+    <div
+        class="alert alert-danger fade show"
+        id="err"
+        style="display: none"
+    ></div>
     <div class="container-fluid text-center" style="width: 1000px">
         <div class="text-center text-primary" style="margin-top: 15%">
             <h1>Welcome to</h1>
@@ -21,6 +26,7 @@
                             id="email"
                             class="form-control needs-validation"
                             required
+                            pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
                         />
 
                         <label class="form-label" for="email"
@@ -45,7 +51,6 @@
                             class="form-control needs-validation"
                             minlength="8"
                             required
-                            formnovalidate
                         />
                         <label class="form-label" for="password"
                             ><i class="fas fa-key"></i> Password</label
@@ -81,6 +86,7 @@
                 <div class="col-2">
                     <button
                         class="btn btn-primary btn-block shadow-0 mb-4"
+                        type="button"
                         id="signin"
                     >
                         Sign in
@@ -117,78 +123,62 @@
     (function () {
         "use strict";
         const forms = document.querySelectorAll(".requires-validation");
+
         Array.from(forms).forEach(function (form) {
-            form.addEventListener(
-                "submit",
+            document.getElementById("signin").addEventListener(
+                "click",
                 function (event) {
                     if (!form.checkValidity()) {
                         event.preventDefault();
                         event.stopPropagation();
+                    } else {
+                        const update = {
+                            email: document.getElementById("email").value,
+                            password: document.getElementById("password").value,
+                        };
+
+                        const options = {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(update),
+                        };
+                        function submitInfo() {
+                            fetch(
+                                "http://127.0.0.1:5555/api/users/login",
+                                options
+                            ).then(async (data) => {
+                                if (data.status == "500") {
+                                    let res = await data.json();
+                                    document.getElementById("err").textContent =
+                                        res.message;
+                                    document.getElementById(
+                                        "err"
+                                    ).style.display = "block";
+                                } else if (data.status == "200") {
+                                    window.location.replace("/");
+                                }
+                            });
+                        }
+                        submitInfo();
                     }
 
                     form.classList.add("was-validated");
+                    //passwordConfirmCheck();
                 },
                 false
             );
         });
     })();
-    // (() => {
-    //     "use strict";
-
-    //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    //     const forms = document.querySelectorAll(".needs-validation");
-
-    //     // Input Validation
-    //     document.getElementById("signin").addEventListener("click", () => {
-    //         console.log(forms);
-    //         const invalidArray = [];
-    //         const validArray = [];
-    //         for (let input of forms) {
-    //             if (input.value == "") {
-    //                 invalidArray.push(input);
-    //             }
-    //         }
-    //         if (document.getElementById("password").value != "") {
-    //             validArray.push(document.getElementById("password"));
-    //         }
-    //         if (
-    //             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-    //                 document.getElementById("email").value
-    //             )
-    //         ) {
-    //             validArray.push(document.getElementById("email"));
-    //         } else {
-    //             invalidArray.push(document.getElementById("email"));
-    //         }
-    //         for (let elements of invalidArray) {
-    //             elements.classList.add("is-invalid");
-    //         }
-    //         for (let elements of validArray) {
-    //             elements.classList.remove("is-invalid");
-    //         }
-    //     });
-    //     // Loop over them and prevent submission
-    //     Array.prototype.slice.call(forms).forEach((form) => {
-    //         form.addEventListener(
-    //             "submit",
-    //             (event) => {
-    //                 form.checkValidity();
-    //                 event.preventDefault();
-    //                 event.stopPropagation();
-    //                 form.classList.add("was-validated");
-    //             },
-    //             false
-    //         );
-    //     });
-    // })();
 
     // Submit data to login
-    $(document).ready(() => {
-        $("#signin").click(() => {
-            if ($("#email").val() === "" || $("#password").val() == "") {
-                return;
-            }
-            var data = {};
-        });
-    });
+    // $(document).ready(() => {
+    //     $("#signin").click(() => {
+    //         if ($("#email").val() == "" || $("#password").val() == "") {
+    //             return;
+    //         }
+    //         var data = {};
+    //     });
+    // });
 </script>

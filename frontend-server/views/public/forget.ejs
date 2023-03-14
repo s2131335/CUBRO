@@ -5,12 +5,14 @@
     <div class="text-center text-primary" style="margin-top: 15%">
         <h1>Password recovery email will be sent</h1>
     </div>
+   
+    <form class="requires-validation">
     <!-- Email input -->
     <div class="row justify-content-md-center" style="margin-top: 10%">
         <div class="col"></div>
         <div class="col-5">
             <div class="form-outline" style="margin-bottom: 30px" >
-                <input type="email" id="email" class="form-control"/>
+                <input type="email" id="email" class="form-control needs-validation" required pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"/>
                 <label class="form-label" for="email"><i class="fas fa-envelope"></i> Email </label
                     > 
                     <div class="invalid-feedback">
@@ -25,12 +27,13 @@
     <div class="row justify-content-md-center">
         <div class="col"></div>
         <div class="col-3">
-            <button class="btn btn-primary btn-block mb-4" id="submit"
+            <button class="btn btn-primary btn-block mb-4" id="submit" type="button"
                 >Send Recover Email</button
             >
         </div>
         <div class="col"></div>
     </div>
+    </form>
 </body>
 
 <script
@@ -39,21 +42,46 @@
 ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-document.getElementById("submit").addEventListener("click", () => {
-    console.log("hi")
-    const invalidArray = [];
-    const validArray = [];
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.getElementById("email").value)
-    ) {
-        validArray.push(document.getElementById("email"));
-    } else {
-        invalidArray.push(document.getElementById("email"));
-    }
-    for (let elements of invalidArray) {
-        elements.classList.add("is-invalid");
-    }
-    for (let elements of validArray) {
-        elements.classList.remove("is-invalid");
-    }
-    });
+(function () {
+        "use strict";
+        const forms = document.querySelectorAll(".requires-validation");
+
+        Array.from(forms).forEach(function (form) {
+            document.getElementById("submit").addEventListener(
+                "click",
+                function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        const update = {
+                            email: document.getElementById("email").value,
+                        };
+
+                        const options = {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(update),
+                        };
+                        function submitInfo() {
+                            fetch(
+                                "http://127.0.0.1:5555/api/users/forget",
+                                options
+                            ).then((data) => {
+                                consol.log("diu");
+                                console.log(data);
+                            });
+                        }
+                        submitInfo();
+                    }
+
+                    form.classList.add("was-validated");
+                    //passwordConfirmCheck();
+                },
+                false
+            );
+        });
+    })();
 </script>

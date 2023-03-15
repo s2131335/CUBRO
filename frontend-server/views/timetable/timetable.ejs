@@ -21,7 +21,10 @@
                 rel="stylesheet"
                 />
             <link rel="stylesheet" href="/stylesheets/tablestyle.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+            </script>
         </head>
+
 
         <body>
             <div><%= course[0].courseCode %></div>
@@ -46,37 +49,33 @@
                                         <tr>
                                             <td class="day">08:30</td>
                                             <% for (var i=0; i<7; i++) { %>
-                                                <% course.forEach((course)=>{ %>
-                                                    <% if (i==course.ts[0]) { %>
+                                                <% course.forEach((c)=>{ %>
+                                                    <% if (i==c.ts[0]) { %>
+                                                        
+                                                        <% if (c.displayed==false){ %>
                                                         <td class="active" id=<%=i
-                                                            %> rowspan=<%=course.ts.length
+                                                            %> rowspan=<%=c.ts.length
                                                                 %>>
                                                                 <h4><%=
-                                                                        course.courseCode
+                                                                        c.courseCode
                                                                         %></h4>
                                                                     <p><%=
-                                                                            course.start
+                                                                            c.start
                                                                             %> -
                                                                             <%=
-                                                                                course.end
+                                                                                c.end
                                                                                 %></p>
                                                                         </td>
-                                                                        <% }
-                                                                            else
-                                                                            {
-                                                                            %>
-                                                                            <td
-                                                                                id=<%=
-                                                                                i
-                                                                                %>></td>
-                                                                            <% }
-                                                                                %>
-                                                                                <%
-                                                                                    })
-                                                                                    %>
-                                                                                    <%
-                                                                                        }
-                                                                                        %>
+                                                                        <% c.displayed=true; %>
+                                                                        <% console.log(c.displayed); %>
+                                                        <% c.ts.splice(0,1); %>
+                                                        <% console.log(c); } %>
+                                                        <% console.log("1"); %>
+                                                                        <% } else { %>
+                                                                            <td id=<%= i %>></td>
+                                                                            <% } %>
+                                                                                <% }) %>
+                                                                                    <% } %>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td
@@ -195,14 +194,15 @@
                                                                                                                                                         </div>
                                                                                                                                                     </div>
                                                                                                                                                 </body>
-                                                                                                                                                <script
-                                                                                                                                                    src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+
+                                                                                                                                                <script>
                                                                                                                                                     console.log("fuck");
                                                                                                                                                     $(document).ready(()=>{
                                                                                                                                                             console.log("ready to delete");
-                                                                                                                                                            course.forEach((course)=>{
-                                                                                                                                                                if(course.ts.length>1){
-                                                                                                                                                                    course.ts.splice(0,1).forEach((t)=>{
+                                                                                                                                                            console.log({course});
+                                                                                                                                                            course.forEach((c)=>{
+                                                                                                                                                                if(c.ts.length>1){
+                                                                                                                                                                    c.ts.splice(0,1).forEach((t)=>{
                                                                                                                                                                         $(`#${t}`).remove();
                                                                                                                                                                         console.log(t);
                                                                                                                                                                     });
@@ -213,5 +213,4 @@
 
 
                 </script>
-                                                                                                                                                <script
-                                                                                                                                                    src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+                                                                                                                                                

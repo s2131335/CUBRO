@@ -12,6 +12,7 @@ router.get("/", function (req, res, next) {
 			start: "0830",
 			end: "1015",
 			ts: [0, 7],
+			displayed: false
 		},
 	];
 	res.render("timetable/timetable", {

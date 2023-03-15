@@ -1,5 +1,6 @@
 <%- include('./head.ejs') %>
 
+<<<<<<< Updated upstream
 <body>
     <div
         class="alert alert-danger fade show"
@@ -37,15 +38,75 @@
                 </div>
 
                 <div class="col"></div>
+=======
+    <body>
+        <div class="container-fluid text-center" style="width: 1000px">
+            <div class="text-center text-primary" style="margin-top: 15%">
+                <h1>Welcome to</h1>
+                <h1 class="text-dark">CUBRO</h1>
+>>>>>>> Stashed changes
             </div>
 
-            <!-- Password input -->
-            <div class="row justify-content-md-center">
-                <div class="col"></div>
+            <!-- Email input -->
+            <form class="requires-validation" novalidate>
+                <div class="row justify-content-md-center" style="margin-top:
+                    5%">
+                    <div class="col"></div>
+                    <div class="col-5">
+                        <div
+                            class="input-group form-outline"
+                            style="margin-bottom: 30px">
+                            <input
+                                type="email"
+                                id="email"
+                                class="form-control needs-validation"
+                                required
+                                />
 
-                <div class="col-5">
-                    <div class="input-group form-outline mb-4">
+                            <label class="form-label" for="email"><i class="fas
+                                    fa-envelope"></i> Email</label>
+                            <div class="invalid-feedback">Invalid email</div>
+                        </div>
+                    </div>
+
+                    <div class="col"></div>
+                </div>
+
+                <!-- Password input -->
+                <div class="row justify-content-md-center">
+                    <div class="col"></div>
+
+                    <div class="col-5">
+                        <div class="input-group form-outline mb-4">
+                            <input
+                                type="password"
+                                id="password"
+                                class="form-control needs-validation"
+                                minlength="8"
+                                required
+                                formnovalidate
+                                />
+                            <label class="form-label" for="password"><i
+                                    class="fas fa-key"></i> Password</label>
+                            <div class="vr vr-blurry"></div>
+                            <a
+                                class="button text-muted shadow-0 pt-1 ps-3
+                                pe-3"
+                                href="./forget">Forgot?</a>
+                            <div class="invalid-feedback">Invalid password</div>
+                        </div>
+                    </div>
+
+                    <div class="col"></div>
+                </div>
+
+                <!-- 2 column grid layout for inline styling -->
+                <div class="row justify-content-md-center">
+                    <div class="col"></div>
+                    <!-- Rememberme Checkbox -->
+                    <div class="col-2 pt-1">
                         <input
+<<<<<<< Updated upstream
                             type="password"
                             id="password"
                             class="form-control needs-validation"
@@ -56,14 +117,41 @@
                             ><i class="fas fa-key"></i> Password</label
                         >
                         <div class="vr vr-blurry"></div>
-                        <a
-                            class="button text-muted shadow-0 pt-1 ps-3 pe-3"
-                            href="./forget"
-                            >Forgot?</a
-                        >
-                        <div class="invalid-feedback">Invalid password</div>
+=======
+                            class="form-check-input"
+                            type="checkbox"
+                            id="rememberme"
+                            />
+                        <label class="form-check-label" for="rememberme">
+                            Remember me
+                        </label>
                     </div>
+                    <!-- Submit button -->
+                    <div class="col-2">
+                        <button
+                            class="btn btn-primary btn-block shadow-0 mb-4"
+                            id="signin">
+                            Sign in
+                        </button>
+                    </div>
+                    <div class="col"></div>
                 </div>
+            </form>
+            <!-- Register button -->
+            <div class="text-center">
+                <p class="mb-1">Not a member?</p>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+>>>>>>> Stashed changes
+                        <a
+                            class="btn btn-block btn-secondary"
+                            id="register"
+                            href="./register">Register</a>
+                    </div>
+                    <div class="col"></div>
+                </div>
+<<<<<<< Updated upstream
 
                 <div class="col"></div>
             </div>
@@ -109,16 +197,19 @@
                     >
                 </div>
                 <div class="col"></div>
+=======
+>>>>>>> Stashed changes
             </div>
         </div>
-    </div>
 
-    <!-- MDB -->
-</body>
+        <!-- MDB -->
+    </body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+    <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         "use strict";

@@ -24,226 +24,194 @@
         </head>
 
         <body>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="schedule-table">
-                            <table class="table bg-white">
-                                <thead>
-                                    <tr>
-                                        <th>Routine</th>
-                                        <th>Mon</th>
-                                        <th>Tue</th>
-                                        <th>Wed</th>
-                                        <th>Thu</th>
-                                        <th>Fri</th>
-                                        <th>Sat</th>
-                                        <th class="last">Sun</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="day">08:00</td>
-                                        <td class="active">
-                                            <h4>Weight Loss</h4>
-                                            <p>10 am - 11 am</p>
-                                            <div class="hover">
-                                                <h4>Weight Loss</h4>
-                                                <p>10 am - 11 am</p>
-                                                <span>Wayne Ponce</span>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                        <td class="active">
-                                            <h4>Yoga</h4>
-                                            <p>03 pm - 04 pm</p>
-                                            <div class="hover">
-                                                <h4>Yoga</h4>
-                                                <p>03 pm - 04 pm</p>
-                                                <span>Francisco Watt</span>
-                                            </div>
-                                        </td>
-                                        <td class="active">
-                                            <h4>Boxing</h4>
-                                            <p>05 pm - 06 pm</p>
-                                            <div class="hover">
-                                                <h4>Boxing</h4>
-                                                <p>05 pm - 046am</p>
-                                                <span>Charles King</span>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="day">08:30</td>
-                                        <% for (var i=0;i <7; i++){ %>
-                                            <td></td>
-                                            <% } %>
-                                            </tr>
-                                            <tr>
-                                                <td class="day">09:00</td>
-                                                <% for (var i=0;i <7; i++){ %>
-                                                    <td></td>
-                                                    <% } %>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="day">09:30</td>
-                                                        <% for (var i=0;i <7;
-                                                            i++){ %>
-                                                            <td></td>
-                                                            <% } %>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="day">10:00</td>
-                                                                <% for (var
-                                                                    i=0;i <7;
-                                                                    i++){ %>
-                                                                    <td></td>
-                                                                    <% } %>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td
-                                                                            class="day">10:30</td>
-                                                                        <% for
-                                                                            (var
-                                                                            i=0;i
-                                                                        <7;
-                                                                            i++){
+            <div><%= course[0].courseCode %></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="schedule-table">
+                                <table class="table bg-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Routine</th>
+                                            <th>Mon</th>
+                                            <th>Tue</th>
+                                            <th>Wed</th>
+                                            <th>Thu</th>
+                                            <th>Fri</th>
+                                            <th>Sat</th>
+                                            <th class="last">Sun</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="day">08:30</td>
+                                            <% for (var i=0; i<7; i++) { %>
+                                                <% course.forEach((course)=>{ %>
+                                                    <% if (i==course.ts[0]) { %>
+                                                        <td class="active" id=<%=i
+                                                            %> rowspan=<%=course.ts.length
+                                                                %>>
+                                                                <h4><%=
+                                                                        course.courseCode
+                                                                        %></h4>
+                                                                    <p><%=
+                                                                            course.start
+                                                                            %> -
+                                                                            <%=
+                                                                                course.end
+                                                                                %></p>
+                                                                        </td>
+                                                                        <% }
+                                                                            else
+                                                                            {
                                                                             %>
-                                                                            <td></td>
+                                                                            <td
+                                                                                id=<%=
+                                                                                i
+                                                                                %>></td>
                                                                             <% }
                                                                                 %>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td
-                                                                                    class="day">11:00</td>
                                                                                 <%
-                                                                                    for
-                                                                                    (var
-                                                                                    i=0;i
-                                                                                <7;
-                                                                                    i++){
+                                                                                    })
                                                                                     %>
-                                                                                    <td></td>
                                                                                     <%
                                                                                         }
                                                                                         %>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td
-                                                                                            class="day">11:30</td>
+                                                                                            class="day">09:30</td>
                                                                                         <%
                                                                                             for
                                                                                             (var
-                                                                                            i=0;i
-                                                                                        <7;
-                                                                                            i++){
+                                                                                            i=7;
+                                                                                            i<14;
+                                                                                            i++)
+                                                                                            {
                                                                                             %>
-                                                                                            <td></td>
                                                                                             <%
-                                                                                                }
+                                                                                                course.forEach((course)=>{
                                                                                                 %>
-                                                                                            </tr>
-                                                                                            <tr>
-                                                                                                <td
-                                                                                                    class="day">12:00</td>
                                                                                                 <%
-                                                                                                    for
-                                                                                                    (var
-                                                                                                    i=0;i
-                                                                                                <7;
-                                                                                                    i++){
+                                                                                                    if
+                                                                                                    (i==course.ts[0])
+                                                                                                    {
                                                                                                     %>
-                                                                                                    <td></td>
-                                                                                                    <%
-                                                                                                        }
+                                                                                                    <td
+                                                                                                        class="active"
+                                                                                                        id=<%=i
                                                                                                         %>
-                                                                                                    </tr>
-                                                                                                    <tr>
-                                                                                                        <td
-                                                                                                            class="day">12:30</td>
-                                                                                                        <%
-                                                                                                            for
-                                                                                                            (var
-                                                                                                            i=0;i
-                                                                                                        <7;
-                                                                                                            i++){
-                                                                                                            %>
-                                                                                                            <td></td>
-                                                                                                            <%
-                                                                                                                }
-                                                                                                                %>
-                                                                                                            </tr>
-                                                                                                            <tr>
-                                                                                                                <td
-                                                                                                                    class="day">13:00</td>
-                                                                                                                <%
-                                                                                                                    for
-                                                                                                                    (var
-                                                                                                                    i=0;i
-                                                                                                                <7;
-                                                                                                                    i++){
-                                                                                                                    %>
-                                                                                                                    <td></td>
+                                                                                                        rowspan=<%=course.ts.length
+                                                                                                            %>>
+                                                                                                            <h4><%=
+                                                                                                                    course.courseCode
+                                                                                                                    %></h4>
+                                                                                                                <p><%=
+                                                                                                                        course.start
+                                                                                                                        %>
+                                                                                                                        -
+                                                                                                                        <%=
+                                                                                                                            course.end
+                                                                                                                            %></p>
+                                                                                                                    </td>
                                                                                                                     <%
                                                                                                                         }
+                                                                                                                        else
+                                                                                                                        {
                                                                                                                         %>
-                                                                                                                    </tr>
-                                                                                                                    <tr>
                                                                                                                         <td
-                                                                                                                            class="day">13:30</td>
+                                                                                                                            id=<%=
+                                                                                                                            i
+                                                                                                                            %>></td>
                                                                                                                         <%
-                                                                                                                            for
-                                                                                                                            (var
-                                                                                                                            i=0;i
-                                                                                                                        <7;
-                                                                                                                            i++){
+                                                                                                                            }
                                                                                                                             %>
-                                                                                                                            <td></td>
                                                                                                                             <%
-                                                                                                                                }
+                                                                                                                                })
                                                                                                                                 %>
-                                                                                                                            </tr>
-                                                                                                                            <tr>
-                                                                                                                                <td
-                                                                                                                                    class="day">14:00</td>
                                                                                                                                 <%
-                                                                                                                                    for
-                                                                                                                                    (var
-                                                                                                                                    i=0;i
-                                                                                                                                <7;
-                                                                                                                                    i++){
+                                                                                                                                    }
                                                                                                                                     %>
-                                                                                                                                    <td></td>
+                                                                                                                                </tr>
+                                                                                                                                <tr>
+                                                                                                                                    <td
+                                                                                                                                        class="day">10:30</td>
                                                                                                                                     <%
-                                                                                                                                        }
+                                                                                                                                        for
+                                                                                                                                        (var
+                                                                                                                                        i=14;
+                                                                                                                                        i<21;
+                                                                                                                                        i++)
+                                                                                                                                        {
                                                                                                                                         %>
-                                                                                                                                    </tr>
-                                                                                                                                    <tr>
-                                                                                                                                        <td
-                                                                                                                                            class="day">14:30</td>
                                                                                                                                         <%
-                                                                                                                                            for
-                                                                                                                                            (var
-                                                                                                                                            i=0;i
-                                                                                                                                        <7;
-                                                                                                                                            i++){
+                                                                                                                                            course.forEach((course)=>{
                                                                                                                                             %>
-                                                                                                                                            <td></td>
                                                                                                                                             <%
-                                                                                                                                                }
+                                                                                                                                                if
+                                                                                                                                                (i==course.ts[0])
+                                                                                                                                                {
                                                                                                                                                 %>
-                                                                                                                                            </tr>
-                                                                                                                                        </tbody>
-                                                                                                                                    </table>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </body>
-                                                                                                                <script>
+                                                                                                                                                <td
+                                                                                                                                                    class="active"
+                                                                                                                                                    id=<%=i
+                                                                                                                                                    %>
+                                                                                                                                                    rowspan=<%=course.ts.length
+                                                                                                                                                        %>>
+                                                                                                                                                        <h4><%=
+                                                                                                                                                                course.courseCode
+                                                                                                                                                                %></h4>
+                                                                                                                                                            <p><%=
+                                                                                                                                                                    course.start
+                                                                                                                                                                    %>
+                                                                                                                                                                    -
+                                                                                                                                                                    <%=
+                                                                                                                                                                        course.end
+                                                                                                                                                                        %></p>
+                                                                                                                                                                </td>
+                                                                                                                                                                <%
+                                                                                                                                                                    }
+                                                                                                                                                                    else
+                                                                                                                                                                    {
+                                                                                                                                                                    %>
+                                                                                                                                                                    <td
+                                                                                                                                                                        id=<%=
+                                                                                                                                                                        i
+                                                                                                                                                                        %>></td>
+                                                                                                                                                                    <%
+                                                                                                                                                                        }
+                                                                                                                                                                        %>
+                                                                                                                                                                        <%
+                                                                                                                                                                            })
+                                                                                                                                                                            %>
+                                                                                                                                                                            <%
+                                                                                                                                                                                }
+                                                                                                                                                                                %>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                </body>
+                                                                                                                                                <script
+                                                                                                                                                    src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+                                                                                                                                                    console.log("fuck");
+                                                                                                                                                    $(document).ready(()=>{
+                                                                                                                                                            console.log("ready to delete");
+                                                                                                                                                            course.forEach((course)=>{
+                                                                                                                                                                if(course.ts.length>1){
+                                                                                                                                                                    course.ts.splice(0,1).forEach((t)=>{
+                                                                                                                                                                        $(`#${t}`).remove();
+                                                                                                                                                                        console.log(t);
+                                                                                                                                                                    });
+                                                                                                                                                                }
+                                                                                                                                                            });
+                                                                                                                                                        });
+                                                                                                                                                    
 
 
                 </script>
+                                                                                                                                                <script
+                                                                                                                                                    src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>

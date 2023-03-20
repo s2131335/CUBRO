@@ -1,143 +1,50 @@
 <%- include('./nav.ejs') %>
     <!-- <body> -->
 
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="schedule-table">
-                        <table class="table bg-white">
-                            <thead>
-                                <tr>
-                                    <th>Routine</th>
-                                    <th>Mon</th>
-                                    <th>Tue</th>
-                                    <th>Wed</th>
-                                    <th>Thu</th>
-                                    <th>Fri</th>
-                                    <th>Sat</th>
-                                    <th class="last">Sun</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="day">08:30</td>
-                                    <% for (var i=0; i<7; i++) { %>
-                                        <% course.forEach((c)=>{ %>
-                                            <% if (i==c.ts[0]) { %>
-
-                                                <% if (c.displayed==false){ %>
-                                                    <td class="active" id=<%=i
-                                                        %> rowspan=<%=c.ts.length
-                                                            %>>
-                                                            <h4><%=
-                                                                    c.courseCode
-                                                                    %></h4>
-                                                                <p><%=
-                                                                        c.start
-                                                                        %> -
-                                                                        <%=
-                                                                            c.end
-                                                                            %></p>
-                                                                    </td>
-                                                                    <%
-                                                                        c.displayed=true;
-                                                                        %>
-                                                                        <%
-                                                                            console.log(c.displayed);
-                                                                            %>
-                                                                            <%
-                                                                                c.ts.splice(0,1);
-                                                                                %>
-                                                                                <%
-                                                                                    console.log(c);
-                                                                                    %>
-                                                                                    <%
-                                                                                        console.log("
-                                                                                        1");
-                                                                                        %>
-                                                                                        <%
-                                                                                            }
-                                                                                            %>
-                                                                                            <%
-                                                                                                }
-                                                                                                else
-                                                                                                {
-                                                                                                %>
-                                                                                                <td
-                                                                                                    id=<%=
-                                                                                                    i
-                                                                                                    %>></td>
-                                                                                                <%
-                                                                                                    }
-                                                                                                    %>
-                                                                                                    <%
-                                                                                                        })
-                                                                                                        %>
-                                                                                                        <%
-                                                                                                            }
-                                                                                                            %>
-                                                                                                        </tr>
-                                                                                                    </tbody>
-                                                                                                </table>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div
-                                                                                        class="row">
-                                                                                        <div
-                                                                                            class="list-group
-                                                                                            list-group-light">
-                                                                                            <%
-                                                                                                data.course.forEach((c)=>{
-                                                                                                %>
-                                                                                                <li
-                                                                                                    class="list-group-item">
-                                                                                                    <input
-                                                                                                        class="form-check-input"
-                                                                                                        type="checkbox"
-                                                                                                        value=""
-                                                                                                        id="checkboxExample1"
-                                                                                                        />
-                                                                                                    <label
-                                                                                                        class="form-check-label"
-                                                                                                        for="checkboxExample1">
-                                                                                                        <div
-                                                                                                            class="d-flex
-                                                                                                            flex-row">
-                                                                                                            <div>
-                                                                                                                <%=
-                                                                                                                    c.courseCode
-                                                                                                                    %>
-                                                                                                                </div>
-                                                                                                                <div>
-                                                                                                                    start:
-                                                                                                                    <%=
-                                                                                                                        c.start
-                                                                                                                        %>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        end:
-                                                                                                                        <%=
-                                                                                                                            c.end
-                                                                                                                            %>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </label>
-                                                                                                            </li>
-                                                                                                            <%
-                                                                                                                })
-                                                                                                                %>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </body>
-                                                                                                <div
-                                                                                                    class="container-fluid
-                                                                                                    pt-5">
-                                                                                                </div>
-                                                                                                <!-- </body> -->
-                                                                                                <script>
-                        var data = <%- JSON.stringify(data) %>;
-        console.log(data)
-    </script>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="list-group list-group-light">
+            <% data.course.forEach((c)=>{%>
+            <li class="list-group-item">
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="checkboxExample1"
+                    />
+                <label
+                    class="form-check-label"
+                    for="checkboxExample1">
+                    <div
+                        class="d-flex
+                        flex-row">
+                        <div>
+                            <%=
+                                c.courseCode
+                                %>
+                            </div>
+                            <div>
+                                start:
+                                <%= c.start %>
+                            </div>
+                                <div>
+                                    end:
+                                    <%=
+                                        c.end
+                                        %>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                        <%
+                            })
+                            %>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var data = <%- JSON.stringify(data) %>;
+    console.log(data)
+</script>

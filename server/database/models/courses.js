@@ -8,6 +8,10 @@ const courseSchema = new Schema({
 	courseName: {
 		type: String,
 	},
+	semester: {
+		type: Number,
+		required: true,
+	},
 	venue: {
 		type: String,
 	},

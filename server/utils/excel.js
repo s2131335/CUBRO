@@ -14,6 +14,7 @@ const DAYS = Object.freeze({
 });
 
 const HEADERS = [
+	"semester",
 	"courseCode",
 	"courseName",
 	"type",
@@ -25,6 +26,8 @@ const HEADERS = [
 	"time",
 	"description",
 ];
+
+const IGNORE_SPACE = ["instructor", "courseName", "description"];
 
 function getDate(courseCode, dates, time) {
 	let meetings = [];
@@ -72,20 +75,20 @@ module.exports.parseExcel = function parseExcel(
 		for (let j = 0; j < HEADERS.length; j++) {
 			let s = `${intToChar(charToInt("A") + j)}${i + 2}`;
 			let value = worksheet[s].v;
-			if (!(j == 1 || j == 9) && typeof value == "string")
+			if (!IGNORE_SPACE.includes(HEADERS[j]) && typeof value == "string")
 				value = value.replaceAll(" ", "");
 			course[HEADERS[j]] = value;
 		}
 
 		let hashValue = hash(course);
-		let key = `${course.courseCode}${course.type}${course.class}`;
+		let key = `${course.courseCode}${course.semester}${course.type}${course.class}`;
 		//If entry is already saved, skip it
 		if (CourseFile[key] === hashValue) {
 			console.log("skip");
 			continue;
 		}
 
-		// Key example: CSCI3100L1
+		// Key example: CSCI13100L1
 		CourseFile[key] = hashValue;
 		course["meetings"] = getDate(
 			course.courseCode,

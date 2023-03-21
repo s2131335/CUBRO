@@ -1,4 +1,31 @@
 <%- include('./nav.ejs') %>
 <body>
+    <div class="container">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="option1"/>
+            <label class="form-check-label" for="option1"> By Course Code </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="option2" />
+            <label class="form-check-label" for="option2"> By Course Name </label>
+        </div>
     
+        <div class="input-group">
+            <div class="form-outline">
+                <input type="search" id="form1" class="form-control" />
+                <label class="form-label" for="form1">Search</label>
+            </div>
+            <button type="button" class="btn btn-primary">
+              <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+    
+        <div class="row">
+            <button type="button" class="btn btn-primary">Add to cart</button>
+            <button type="button" class="btn btn-secondary">Clear</button>
+        </div>
+    </div>
+    
+
 </body>

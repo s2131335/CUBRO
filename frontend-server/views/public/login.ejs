@@ -1,16 +1,19 @@
 <%- include('./head.ejs') %>
 
 <body>
-    <div
-        class="alert alert-danger fade show"
-        id="err"
-        style="display: none"
-    ></div>
     <div class="container-fluid text-center" style="width: 1000px">
+        <!-- Welcome title -->
         <div class="text-center text-primary" style="margin-top: 15%">
             <h1>Welcome to</h1>
             <h1 class="text-dark">CUBRO</h1>
         </div>
+
+        <!-- Error alert -->
+        <div
+            class="alert alert-danger fade show"
+            id="err"
+            style="display: none"
+        ></div>
 
         <!-- Email input -->
         <form class="requires-validation" novalidate>
@@ -97,10 +100,10 @@
         </form>
         <!-- Register button -->
         <div class="text-center">
-            <p class="mb-1">Not a member?</p>
             <div class="row">
                 <div class="col"></div>
-                <div class="col">
+                <p class="mb-1 col-2">Not a member?</p>
+                <div class="col-2">
                     <a
                         class="btn btn-block btn-secondary"
                         id="register"

@@ -115,11 +115,14 @@ This is the router for managing users. The following are a list of apis that can
         -   [`PasswordIncorrect`](#passwordincorrect)
         -   [`EmailNotValid`](#emailnotvalid)
         -   [`NameNotValid`](#namenotvalid)
+        -   [`CourseIDNotValid`](#courseidnotvalid)
+        -   [`RegistrationNotValid`](#registrationnotvalid)
         -   [`AccountNotActivated`](#accountnotactivated)
         -   [`FailToSendMail`](#failtosendmail)
         -   [`TokenInvalid`](#tokeninvalid)
         -   [`DatabaseUpdate`](#databaseupdate)
     -   [User Schema](#user-schema)
+    -   [Course Schema](#course-schema)
 
 ### `/register`
 
@@ -490,6 +493,26 @@ NameNotValid: {
 	}
 ```
 
+### `CourseIDNotValid`
+
+```json
+CourseIDNotValid: {
+    status: 500,
+    code: 1007,
+    message: "Course ID Not Valid",
+	}
+```
+
+### `RegistrationNotValid`
+
+```json
+RegistrationNotValid: {
+    status: 500,
+    code: 1008,
+    message: "Course ID Did Not Appear with the User's ID in Registration Database",
+	}
+```
+
 ### `AccountNotActivated`
 
 ```json
@@ -541,3 +564,16 @@ DatabaseUpdate: {
 | `contactNumber` | True     | False  | Number          |               | Phone number of user                |
 | `activated`     | True     | False  | Boolean         | `false`       | Indicate if account is activated    |
 | `token`         | False    | False  | String          |               | Save jwt token for verification     |
+
+## Course Schema
+
+Unique identifier of the course is in '{courseCode}{semester}{type}{class}' format
+| Field | Required | Unique | Type | Default | Description |
+| ------------ | -------- | ------ | ------- | ------- | ----------------------------- |
+| `courseCode` | True | False | String | | Course code of course |
+| `courseName` | True | False | String | | Name of course |
+| `semester` | True | False | Number | | Semester of the course |
+| `venue` | True | False | String | | Venue of the course |
+| `class` | True | False | Number | | Time slot number of the course |
+| `meeting` | True | False | Array of Object| `false` | Date and time of the courses |
+| `seat` | True | False | Number | | Number of seat for the course |

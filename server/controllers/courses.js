@@ -1,4 +1,4 @@
-const { parseExcel } = require("../utils/excel");
+const { parseExcel } = require("../utils/courseIO");
 const error = require("../utils/errors");
 const { isValidObjectId } = require("mongoose");
 const registration = require("../database/models/registration");

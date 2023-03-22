@@ -137,35 +137,16 @@ module.exports.parseExcel = function parseExcel(
 	return courses;
 };
 
-async function toCsv(req, res) {
+async function toCsv(courses) {
 	const { parse } = require("json2csv");
+	//courses come from db
 	try {
-		const can = await candidates.find(filter);
-		// console.log(filter);
-		// console.log(data);
-		can.map((d) => {
-			if (d.education == "0") {
-				d.education = "中學畢業";
-			} else if (d.education == "1") {
-				d.education = "大學畢業";
-			} else if (d.education == "2") {
-				d.education = "碩士畢業";
-			} else {
-				d.education = "博士或更高學歷";
-			}
-			if (d.employment == "0") {
-				d.employment = "全職";
-			} else {
-				d.employment = "兼職";
-			}
+		const data = parse(courses, {
+			HEADERS,
+			excelStrings: true,
+			withBOM: true,
 		});
-		const data = parse(can, { HEADERS, excelStrings: true, withBOM: true });
 		// console.log(data);
-		res.setHeader("Content-Type", "application/csv");
-		res.setHeader("Content-Disposition", 'inline; filename="x.csv"');
-		res.status(200).send(data);
-	} catch (error) {
-		console.log(error);
-		res.status(500).json(error);
-	}
+	} catch (error) {}
+	return data;
 }

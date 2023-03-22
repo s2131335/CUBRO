@@ -22,11 +22,11 @@ const courseSchema = new Schema({
 	meetings: [
 		{
 			courseCode: { type: String },
-			day: {
-				type: Number,
+			day: { type: Number },
+			timeSlot: {
+				type: Array,
+				of: String,
 			},
-			start: { type: String },
-			end: { type: String },
 			dates: {
 				type: Array,
 				of: String,

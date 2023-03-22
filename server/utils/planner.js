@@ -1,32 +1,28 @@
 const { Course } = require("../database/models/courses");
 const registration = require("../database/models/registration");
 
-const courses = [
-	{
-		courseCode: "csci3101",
-		day: 3,
-		start: "13:00",
-		end: "15:01",
-	},
-	{
-		courseCode: "csci3100",
-		day: 3,
-		start: "11:00",
-		end: "12:00",
-	},
-	{
-		courseCode: "csci3103",
-		day: 3,
-		start: "16:30",
-		end: "17:00",
-	},
-	{
-		courseCode: "csci3102",
-		day: 3,
-		start: "15:00",
-		end: "15:30",
-	},
-];
+// const courses = [
+// 	{
+// 		courseCode: "csci3101",
+// 		day: 3,
+// 		timeSlots: ["02"],
+// 	},
+// 	{
+// 		courseCode: "csci3100",
+// 		day: 3,
+// 		timeSlots: ["03"],
+// 	},
+// 	{
+// 		courseCode: "csci3103",
+// 		day: 3,
+// 		timeSlots: ["11"],
+// 	},
+// 	{
+// 		courseCode: "csci3104",
+// 		day: 3,
+// 		timeSlots: ["10", "11"],
+// 	},
+// ];
 //// sort meeting by start time
 function sortByTime(intervals) {
 	intervals.sort((a, b) => {
@@ -47,17 +43,22 @@ function dataExtract(courses) {
 	let dict = {};
 	let intervals = [];
 	for (let course of courses) {
-		intervals.push({
-			code: course.courseCode,
-			time: course.start,
-			t: "start",
-		});
-		intervals.push({
-			code: course.courseCode,
-			time: course.end,
-			t: "end",
-		});
-		dict[course.courseCode] = course;
+		for (let slot of course.timeSlots) {
+			time = global.CUBRO.TIMESLOTS[Number(slot)].split("-");
+			console.log("🚀 ~ file: planner.js:48 ~ dataExtract ~ time:", time);
+
+			intervals.push({
+				code: course.courseCode,
+				time: time[0],
+				t: "start",
+			});
+			intervals.push({
+				code: course.courseCode,
+				time: time[1],
+				t: "end",
+			});
+			dict[course.courseCode] = course;
+		}
 		delete dict[course.courseCode].courseCode;
 	}
 	return { intervals, dict };
@@ -121,3 +122,5 @@ module.exports.checkCollision = async function checkCollision(user, courses) {
 	}
 	return collisionDetection(meetings);
 };
+
+// collisionDetection(courses);

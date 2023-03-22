@@ -1,6 +1,13 @@
 <%- include('./head.ejs') %>
 
 <body>
+    <!-- Error alert -->
+    <div
+        class="alert alert-danger fade show"
+        id="err"
+        style="display: none"
+    ></div>
+
     <div class="container-fluid text-center" style="width: 1000px">
         <!-- Welcome title -->
         <div class="text-center text-primary" style="margin-top: 15%">
@@ -8,65 +15,61 @@
             <h1 class="text-dark">CUBRO</h1>
         </div>
 
-        <!-- Error alert -->
-        <div
-            class="alert alert-danger fade show"
-            id="err"
-            style="display: none"
-        ></div>
+        <!-- Email input -->
+        <form class="requires-validation" novalidate>
+            <div class="row justify-content-md-center" style="margin-top: 5%">
+                <div class="col"></div>
+                <div class="col-5">
+                    <div
+                        class="input-group form-outline"
+                        style="margin-bottom: 30px"
+                    >
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control needs-validation"
+                            required
+                        />
 
-            <!-- Email input -->
-            <form class="requires-validation" novalidate>
-                <div class="row justify-content-md-center" style="margin-top:
-                    5%">
-                    <div class="col"></div>
-                    <div class="col-5">
-                        <div
-                            class="input-group form-outline"
-                            style="margin-bottom: 30px">
-                            <input
-                                type="email"
-                                id="email"
-                                class="form-control needs-validation"
-                                required
-                                />
-
-                            <label class="form-label" for="email"><i class="fas
-                                    fa-envelope"></i> Email</label>
-                            <div class="invalid-feedback">Invalid email</div>
-                        </div>
+                        <label class="form-label" for="email"
+                            ><i class="fas fa-envelope"></i> Email</label
+                        >
+                        <div class="invalid-feedback">Invalid email</div>
                     </div>
-
-                    <div class="col"></div>
                 </div>
 
-                <!-- Password input -->
-                <div class="row justify-content-md-center">
-                    <div class="col"></div>
+                <div class="col"></div>
+            </div>
 
-                    <div class="col-5">
-                        <div class="input-group form-outline mb-4">
-                            <input
-                                type="password"
-                                id="password"
-                                class="form-control needs-validation"
-                                minlength="8"
-                                required
-                                formnovalidate
-                                />
-                            <label class="form-label" for="password"><i
-                                    class="fas fa-key"></i> Password</label>
-                            <div class="vr vr-blurry"></div>
-                            <a
-                                class="button text-muted shadow-0 pt-1 ps-3
-                                pe-3"
-                                href="./forget">Forgot?</a>
-                            <div class="invalid-feedback">Invalid password</div>
-                        </div>
+            <!-- Password input -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+
+                <div class="col-5">
+                    <div class="input-group form-outline mb-4">
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control needs-validation"
+                            minlength="8"
+                            required
+                            formnovalidate
+                        />
+                        <label class="form-label" for="password"
+                            ><i class="fas fa-key"></i> Password</label
+                        >
+                        <div class="vr vr-blurry"></div>
+                        <a
+                            class="button text-muted shadow-0 pt-1 ps-3 pe-3"
+                            href="./forget"
+                            >Forgot?</a
+                        >
+                        <div class="invalid-feedback">Invalid password</div>
                     </div>
-
-                    <div class="col"></div>
                 </div>
+
+                <div class="col"></div>
+            </div>
 
             <!-- 2 column grid layout for inline styling -->
             <div class="row justify-content-md-center">
@@ -113,14 +116,12 @@
         </div>
     </div>
 
-        <!-- MDB -->
-    </body>
+    <!-- MDB -->
+</body>
 
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
-    <script
-        src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         "use strict";

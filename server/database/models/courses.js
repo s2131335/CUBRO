@@ -15,7 +15,7 @@ const courseSchema = new Schema({
 	venue: {
 		type: String,
 	},
-	class: {
+	classNum: {
 		// class number
 		type: Number,
 	},

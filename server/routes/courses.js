@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {
+	createCourse,
+	deleteCourse,
+	editCourse,
 	browseCourse,
 	courseInfo,
 	selectCourse,
@@ -20,6 +23,9 @@ router.get("/info/:id", Auth.checkAuth(), courseInfo);
 router.post("/select", Auth.checkAuth(), selectCourse);
 router.post("/drop", Auth.checkAuth(), dropCourse);
 
+router.post("/create", createCourse);
+router.post("/delete", deleteCourse);
+router.post("/update", Auth.checkAuth(), editCourse);
 // router.get("/excel");
 
 module.exports = router;

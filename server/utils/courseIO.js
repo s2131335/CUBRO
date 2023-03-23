@@ -73,7 +73,7 @@ module.exports.getMeeting = function getMeeting(courseCode, dates, timeSlot) {
 // return true when courseFile has updated.
 module.exports.updateCourseFile = function updateCourseFile(course) {
 	let hashValue = hash(course);
-	let key = `${course.courseCode}${course.semester}${course.type}${course.class}`;
+	let key = `${course.courseCode}${course.semester}${course.type}${course.classNum}`;
 	//If entry is already saved
 	if (global.CUBRO.CourseFile[key] === hashValue) {
 		return false;

@@ -23,6 +23,53 @@ router.get("/search", function (req, res, next) {
 	res.render("internal/search", { title: "Search" });
 });
 
+/* GET user search page. */
+router.get("/course/info/:id", function (req, res, next) {
+	res.render("internal/course_info", {
+		title: "Course Info",
+		courseCode: "CSCI3100",
+		classNo: 1,
+		courseName: "Software Engineering",
+		description:
+			"This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
+		instructor: "Prof. Michael Lyu",
+		meetings: [
+			{
+				dates: ["2023-02-02"],
+				_id: {
+					$oid: "64099edd8f618f1d44b91dbe",
+				},
+				courseCode: "ABCD1234",
+				day: 4,
+				start: "12:00",
+				end: "13:30",
+			},
+			{
+				dates: ["2023-02-01", "2023-02-08"],
+				_id: {
+					$oid: "64099edd8f618f1d44b91dbf",
+				},
+				courseCode: "ABCD1234",
+				day: 3,
+				start: "11:00",
+				end: "12:30",
+			},
+			{
+				dates: ["2023-02-03"],
+				_id: {
+					$oid: "64099edd8f618f1d44b91dc0",
+				},
+				courseCode: "ABCD1234",
+				day: 5,
+				start: "10:50",
+				end: "11:50",
+			},
+		],
+		seat: 210,
+		venue: "SHB",
+	});
+});
+
 /* GET user regcourse page. */
 router.get("/regcourse", function (req, res, next) {
 	const course = [
@@ -35,7 +82,7 @@ router.get("/regcourse", function (req, res, next) {
 			end: "1015",
 			ts: [0, 7],
 			displayed: false,
-			checked:true,
+			checked: true,
 		},
 		{
 			courseCode: "CSCI1234",
@@ -46,7 +93,7 @@ router.get("/regcourse", function (req, res, next) {
 			end: "1015",
 			ts: [5, 12],
 			displayed: false,
-			checked: false
+			checked: false,
 		},
 		{
 			courseCode: "CSCI1234",
@@ -57,7 +104,7 @@ router.get("/regcourse", function (req, res, next) {
 			end: "1015",
 			ts: [8, 15],
 			displayed: false,
-			checked : false,
+			checked: false,
 		},
 		{
 			courseCode: "CSCI4321",
@@ -79,7 +126,7 @@ router.get("/regcourse", function (req, res, next) {
 			end: "1015",
 			ts: [21, 28],
 			displayed: false,
-			checked : true,
+			checked: true,
 		},
 	];
 	res.render("internal/regcourse", {

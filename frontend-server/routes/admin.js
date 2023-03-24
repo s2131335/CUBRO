@@ -2,14 +2,74 @@ var express = require("express");
 var router = express.Router();
 
 const profile = {
-	fullName: "CHAN TAI MAN",
+	fullName: "Tuan Sung Chi",
 	email: "12345678@link.cuhk.edu.hk",
-	role: "STUDENT",
+	role: "Admin",
 	contactNumber: "12345678",
 };
 
-/* GET user search page. */
-router.get("/course/edit/:id", function (req, res, next) {
+const users = [
+	{
+		id: "12345678",
+		name: "Chan Tai Ming",
+		role: "Student",
+	},
+	{
+		id: "87654321",
+		name: "Chan Siu Ming",
+		role: "Student",
+	},
+	{
+		id: "43218765",
+		name: "Wong Tai Ming",
+		role: "Student",
+	},
+	{
+		id: "56781234",
+		name: "Lam Siu Ming",
+		role: "Student",
+	},
+	{
+		id: "22222222",
+		name: "Lam Tai Ming",
+		role: "Student",
+	},
+	{
+		id: "33333333",
+		name: "Tai Tai Tai",
+		role: "Admin",
+	},
+	{
+		id: "45677654",
+		name: "Min Min Min",
+		role: "Admin",
+	},
+];
+
+/* GET admin profile page */
+router.get("/profile", function (req, res, next) {
+	res.render("admin/profile", {
+		title: "Profile",
+		data: profile,
+	});
+});
+
+/* GET admin user_edit page */
+router.get("/user/edit", function (req, res, next) {
+	res.render("admin/user_edit", {
+		title: "Course Info",
+		data: { users },
+	});
+});
+/* GET admin home page */
+router.get("/home", function (req, res, next) {
+	res.render("admin/home", {
+		title: "Home",
+	});
+});
+
+/* GET admin course_edit page. */
+router.get("/course/edit", function (req, res, next) {
 	res.render("admin/course_edit", {
 		title: "Course Info",
 		courseCode: "CSCI3100",

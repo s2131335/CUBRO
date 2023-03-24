@@ -20,7 +20,30 @@ router.get("/profile", function (req, res, next) {
 
 /* GET user search page. */
 router.get("/search", function (req, res, next) {
-	res.render("internal/search", { title: "Search" });
+	const course = [
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: 1,
+			day: 1,
+			start: "0830",
+			end: "1015",
+			ts: [0, 7],
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "SHAWHAWHS",
+			class: 2,
+			day: 3,
+			start: "0930",
+			end: "1015",
+			ts: [5, 12],
+		},
+	];
+	res.render("internal/search", {
+		title: "Search",
+		data: { course },
+	});
 });
 
 /* GET user search page. */

@@ -20,7 +20,7 @@ const HEADERS = [
 	"courseCode",
 	"courseName",
 	"type",
-	"class",
+	"classNum",
 	"venue",
 	"instructor",
 	"seat",
@@ -137,16 +137,89 @@ module.exports.parseExcel = function parseExcel(
 	return courses;
 };
 
-async function toCsv(courses) {
+function getAllDates(meetings) {
+	let dates = [];
+	for (let m of meetings) {
+		dates = dates.concat(m.dates);
+	}
+	return dates.toString();
+}
+
+function getTimeSlots(meetings) {
+	timeSlots = "";
+	for (let m of meetings) {
+		string = m.day.toString();
+		for (let t of m.timeSlot) {
+			string += `-${t}`;
+		}
+		timeSlots += `${string},`;
+	}
+	// console.log(timeSlots);
+	return timeSlots;
+}
+
+function toCsv(courses) {
 	const { parse } = require("json2csv");
 	//courses come from db
+	let data = [];
+
+	for (let course of courses) {
+		course.time = getTimeSlots(course.meetings);
+		course.dates = getAllDates(course.meetings);
+		course.type = course.__t;
+		for (field in course) {
+			if (!HEADERS.includes(field)) {
+				delete course[field];
+			}
+		}
+		data.push(course);
+	}
+
 	try {
-		const data = parse(courses, {
-			HEADERS,
+		const result = parse(data, {
+			fields: HEADERS,
 			excelStrings: true,
 			withBOM: true,
 		});
+		return result;
 		// console.log(data);
 	} catch (error) {}
-	return data;
 }
+
+const c = {
+	_id: {
+		$oid: "641dd25cdc5a8a14ecc37cca",
+	},
+	__t: "lecture",
+	courseCode: "ABCD1234",
+	__v: 0,
+	courseName: "intro to fucking",
+	classNum: 1,
+	description: "This is fucking good class",
+	instructor: "KKL",
+	meetings: [
+		{
+			timeSlot: ["00", "02"],
+			dates: ["2023-02-02"],
+			_id: {
+				$oid: "641dd25d9c8944558db35428",
+			},
+			courseCode: "ABCD1234",
+			day: 4,
+		},
+		{
+			timeSlot: ["03", "04"],
+			dates: ["2023-02-01", "2023-02-08"],
+			_id: {
+				$oid: "641dd25d9c8944558db35429",
+			},
+			courseCode: "ABCD1234",
+			day: 3,
+		},
+	],
+	seat: 100,
+	semester: 1,
+	venue: "SHB",
+};
+
+// console.log(toCsv([c]));

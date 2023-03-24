@@ -4,7 +4,7 @@ const error = require("../utils/errors");
 module.exports.upsertLesson = async function upsertLesson(lesson) {
 	let type = lesson.type;
 	try {
-		if (type === "T") {
+		if (type === "tutorial") {
 			await Tutorial.updateOne(
 				{ courseCode: lesson.courseCode },
 				lesson,

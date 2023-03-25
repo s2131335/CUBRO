@@ -40,28 +40,49 @@
 				<div class="collapse navbar-collapse" id="navbarText">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a
-								class="nav-link active"
-								aria-current="page"
-								href="/internal/regcourse"
-								>Register</a
-							>
+							<% if (title == 'My Courses') { %>
+							<a class="nav-link active" href="#">My Courses </a>
+							<%}else{%>
+							<a class="nav-link" href="#"> My Courses </a>
+							<%}%>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/internal/search"
+							<% if (title == 'Search') { %>
+							<a class="nav-link active" href="/internal/search"
 								>Course Browse</a
 							>
+							<%}else{%>
+							<a class="nav-link" href="/internal/search"
+								>Course Browse
+							</a>
+							<%}%>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Timetable</a>
+							<% if (title == 'Timetable Planner') { %>
+							<a
+								class="nav-link active"
+								href="/internal/regcourse"
+								>Timetable</a
+							>
+							<%}else{%>
+							<a class="nav-link" href="/internal/regcourse"
+								>Timetable
+							</a>
+							<%}%>
 						</li>
 					</ul>
 				</div>
 				<div class="d-flex align-items-center">
 					<!-- Icon -->
-					<a class="link-secondary me-3" href="/internal/profile">
-						Profile
+					<% if (title == 'Profile') { %>
+					<a class="nav-link active me-3" href="/internal/profile"
+						>Profile</a
+					>
+					<%}else{%>
+					<a class="nav-link me-3" href="/internal/profile"
+						>Profile
 					</a>
+					<%}%>
 					<a class="link-secondary me-3" href="/public/login">
 						Logout
 					</a>

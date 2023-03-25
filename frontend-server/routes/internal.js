@@ -185,7 +185,7 @@ router.get("/regcourse", function (req, res, next) {
 		},
 	];
 	res.render("internal/regcourse", {
-		title: "RegisterCourse",
+		title: "Timetable Planner",
 		data: { course },
 	});
 });

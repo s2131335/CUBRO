@@ -39,10 +39,50 @@ const users = [
 		name: "Tai Tai Tai",
 		role: "Admin",
 	},
+];
+
+const courses = [
 	{
-		id: "45677654",
-		name: "Min Min Min",
-		role: "Admin",
+		courseCode: "CSCI3100",
+		courseName: "Software Engineering",
+		instructor: "Prof. Michael LYU",
+		seat: 210,
+		venue: "SHB",
+	},
+	{
+		courseCode: "CSCI3250",
+		courseName: "Computers and Society",
+		instructor: "Prof. ChAU Cheuk Chi",
+		seat: 257,
+		venue: "SHB",
+	},
+	{
+		courseCode: "CSCI3320",
+		courseName: "Fundamentals of Machine Learning",
+		instructor: "Prof. WANG Liwei",
+		seat: 150,
+		venue: "ELB",
+	},
+	{
+		courseCode: "CENG3420",
+		courseName: "Computer Organization and Design",
+		instructor: "Prof. Yu Bei",
+		seat: 210,
+		venue: "LSB",
+	},
+	{
+		courseCode: "UGFN1000",
+		courseName: "In Dialogue With Nature",
+		instructor: "Dr. LAM To Kam",
+		seat: 30,
+		venue: "YIA",
+	},
+	{
+		courseCode: "STAT3008",
+		courseName: "Applied Regression Analysis",
+		instructor: "Prof. WANG JunHui",
+		seat: 200,
+		venue: "SLT",
 	},
 ];
 
@@ -55,9 +95,9 @@ router.get("/profile", function (req, res, next) {
 });
 
 /* GET admin user_edit page */
-router.get("/user/edit", function (req, res, next) {
-	res.render("admin/user_edit", {
-		title: "Course Info",
+router.get("/users", function (req, res, next) {
+	res.render("admin/user_management", {
+		title: "User Management",
 		data: { users },
 	});
 });
@@ -69,15 +109,24 @@ router.get("/home", function (req, res, next) {
 });
 
 /* GET admin course_edit page. */
+
+router.get("/courses", (req, res) => {
+	res.render("admin/course_management", {
+		title: "Course Management",
+		courses,
+	});
+});
+
+/* GET course edit page. */
 router.get("/course/edit", function (req, res, next) {
 	res.render("admin/course_edit", {
-		title: "Course Info",
+		title: "Course Edit",
 		courseCode: "CSCI3100",
 		classNo: 1,
 		courseName: "Software Engineering",
 		description:
 			"This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
-		instructor: "Prof. Michael Lyu",
+		instructor: "Prof. Michael LYU",
 		meetings: [
 			{
 				dates: ["2023-02-02"],

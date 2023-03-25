@@ -1,48 +1,27 @@
 <%- include('./nav.ejs') %>
 <body>
 	<div class="container pt-4 pb-5">
-		<h4 class="text-muted" style="display: inline">User</h4>
-		<button class="btn btn-link btn-floating" type="button">
-			<i class="fa-solid fa-plus"></i>
-		</button>
-		<table class="table">
+		<div class="row">
+			<div class="col-6">
+				<h3>User Management</h3>
+			</div>
+		</div>
+		<hr class="my-2" />
+		<table class="table stripe mt-0" id="table" style="width: 100%">
 			<thead>
 				<tr>
 					<th scope="col">ID</th>
-					<th scope="col">Name </th>
+					<th scope="col">Name</th>
 					<th scope="col">Role</th>
 					<th scope="col">Action</th>
 				</tr>
 			</thead>
-			<% var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday",
-			"Thursday", "Friday", "Saturday"] %>
 			<tbody>
 				<% data.users.forEach((user)=> { %>
 				<tr>
-					<td>
-						<input
-							type="text"
-							class="form-control"
-							value="<%= user.id%>"
-							
-						/>
-					</td>
-					<td>
-						<input
-							type="text"
-							class="form-control"
-							value="<%= user.name%>"
-							
-						/>
-					</td>
-					<td>
-						<input
-							type="text"
-							class="form-control"
-							value="<%=user.role%>"
-							
-						/>
-					</td>
+					<td><%= user.id%></td>
+					<td><%= user.name%></td>
+					<td><%=user.role%></td>
 					<td>
 						<button
 							class="btn btn-light btn-rounded btn-sm fw-bold"
@@ -52,7 +31,7 @@
 							data-mdb-ripple-color="dark"
 							onclick=""
 						>
-							Edit
+							Reset Password
 						</button>
 						<button
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
@@ -69,9 +48,18 @@
 				<% }) %>
 			</tbody>
 		</table>
-		<div class="float-center d-flex justify-content-center">
-			<button class="btn btn-link">back</button>
-		</div>
 	</div>
 </body>
+<script>
+	$(document).ready(function () {
+		$("#table").DataTable({
+			columnDefs: [
+				{
+					orderable: false,
+					targets: 3,
+				},
+			],
+		});
+	});
+</script>
 <%- include('./nav_end.ejs') %>

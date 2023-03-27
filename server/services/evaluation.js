@@ -35,11 +35,14 @@ module.exports.findEvalByFilter = async function (fields) {
 module.exports.findEvalAndUpdate = async function (filter, update) {
 	try {
 		// console.log(update);
-		await Course.findOneAndUpdate(filter, update);
-		return null;
+		const eval = await Evaluation.findOneAndUpdate(filter, update);
+		if (!eval) throw error.RecordNotFound;
 	} catch (err) {
-		console.log("🚀 ~ file: courses.js:41 ~ err:", err);
-		throw error.DatabaseUpdate;
+		if (err === error.RecordNotFound) throw err;
+		else {
+			console.log("🚀 ~ file: courses.js:41 ~ err:", err);
+			throw error.DatabaseUpdate;
+		}
 	}
 };
 

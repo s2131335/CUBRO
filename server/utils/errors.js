@@ -4,6 +4,11 @@ module.exports = {
 		code: 4000,
 		message: "Something Wrong",
 	},
+	NotPermitted: {
+		status: 500,
+		code: 4001,
+		message: "Not Permitted",
+	},
 	ValidatorError: {
 		status: 500,
 		code: 1000,
@@ -69,6 +74,11 @@ module.exports = {
 		status: 500,
 		code: 5001,
 		message: "Update not success",
+	},
+	RecordNotFound: {
+		status: 500,
+		code: 5002,
+		message: "Record Not Found",
 	},
 };
 

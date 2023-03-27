@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const evaluationSchema = new Schema({
+	userId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "user",
+	},
 	courseID: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "course",

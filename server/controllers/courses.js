@@ -1,23 +1,26 @@
+const path = require("path");
+const error = require("../utils/errors");
+const { writeJSON } = require("../utils/utils");
+const { checkCollision } = require("../utils/planner");
+const Email = require("../utils/sendMail");
 const {
 	parseExcel,
 	getMeeting,
 	updateCourseFile,
 } = require("../utils/courseIO");
-const path = require("path");
-const { writeJSON } = require("../utils/utils");
-const error = require("../utils/errors");
-const { isValidObjectId } = require("mongoose");
-const registration = require("../database/models/registration");
-const Email = require("../utils/sendMail");
+
 const {
 	upsertLesson,
 	findAllCoursesByFilter,
 	findCourseByFilter,
 	deleteCoursesByFilter,
 } = require("../services/courses");
-const { checkCollision } = require("../utils/planner");
-const { Course } = require("../database/models/courses");
-const { update } = require("../database/models/registration");
+const {
+	countFilter,
+	findRegByFilter,
+	getRegIdByFilter,
+	deleteRegByFilter,
+} = require("../services/regCourse");
 
 module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;
@@ -100,85 +103,6 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 // 	}
 // 	return collisions;
 // }
-
-module.exports.selectCourse = async function selectCourse(req, res) {
-	try {
-		const { select, courses } = req.body;
-		if (courses.length == 0) throw error.CourseIDNotValid;
-		var toSelect = await Course.countDocuments({ _id: { $in: courses } });
-		console.log(toSelect);
-		if (toSelect != courses.length) {
-			throw error.CourseIDNotValid;
-		}
-		var collision = await checkCollision(req.user, courses);
-		console.log("collision:", collision);
-		if (collision.length != 0) {
-			return res.status(500).json(collision);
-		}
-
-		for (let course of courses) {
-			await registration.replaceOne(
-				{
-					courseID: course,
-					studentID: req.user.id,
-				},
-				{
-					courseID: course,
-					studentID: req.user.id,
-					selected: select,
-				},
-				{ upsert: true }
-			);
-		}
-		// send email to student if it is a course registration
-		if (select == "true") {
-			let courseList = await findAllCoursesByFilter({
-				_id: { $in: courses },
-			});
-			await Email.sendMail(req.user.email, {
-				mode: Email.MODE_SELECT,
-				courses: courseList,
-			});
-		}
-		res.status(200).send("ok");
-	} catch (err) {
-		console.error(err);
-		res.status(err.status || 500).send(err);
-	}
-};
-
-module.exports.dropCourse = async function dropCourse(req, res) {
-	try {
-		var { courses } = req.body;
-		for (var course of courses) {
-			if (!isValidObjectId(course)) throw error.CourseIDNotValid;
-		}
-		var toDrop = await registration
-			.find({
-				courseID: { $in: courses },
-				studentID: req.user._id,
-			})
-			.distinct("_id");
-		if (toDrop.length != courses.length) {
-			throw error.RegistrationNotValid;
-		}
-		await registration.deleteMany({
-			courseID: { $in: courses },
-			studentID: req.user._id,
-		});
-		let courseList = await findAllCoursesByFilter({
-			_id: { $in: courses },
-		});
-		await Email.sendMail(req.user.email, {
-			mode: Email.MODE_DROP,
-			courses: courseList,
-		});
-		res.status(200).send("ok");
-	} catch (err) {
-		console.error(err);
-		res.status(err.status || 500).send(err);
-	}
-};
 
 module.exports.createCourse = (req, res) => {
 	// courseCode
@@ -269,4 +193,80 @@ module.exports.editCourse = (req, res) => {
 		return res.status(error.status).send(error);
 	}
 	res.status(200).send("ok");
+};
+
+module.exports.selectCourse = async function selectCourse(req, res) {
+	try {
+		const { select, courses } = req.body;
+		if (courses.length == 0) throw error.CourseIDNotValid;
+		let toSelect = await countFilter({ _id: { $in: courses } });
+		console.log(toSelect);
+		if (toSelect != courses.length) {
+			throw error.CourseIDNotValid;
+		}
+		let collision = await checkCollision(req.user, courses);
+		console.log("collision:", collision);
+		if (collision.length != 0) {
+			return res.status(500).json(collision);
+		}
+
+		for (let course of courses) {
+			await registration.upsertReg(
+				{
+					courseID: course,
+					studentID: req.user.id,
+				},
+				{
+					courseID: course,
+					studentID: req.user.id,
+					selected: select,
+				}
+			);
+		}
+		// send email to student if it is a course registration
+		if (select == "true") {
+			let courseList = await findAllCoursesByFilter({
+				_id: { $in: courses },
+			});
+			await Email.sendMail(req.user.email, {
+				mode: Email.MODE_SELECT,
+				courses: courseList,
+			});
+		}
+		res.status(200).send("ok");
+	} catch (err) {
+		console.error(err);
+		res.status(err.status || 500).send(err);
+	}
+};
+
+module.exports.dropCourse = async function dropCourse(req, res) {
+	try {
+		let { courses } = req.body;
+		for (let course of courses) {
+			if (!isValidObjectId(course)) throw error.CourseIDNotValid;
+		}
+		let toDrop = await getRegIdByFilter({
+			courseID: { $in: courses },
+			studentID: req.user._id,
+		});
+		if (toDrop.length != courses.length) {
+			throw error.RegistrationNotValid;
+		}
+		await deleteRegByFilter({
+			courseID: { $in: courses },
+			studentID: req.user._id,
+		});
+		let courseList = await findAllCoursesByFilter({
+			_id: { $in: courses },
+		});
+		await Email.sendMail(req.user.email, {
+			mode: Email.MODE_DROP,
+			courses: courseList,
+		});
+		res.status(200).send("ok");
+	} catch (err) {
+		console.error(err);
+		res.status(err.status || 500).send(err);
+	}
 };

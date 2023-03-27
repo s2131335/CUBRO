@@ -11,7 +11,6 @@ const {
 } = require("../controllers/courses");
 const upload = require("../middleware/upload");
 const { importCourse } = require("../controllers/courses");
-const { tutorial, lecture } = require("../database/models/courses");
 const Auth = require("../middleware/auth");
 
 // router.post("/add");

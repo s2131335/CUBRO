@@ -1,6 +1,18 @@
 <%- include('./head.ejs') %>
 
 <body>
+    <div
+        class="alert alert-danger fade show"
+        id="err"
+        style="display: none; border-radius: 0"
+    ></div>
+    <div
+        class="alert alert-success fade show"
+        id="success"
+        style="display: none; border-radius: 0"
+    >
+        Please check your email to reset password, redirecting you to login page.
+    </div>
     <div class="container text-center" style="width: 65%">
     <div class="text-center text-primary" style="margin-top: 20%">
         <h1>Password recovery email will be sent</h1>
@@ -70,9 +82,26 @@
                             fetch(
                                 "http://127.0.0.1:5555/api/users/forget",
                                 options
-                            ).then((data) => {
-                                consol.log("diu");
-                                console.log(data);
+                            ).then(async (data) => {
+                                if (data.status == "500") {
+                                    let res = await data.json();
+                                    document.getElementById("err").textContent =
+                                        res.message;
+                                    document.getElementById(
+                                        "err"
+                                    ).style.display = "block";
+                                } else if (data.status == "200") {
+                                    document.getElementById(
+                                        "submit"
+                                    ).disabled = true;
+                                    document.getElementById(
+                                        "success"
+                                    ).style.display = "block";
+                                    setTimeout(
+                                        () => window.location.replace("/"),
+                                        5000
+                                    );
+                                }
                             });
                         }
                         submitInfo();

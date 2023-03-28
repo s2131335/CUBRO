@@ -17,7 +17,8 @@ const courseSchema = new Schema({
 	},
 	classNum: {
 		// class number
-		type: Number,
+		type: String,
+		default: "",
 	},
 	meetings: [
 		{
@@ -25,7 +26,7 @@ const courseSchema = new Schema({
 			day: { type: Number },
 			timeSlot: {
 				type: Array,
-				of: String,
+				of: String, // format: "00", "01"
 			},
 			dates: {
 				type: Array,

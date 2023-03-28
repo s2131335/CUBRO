@@ -14,8 +14,9 @@ const { intToChar, charToInt, writeJSON, readJSON } = require("./utils");
 // });
 
 // const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-
 const HEADERS = [
+	// need to match the order of the excel headers
+	// need to match the fields in course schema
 	"semester",
 	"courseCode",
 	"courseName",
@@ -186,6 +187,7 @@ function toCsv(courses) {
 	} catch (error) {}
 }
 
+//dummy data for testing purposes
 const c = {
 	_id: {
 		$oid: "641dd25cdc5a8a14ecc37cca",
@@ -194,7 +196,7 @@ const c = {
 	courseCode: "ABCD1234",
 	__v: 0,
 	courseName: "intro to fucking",
-	classNum: 1,
+	classNum: "A",
 	description: "This is fucking good class",
 	instructor: "KKL",
 	meetings: [

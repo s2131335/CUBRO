@@ -8,7 +8,8 @@ const Token = require("../utils/tokenUtil");
 
 module.exports.login = function (req, res, next) {
 	// If user already logged in
-	if (req.isAuthenticated()) return res.status(201).send({message:"Login"});
+	if (req.isAuthenticated())
+		return res.status(201).send({ message: "Login" });
 
 	passport.authenticate("local", function (err, user, info) {
 		if (err) {
@@ -101,6 +102,16 @@ module.exports.logout = function (req, res, next) {
 
 		res.send("Logout");
 	});
+};
+
+module.exports.getUserProfile = async function (req, res) {
+	try {
+		let user = await userService.findUserByFilter({ _id: req.user._id });
+		return res.status(200).send(user);
+	} catch (err) {
+		console.error(err);
+		res.status(err.status).send(err);
+	}
 };
 
 module.exports.showStudents = async function (req, res, next) {

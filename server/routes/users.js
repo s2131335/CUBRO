@@ -5,6 +5,7 @@ const {
 	register,
 	login,
 	logout,
+	getUserProfile,
 	showStudents,
 	changePassword,
 	modRoles,
@@ -32,6 +33,7 @@ router.post(
 );
 
 // router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);
+router.get("/user-profile", Auth.checkAuth(), getUserProfile);
 
 router.post("/show-users", Auth.checkAuth(Auth.ADMIN), showUsers);
 

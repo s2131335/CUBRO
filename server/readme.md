@@ -86,25 +86,27 @@ This is the router for managing users. The following are a list of apis that can
         -   [`/reset-password/:token`](#reset-passwordtoken)
             -   [Request](#request-9)
             -   [POST body](#post-body-6)
+        -   [`/get-current-user`](#get-current-user)
+            -   [Request](#request-10)
     -   [`/api/courses`](#apicourses)
         -   [`/browse`](#browse)
-            -   [Request](#request-10)
+            -   [Request](#request-11)
             -   [Query](#query)
         -   [`/info/:id`](#infoid)
-            -   [Request](#request-11)
-        -   [`/select`](#select)
             -   [Request](#request-12)
+        -   [`/select`](#select)
+            -   [Request](#request-13)
             -   [POST body](#post-body-7)
         -   [`/import-courses` \[Admin only\]](#import-courses-admin-only)
-            -   [Request](#request-13)
+            -   [Request](#request-14)
             -   [POST body](#post-body-8)
             -   [Excel file format](#excel-file-format)
     -   [`/api/testing`](#apitesting)
         -   [`/gen-students/:no`](#gen-studentsno)
-            -   [Request](#request-14)
+            -   [Request](#request-15)
     -   [`/api/courses`](#apicourses-1)
         -   [`import-courses` \[Admin only\]](#import-courses-admin-only-1)
-            -   [Request](#request-15)
+            -   [Request](#request-16)
             -   [POST body](#post-body-9)
     -   [Custom Error Documentation](#custom-error-documentation)
         -   [`Unknown`](#unknown)
@@ -287,6 +289,16 @@ After getting the email from the method above, by using this api, users can rese
 | Field      | Required | Type   | Description                    |
 | ---------- | -------- | ------ | ------------------------------ |
 | `password` | True     | String | The login password of the user |
+
+### `/get-current-user`
+
+Get the current user information
+
+#### Request
+
+| Type | On Success                       | On Error                                 |
+| ---- | -------------------------------- | ---------------------------------------- |
+| GET  | Send user object with status 200 | Please refer to the error documentation. |
 
 <!-- courses api -->
 

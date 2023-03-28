@@ -33,8 +33,8 @@ module.exports.sendMail = async function (recipient, data) {
 					subject: "CUBRO - Account Activation",
 					html: `
                             <h2>Click this link to activate your account</h2>
-                            <p>http://${process.env.DOMAIN}:${process.env.PORT}/api/users/activate-account/${data.payload}</p>
-                            <p>This link only last for 10 min</p>`,
+                            <p>http://${process.env.DOMAIN}:${process.env.FRONTEND_PORT}/activate-account/token=${data.payload}</p>
+							`,
 				};
 				break;
 

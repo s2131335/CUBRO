@@ -118,7 +118,7 @@ router.get("/courses", (req, res) => {
 });
 
 /* GET course edit page. */
-router.get("/course/edit", function (req, res, next) {
+router.get("/courses/edit", function (req, res, next) {
 	res.render("admin/course_edit", {
 		title: "Course Edit",
 		courseCode: "CSCI3100",

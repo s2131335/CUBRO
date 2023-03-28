@@ -137,17 +137,20 @@ module.exports.checkCollision = async function checkCollision(user, courses) {
 
 module.exports.getTimetable = function (course) {
 	const timetable = {
-		courseCode,
+		courseCode: course.courseCode,
 		type: course.__t,
-		classNum,
-		venue,
+		classNum: course.classNum,
+		venue: course.venue,
 	};
 	let timeSlot = [];
 	for (let meeting of course.meetings) {
-		timeSlot = timeSlot.join(meeting.timeSlots);
+		let tmp = meeting.timeSlot.map((t) => {
+			return `${meeting.day}${t}`;
+		});
+		timeSlot = timeSlot.concat(tmp);
 	}
 	timetable.timeSlots = timeSlot;
+	console.log("🚀 ~ file: planner.js:153 ~ timetable:", timetable);
+
 	return timetable;
 };
-
-// collisionDetection(courses);

@@ -10,10 +10,17 @@
 
     <div class="container-fluid text-center" style="width: 1000px">
         <!-- Welcome title -->
-        <div class="text-center text-primary" style="margin-top: 15%">
+        <div class="text-center text-primary" style="margin-top: 25%">
             <h1>Welcome to</h1>
             <h1 class="text-dark">CUBRO</h1>
         </div>
+
+        <!-- Error alert -->
+        <div
+            class="alert alert-danger fade show"
+            id="err"
+            style="display: none"
+        ></div>
 
         <!-- Email input -->
         <form class="requires-validation" novalidate>
@@ -102,15 +109,17 @@
         <div class="text-center">
             <div class="row">
                 <div class="col"></div>
-                <p class="mb-1 col-2">Not a member?</p>
-                <div class="col-2">
-                    <a
-                        class="btn btn-block btn-secondary"
-                        id="register"
-                        href="./register"
-                        >Register</a
-                    >
-                </div>
+                <p class="mb-1 col-2 pe-0 d-flex justify-content-end">
+                    Not a member?&nbsp
+                </p>
+
+                <a
+                    class="col-2 ps-0 d-flex justify-content-start"
+                    id="register"
+                    href="./register"
+                    >Register here</a
+                >
+
                 <div class="col"></div>
             </div>
         </div>

@@ -16,4 +16,11 @@ router.get("/forget", function (req, res, next) {
 	res.render("public/forget", { title: "Forget" });
 });
 
+/* GET activated page*/
+router.get("/activate_account/:token", function (req, res, next) {
+	const token = req.params.token;
+	console.log(token);
+	res.render("public/activate_account", { title: "Activate account", token });
+});
+
 module.exports = router;

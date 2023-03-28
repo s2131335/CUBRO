@@ -1,11 +1,26 @@
 <%- include('./head.ejs') %>
 
 <body>
-    <div class="container-fluid text-center" style="width: 1000px">
-        <div class="text-center text-primary" style="margin-top: 15%">
+    <!-- Error alert -->
+    <div
+        class="alert alert-danger fade show"
+        id="err"
+        style="display: none; border-radius: 0"
+    ></div>
+
+    <div class="container-fluid text-center" style="width: 65%">
+        <!-- Welcome title -->
+        <div class="text-center text-primary" style="margin-top: 17%">
             <h1>Welcome to</h1>
             <h1 class="text-dark">CUBRO</h1>
         </div>
+
+        <!-- Error alert -->
+        <div
+            class="alert alert-danger fade show"
+            id="err"
+            style="display: none"
+        ></div>
 
         <!-- Email input -->
         <form class="requires-validation" novalidate>
@@ -81,6 +96,7 @@
                 <div class="col-2">
                     <button
                         class="btn btn-primary btn-block shadow-0 mb-4"
+                        type="button"
                         id="signin"
                     >
                         Sign in
@@ -91,17 +107,19 @@
         </form>
         <!-- Register button -->
         <div class="text-center">
-            <p class="mb-1">Not a member?</p>
             <div class="row">
                 <div class="col"></div>
-                <div class="col">
-                    <a
-                        class="btn btn-block btn-secondary"
-                        id="register"
-                        href="./register"
-                        >Register</a
-                    >
-                </div>
+                <p class="mb-1 col-2 pe-0 d-flex justify-content-end">
+                    Not a member?&nbsp
+                </p>
+
+                <a
+                    class="col-2 ps-0 d-flex justify-content-start"
+                    id="register"
+                    href="./register"
+                    >Register here</a
+                >
+
                 <div class="col"></div>
             </div>
         </div>
@@ -117,78 +135,64 @@
     (function () {
         "use strict";
         const forms = document.querySelectorAll(".requires-validation");
+
         Array.from(forms).forEach(function (form) {
-            form.addEventListener(
-                "submit",
+            document.getElementById("signin").addEventListener(
+                "click",
                 function (event) {
                     if (!form.checkValidity()) {
                         event.preventDefault();
                         event.stopPropagation();
+                    } else {
+                        const update = {
+                            email: document.getElementById("email").value,
+                            password: document.getElementById("password").value,
+                        };
+
+                        const options = {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(update),
+                        };
+                        function submitInfo() {
+                            fetch(
+                                "http://127.0.0.1:5555/api/users/login",
+                                options
+                            ).then(async (data) => {
+                                if (data.status == "500") {
+                                    let res = await data.json();
+                                    document.getElementById("err").textContent =
+                                        res.message;
+                                    document.getElementById(
+                                        "err"
+                                    ).style.display = "block";
+                                } else if (data.status == "200") {
+                                    window.location.replace(
+                                        "/internal/profile"
+                                    );
+                                }
+                            });
+                        }
+                        submitInfo();
                     }
 
                     form.classList.add("was-validated");
+                    //passwordConfirmCheck();
                 },
                 false
             );
         });
     })();
-    // (() => {
-    //     "use strict";
-
-    //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    //     const forms = document.querySelectorAll(".needs-validation");
-
-    //     // Input Validation
-    //     document.getElementById("signin").addEventListener("click", () => {
-    //         console.log(forms);
-    //         const invalidArray = [];
-    //         const validArray = [];
-    //         for (let input of forms) {
-    //             if (input.value == "") {
-    //                 invalidArray.push(input);
-    //             }
-    //         }
-    //         if (document.getElementById("password").value != "") {
-    //             validArray.push(document.getElementById("password"));
-    //         }
-    //         if (
-    //             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-    //                 document.getElementById("email").value
-    //             )
-    //         ) {
-    //             validArray.push(document.getElementById("email"));
-    //         } else {
-    //             invalidArray.push(document.getElementById("email"));
-    //         }
-    //         for (let elements of invalidArray) {
-    //             elements.classList.add("is-invalid");
-    //         }
-    //         for (let elements of validArray) {
-    //             elements.classList.remove("is-invalid");
-    //         }
-    //     });
-    //     // Loop over them and prevent submission
-    //     Array.prototype.slice.call(forms).forEach((form) => {
-    //         form.addEventListener(
-    //             "submit",
-    //             (event) => {
-    //                 form.checkValidity();
-    //                 event.preventDefault();
-    //                 event.stopPropagation();
-    //                 form.classList.add("was-validated");
-    //             },
-    //             false
-    //         );
-    //     });
-    // })();
 
     // Submit data to login
-    $(document).ready(() => {
-        $("#signin").click(() => {
-            if ($("#email").val() === "" || $("#password").val() == "") {
-                return;
-            }
-            var data = {};
-        });
-    });
+    // $(document).ready(() => {
+    //     $("#signin").click(() => {
+    //         if ($("#email").val() == "" || $("#password").val() == "") {
+    //             return;
+    //         }
+    //         var data = {};
+    //     });
+    // });
 </script>

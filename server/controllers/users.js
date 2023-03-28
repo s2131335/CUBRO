@@ -8,7 +8,7 @@ const Token = require("../utils/tokenUtil");
 
 module.exports.login = function (req, res, next) {
 	// If user already logged in
-	if (req.isAuthenticated()) return res.status(201).send("Login");
+	if (req.isAuthenticated()) return res.status(201).send({message:"Login"});
 
 	passport.authenticate("local", function (err, user, info) {
 		if (err) {

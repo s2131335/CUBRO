@@ -25,7 +25,67 @@ router.get("/search", function (req, res, next) {
 
 /* GET user regcourse page. */
 router.get("/regcourse", function (req, res, next) {
-	res.render("internal/regcourse", { title: "RegisterCourse" });
+	const course = [
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: 1,
+			day: 1,
+			start: "0830",
+			end: "1015",
+			ts: [0, 7],
+			displayed: false,
+			checked:true,
+		},
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: 1,
+			day: 1,
+			start: "0830",
+			end: "1015",
+			ts: [5, 12],
+			displayed: false,
+			checked: false
+		},
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: 1,
+			day: 1,
+			start: "0830",
+			end: "1015",
+			ts: [8, 15],
+			displayed: false,
+			checked : false,
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: 1,
+			day: 1,
+			start: "0830",
+			end: "1015",
+			ts: [8],
+			displayed: false,
+			checked: true,
+		},
+		{
+			courseCode: "CENG1234",
+			venue: "NONONONO",
+			class: 1,
+			day: 1,
+			start: "0830",
+			end: "1015",
+			ts: [21, 28],
+			displayed: false,
+			checked : true,
+		},
+	];
+	res.render("internal/regcourse", {
+		title: "RegisterCourse",
+		data: { course },
+	});
 });
 
 module.exports = router;

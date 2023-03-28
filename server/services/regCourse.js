@@ -1,5 +1,5 @@
-const { isValidObjectId } = require("mongoose");
 const Registration = require("../database/models/registration");
+const { Tutorial, Lecture, Course } = require("../database/models/courses");
 const error = require("../utils/errors");
 
 module.exports.countFilter = async function (filter) {

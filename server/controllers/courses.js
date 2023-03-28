@@ -17,6 +17,7 @@ const {
 } = require("../services/courses");
 const {
 	countFilter,
+	upsertReg,
 	findRegByFilter,
 	getRegIdByFilter,
 	deleteRegByFilter,
@@ -211,7 +212,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 		}
 
 		for (let course of courses) {
-			await registration.upsertReg(
+			await upsertReg(
 				{
 					courseID: course,
 					studentID: req.user._id,

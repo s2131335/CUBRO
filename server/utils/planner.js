@@ -53,7 +53,7 @@ function dataExtract(courses) {
 	let dict = {};
 	let intervals = [];
 	for (let course of courses) {
-		for (let slot of course.timeSlots) {
+		for (let slot of course.timeSlot) {
 			time = global.CUBRO.TIMESLOTS[Number(slot)].split("-");
 			console.log("🚀 ~ file: planner.js:48 ~ dataExtract ~ time:", time);
 

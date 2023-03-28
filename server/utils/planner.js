@@ -1,5 +1,15 @@
-const { Course } = require("../database/models/courses");
 const registration = require("../database/models/registration");
+const { findAllCoursesByFilter } = require("../services/courses");
+
+// courses = [
+// 	{
+// 		courseCode: "csci3101",
+// 		type: "lecture",
+// 		venue: "sss",
+// 		timeSlots: [],
+// 		classNum: "C",
+// 	},
+// ];
 
 // const courses = [
 // 	{
@@ -43,7 +53,7 @@ function dataExtract(courses) {
 	let dict = {};
 	let intervals = [];
 	for (let course of courses) {
-		for (let slot of course.timeSlots) {
+		for (let slot of course.timeSlot) {
 			time = global.CUBRO.TIMESLOTS[Number(slot)].split("-");
 			console.log("🚀 ~ file: planner.js:48 ~ dataExtract ~ time:", time);
 
@@ -90,12 +100,12 @@ function checkOneDay(courses) {
 
 // input: array of meetings
 // output : array of clashed pairs
-function collisionDetection(courses) {
+function collisionDetection(meetings) {
 	let allCollisions = new Set();
 	for (let i = 0; i < 7; i++) {
 		checkOneDay(
-			courses.filter((course) => {
-				return course.day === i;
+			meetings.filter((meeting) => {
+				return meeting.day === i;
 			})
 		).forEach((item) => allCollisions.add(item.join("+")));
 	}
@@ -117,10 +127,30 @@ module.exports.checkCollision = async function checkCollision(user, courses) {
 	for (let userCourse of userCourses) {
 		meetings.push(...userCourse["courseID"]["meetings"]);
 	}
-	for (let course of await Course.find({ _id: { $in: courses } })) {
+	for (let course of await findAllCoursesByFilter({
+		_id: { $in: courses },
+	})) {
 		meetings.push(...course["meetings"]);
 	}
 	return collisionDetection(meetings);
 };
 
-// collisionDetection(courses);
+module.exports.getTimetable = function (course) {
+	const timetable = {
+		courseCode: course.courseCode,
+		type: course.__t,
+		classNum: course.classNum,
+		venue: course.venue,
+	};
+	let timeSlot = [];
+	for (let meeting of course.meetings) {
+		let tmp = meeting.timeSlot.map((t) => {
+			return `${meeting.day}${t}`;
+		});
+		timeSlot = timeSlot.concat(tmp);
+	}
+	timetable.timeSlots = timeSlot;
+	console.log("🚀 ~ file: planner.js:153 ~ timetable:", timetable);
+
+	return timetable;
+};

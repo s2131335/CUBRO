@@ -14,13 +14,14 @@ const { intToChar, charToInt, writeJSON, readJSON } = require("./utils");
 // });
 
 // const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-
 const HEADERS = [
+	// need to match the order of the excel headers
+	// need to match the fields in course schema
 	"semester",
 	"courseCode",
 	"courseName",
 	"type",
-	"class",
+	"classNum",
 	"venue",
 	"instructor",
 	"seat",
@@ -73,7 +74,7 @@ module.exports.getMeeting = function getMeeting(courseCode, dates, timeSlot) {
 // return true when courseFile has updated.
 module.exports.updateCourseFile = function updateCourseFile(course) {
 	let hashValue = hash(course);
-	let key = `${course.courseCode}${course.semester}${course.type}${course.class}`;
+	let key = `${course.courseCode}${course.semester}${course.type}${course.classNum}`;
 	//If entry is already saved
 	if (global.CUBRO.CourseFile[key] === hashValue) {
 		return false;
@@ -137,35 +138,90 @@ module.exports.parseExcel = function parseExcel(
 	return courses;
 };
 
-async function toCsv(req, res) {
-	const { parse } = require("json2csv");
-	try {
-		const can = await candidates.find(filter);
-		// console.log(filter);
-		// console.log(data);
-		can.map((d) => {
-			if (d.education == "0") {
-				d.education = "中學畢業";
-			} else if (d.education == "1") {
-				d.education = "大學畢業";
-			} else if (d.education == "2") {
-				d.education = "碩士畢業";
-			} else {
-				d.education = "博士或更高學歷";
-			}
-			if (d.employment == "0") {
-				d.employment = "全職";
-			} else {
-				d.employment = "兼職";
-			}
-		});
-		const data = parse(can, { HEADERS, excelStrings: true, withBOM: true });
-		// console.log(data);
-		res.setHeader("Content-Type", "application/csv");
-		res.setHeader("Content-Disposition", 'inline; filename="x.csv"');
-		res.status(200).send(data);
-	} catch (error) {
-		console.log(error);
-		res.status(500).json(error);
+function getAllDates(meetings) {
+	let dates = [];
+	for (let m of meetings) {
+		dates = dates.concat(m.dates);
 	}
+	return dates.toString();
 }
+
+function getTimeSlots(meetings) {
+	timeSlots = "";
+	for (let m of meetings) {
+		string = m.day.toString();
+		for (let t of m.timeSlot) {
+			string += `-${t}`;
+		}
+		timeSlots += `${string},`;
+	}
+	// console.log(timeSlots);
+	return timeSlots;
+}
+
+function toCsv(courses) {
+	const { parse } = require("json2csv");
+	//courses come from db
+	let data = [];
+
+	for (let course of courses) {
+		course.time = getTimeSlots(course.meetings);
+		course.dates = getAllDates(course.meetings);
+		course.type = course.__t;
+		for (field in course) {
+			if (!HEADERS.includes(field)) {
+				delete course[field];
+			}
+		}
+		data.push(course);
+	}
+
+	try {
+		const result = parse(data, {
+			fields: HEADERS,
+			excelStrings: true,
+			withBOM: true,
+		});
+		return result;
+		// console.log(data);
+	} catch (error) {}
+}
+
+//dummy data for testing purposes
+const c = {
+	_id: {
+		$oid: "641dd25cdc5a8a14ecc37cca",
+	},
+	__t: "lecture",
+	courseCode: "ABCD1234",
+	__v: 0,
+	courseName: "intro to fucking",
+	classNum: "A",
+	description: "This is fucking good class",
+	instructor: "KKL",
+	meetings: [
+		{
+			timeSlot: ["00", "02"],
+			dates: ["2023-02-02"],
+			_id: {
+				$oid: "641dd25d9c8944558db35428",
+			},
+			courseCode: "ABCD1234",
+			day: 4,
+		},
+		{
+			timeSlot: ["03", "04"],
+			dates: ["2023-02-01", "2023-02-08"],
+			_id: {
+				$oid: "641dd25d9c8944558db35429",
+			},
+			courseCode: "ABCD1234",
+			day: 3,
+		},
+	],
+	seat: 100,
+	semester: 1,
+	venue: "SHB",
+};
+
+// console.log(toCsv([c]));

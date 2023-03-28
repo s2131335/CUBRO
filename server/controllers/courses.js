@@ -1,7 +1,7 @@
 const path = require("path");
 const error = require("../utils/errors");
 const { writeJSON } = require("../utils/utils");
-const { checkCollision } = require("../utils/planner");
+const { checkCollision, getTimetable } = require("../utils/planner");
 const Email = require("../utils/sendMail");
 const {
 	parseExcel,
@@ -214,11 +214,11 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 			await registration.upsertReg(
 				{
 					courseID: course,
-					studentID: req.user.id,
+					studentID: req.user._id,
 				},
 				{
 					courseID: course,
-					studentID: req.user.id,
+					studentID: req.user._id,
 					selected: select,
 				}
 			);
@@ -269,4 +269,28 @@ module.exports.dropCourse = async function dropCourse(req, res) {
 		console.error(err);
 		res.status(err.status || 500).send(err);
 	}
+};
+
+module.exports.getTimetableInfo = async function (req, res) {
+	const studentID = req.user._id;
+	try {
+		const selectedCourses = await findRegByFilter({ studentID });
+		const courseIds = [];
+		for (course of selectedCourses) {
+			if (course.selected) {
+				courseIds.push(course._id);
+			}
+		}
+		const courses = await findAllCoursesByFilter({
+			_id: { $in: courseIds },
+		});
+		const timetableInfo = [];
+		for (let course of courses) {
+			timetableInfo.push(getTimetable(course));
+		}
+		console.log(timetableInfo);
+	} catch (err) {
+		return res.status(err.status).send(err);
+	}
+	res.status(200).send(timetableInfo);
 };

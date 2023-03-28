@@ -8,6 +8,7 @@ const {
 	courseInfo,
 	selectCourse,
 	dropCourse,
+	getTimetableInfo,
 } = require("../controllers/courses");
 const upload = require("../middleware/upload");
 const { importCourse } = require("../controllers/courses");
@@ -25,6 +26,8 @@ router.post("/drop", Auth.checkAuth(), dropCourse);
 router.post("/create", createCourse);
 router.post("/delete", deleteCourse);
 router.post("/update", Auth.checkAuth(), editCourse);
+
+router.get("/getTimetableInfo", getTimetableInfo);
 // router.get("/excel");
 
 module.exports = router;

@@ -1,0 +1,45 @@
+<%- include('./head.ejs') %>
+
+<body>
+    
+    <div class="text-center text-primary" id="succes" style="margin-top: 30%; display: none">
+        <h1>Account activated. Redirecting you to login page.</h1>
+    </div>
+
+    <div class="text-center text-primary" id="succes" style="margin-top: 30%; display: none">
+        <h1>Link expired. Redirecting you to login page.</h1>
+    </div>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    function submitInfo() {
+                            fetch(
+                                "http://127.0.0.1:5555/api/users/register",
+                                options
+                            ).then(async (data) => {
+                                if (data.code == "3001") {
+                                    document.getElementById(
+                                        "err"
+                                    ).style.display = "block";
+                                    setTimeout(
+                                        () => window.location.replace("/"),
+                                        5000
+                                    );
+                                } else if (data.status == "200") {
+                                    document.getElementById(
+                                        "submitbutton"
+                                    ).disabled = true;
+                                    document.getElementById(
+                                        "success"
+                                    ).style.display = "block";
+                                    setTimeout(
+                                        () => window.location.replace("/"),
+                                        5000
+                                    );
+                                }
+                            });
+
+</script>

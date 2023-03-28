@@ -1,16 +1,21 @@
 <%- include('./head.ejs') %>
 
 <body>
-    <!-- Error alert -->
-    <div
-        class="alert alert-danger fade show"
-        id="err"
-        style="display: none; border-radius: 0"
-    ></div>
+    <div class="row" style="margin-top: 9%"></div>
 
     <div class="container-fluid text-center" style="width: 65%">
+        <!-- Error alert -->
+        <div class="row mb-3">
+            <div class="col"></div>
+            <div
+                class="col-5 alert alert-danger fade show text-center"
+                id="err"
+                style="display: none; border-radius: 0"
+            ></div>
+            <div class="col"></div>
+        </div>
         <!-- Welcome title -->
-        <div class="text-center text-primary" style="margin-top: 17%">
+        <div class="text-center text-primary" >
             <h1>Welcome to</h1>
             <h1 class="text-dark">CUBRO</h1>
         </div>
@@ -23,8 +28,8 @@
         ></div>
 
         <!-- Email input -->
-        <form class="requires-validation" novalidate>
-            <div class="row justify-content-md-center" style="margin-top: 5%">
+        <form class="requires-validation" id="form" novalidate>
+            <div class="row justify-content-md-center" style="margin-top: 3%">
                 <div class="col"></div>
                 <div class="col-5">
                     <div
@@ -185,14 +190,12 @@
             );
         });
     })();
+    let input = document.getElementById("form");
 
-    // Submit data to login
-    // $(document).ready(() => {
-    //     $("#signin").click(() => {
-    //         if ($("#email").val() == "" || $("#password").val() == "") {
-    //             return;
-    //         }
-    //         var data = {};
-    //     });
-    // });
+    input.addEventListener("keypress", function(event){
+        if(event.key == "Enter"){
+            event.preventDefault();
+            document.getElementById("signin").click();
+        }
+    });
 </script>

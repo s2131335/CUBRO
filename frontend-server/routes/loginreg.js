@@ -18,9 +18,12 @@ router.get("/forget", function (req, res, next) {
 
 /* GET activated page*/
 router.get("/activate_account/:token", function (req, res, next) {
-	const token = req.params.token;
-	console.log(token);
-	res.render("public/activate_account", { title: "Activate account", token });
+	res.render("public/activate_account", { title: "Activate account" });
+});
+
+/* GET password reset authentication*/
+router.get("/reset_auth/:token", function (req, res, next) {
+	res.render("public/reset_auth", { title: "Password Reset Authentication" });
 });
 
 module.exports = router;

@@ -3,7 +3,7 @@
 <body>
     
     <div class="text-center text-primary" id="success" style="margin-top: 20%; display: none">
-        <h1>Account activated. Redirecting you to login page.</h1>
+        <h1>Reset authorized. Redirecting you to password reset page.</h1>
     </div>
 
     <div class="text-center text-primary" id="err" style="margin-top: 20%; display: none">
@@ -18,17 +18,16 @@
     setTimeout(() => window.location.replace("/"),5000);
     function submitInfo() {
                             const options = {
-                                method: "GET",
+                                method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
                                 },
                             
                             }
                             let url = window.location.href;
-                            token = url.split("token=")[1];
-                            console.log(token);
+                            token = url.split("token=")[1]
                             fetch(
-                                "http://127.0.0.1:5555/api/users/activate-account/"+token,
+                                "http://127.0.0.1:5555/api/users/reset-password/"+token,
                                 options
                             ).then(async (data) => {
                                 if (data.status == "401") {

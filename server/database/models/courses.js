@@ -52,6 +52,9 @@ const Lecture = Course.discriminator(
 		description: {
 			type: String,
 		},
+		file: {
+			type: Buffer,
+		},
 	})
 );
 

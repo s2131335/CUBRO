@@ -55,7 +55,8 @@ module.exports.verifyUserToken = async function verifyUserToken(
 		}
 		await userService.findUserAndUpdate({ _id: user._id }, { token: "" });
 	} catch (err) {
-		throw err;
+		if (err != error.TokenInvalid) throw error.Unknown;
+		else throw err;
 	}
 	return token._id;
 };

@@ -1,21 +1,25 @@
 <%- include('./head.ejs') %>
 
 <body>
-    <div class="row" style="margin-top: 9%"></div>
+    <div
+        class="row alert alert-danger fade show text-center mb-0"
+        id="err"
+        style="display: none"
+    ></div>
 
-    <div class="container-fluid text-center" style="width: 65%">
+    <div class="container-fluid text-center" style="width: 65%; margin-top: 9%">
         <!-- Error alert -->
         <div class="row mb-3">
             <div class="col"></div>
             <div
-                class="col-5 alert alert-danger fade show text-center"
+                class="col-5 alert alert-danger fade show text-center mb-3"
                 id="err"
-                style="display: none; border-radius: 0"
+                style="display: none"
             ></div>
             <div class="col"></div>
         </div>
         <!-- Welcome title -->
-        <div class="text-center text-primary" >
+        <div class="text-center text-primary">
             <h1>Welcome to</h1>
             <h1 class="text-dark">CUBRO</h1>
         </div>
@@ -36,45 +40,45 @@
                             required
                         />
 
-						<label class="form-label" for="email"
-							><i class="fas fa-envelope"></i> Email</label
-						>
-						<div class="invalid-feedback">Invalid email</div>
-					</div>
-				</div>
+                        <label class="form-label" for="email"
+                            ><i class="fas fa-envelope"></i> Email</label
+                        >
+                        <div class="invalid-feedback">Invalid email</div>
+                    </div>
+                </div>
 
-				<div class="col"></div>
-			</div>
+                <div class="col"></div>
+            </div>
 
-			<!-- Password input -->
-			<div class="row justify-content-md-center">
-				<div class="col"></div>
+            <!-- Password input -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
 
-				<div class="col-5">
-					<div class="input-group form-outline mb-4">
-						<input
-							type="password"
-							id="password"
-							class="form-control needs-validation"
-							minlength="8"
-							required
-							formnovalidate
-						/>
-						<label class="form-label" for="password"
-							><i class="fas fa-key"></i> Password</label
-						>
-						<div class="vr vr-blurry"></div>
-						<a
-							class="button text-muted shadow-0 pt-1 ps-3 pe-3"
-							href="./forget"
-							>Forgot?</a
-						>
-						<div class="invalid-feedback">Invalid password</div>
-					</div>
-				</div>
+                <div class="col-5">
+                    <div class="input-group form-outline mb-4">
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control needs-validation"
+                            minlength="8"
+                            required
+                            formnovalidate
+                        />
+                        <label class="form-label" for="password"
+                            ><i class="fas fa-key"></i> Password</label
+                        >
+                        <div class="vr vr-blurry"></div>
+                        <a
+                            class="button text-muted shadow-0 pt-1 ps-3 pe-3"
+                            href="./forget"
+                            >Forgot?</a
+                        >
+                        <div class="invalid-feedback">Invalid password</div>
+                    </div>
+                </div>
 
-				<div class="col"></div>
-			</div>
+                <div class="col"></div>
+            </div>
 
             <!-- 2 column grid layout for inline styling -->
             <div class="row justify-content-md-center">
@@ -129,23 +133,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
-	(function () {
-		"use strict";
-		const forms = document.querySelectorAll(".requires-validation");
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        "use strict";
+        const forms = document.querySelectorAll(".requires-validation");
 
-		Array.from(forms).forEach(function (form) {
-			document.getElementById("signin").addEventListener(
-				"click",
-				function (event) {
-					if (!form.checkValidity()) {
-						event.preventDefault();
-						event.stopPropagation();
-					} else {
-						const update = {
-							email: document.getElementById("email").value,
-							password: document.getElementById("password").value,
-						};
+        Array.from(forms).forEach(function (form) {
+            document.getElementById("signin").addEventListener(
+                "click",
+                function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        const update = {
+                            email: document.getElementById("email").value,
+                            password: document.getElementById("password").value,
+                        };
 
                         const options = {
                             method: "POST",
@@ -159,17 +163,17 @@
                                 "http://127.0.0.1:5555/api/users/login",
                                 options
                             ).then(async (data) => {
-                                if (data.status == "500") {
+                                if (data.status == "200") {
+                                    window.location.replace(
+                                        "/internal/profile"
+                                    );
+                                } else {
                                     let res = await data.json();
                                     document.getElementById("err").textContent =
                                         res.message;
                                     document.getElementById(
                                         "err"
                                     ).style.display = "block";
-                                } else if (data.status == "200") {
-                                    window.location.replace(
-                                        "/internal/profile"
-                                    );
                                 }
                             });
                         }
@@ -185,8 +189,8 @@
     })();
     let input = document.getElementById("form");
 
-    input.addEventListener("keypress", function(event){
-        if(event.key == "Enter"){
+    input.addEventListener("keypress", function (event) {
+        if (event.key == "Enter") {
             event.preventDefault();
             document.getElementById("signin").click();
         }

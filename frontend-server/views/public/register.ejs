@@ -11,7 +11,8 @@
         id="success"
         style="display: none; border-radius: 0"
     >
-        Register stressful, please check your email to activate your account. Redirecting you to login page.
+        Register successful, please check your email to activate your account.
+        Redirecting you to login page.
     </div>
     <div class="container text-center" style="width: 65%">
         <div class="text-center text-primary" style="margin-top: 10%">
@@ -94,7 +95,7 @@
                             id="email"
                             class="form-control needs-validation"
                             required
-                            pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
+                            pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4})(\]?)$"
                         />
                         <label class="form-label" for="email">*Email</label>
                         <div class="invalid-feedback">
@@ -217,24 +218,30 @@
                                 "http://127.0.0.1:5555/api/users/register",
                                 options
                             ).then(async (data) => {
-                                if (data.status == "500") {
+                                if (data.status == "200") {
+                                    document.getElementById(
+                                        "submitbutton"
+                                    ).disabled = true;
+                                    document.getElementById(
+                                        "err"
+                                    ).style.display = "none";
+                                    document.getElementById(
+                                        "success"
+                                    ).style.display = "block";
+                                    setTimeout(
+                                        () =>
+                                            window.location.replace(
+                                                "http://localhost:3000/"
+                                            ),
+                                        5000
+                                    );
+                                } else {
                                     let res = await data.json();
                                     document.getElementById("err").textContent =
                                         res.message;
                                     document.getElementById(
                                         "err"
                                     ).style.display = "block";
-                                } else if (data.status == "200") {
-                                    document.getElementById(
-                                        "submitbutton"
-                                    ).disabled = true;
-                                    document.getElementById(
-                                        "success"
-                                    ).style.display = "block";
-                                    setTimeout(
-                                        () => window.location.replace("/"),
-                                        5000
-                                    );
                                 }
                             });
                         }

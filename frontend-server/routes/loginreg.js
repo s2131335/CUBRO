@@ -22,8 +22,8 @@ router.get("/activate_account/:token", function (req, res, next) {
 });
 
 /* GET password reset authentication*/
-router.get("/reset_auth/:token", function (req, res, next) {
-	res.render("public/reset_auth", { title: "Password Reset Authentication" });
+router.get("/reset_password/:token", function (req, res, next) {
+	res.render("public/reset_password", { title: "Password Reset Authentication" });
 });
 
 module.exports = router;

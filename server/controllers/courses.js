@@ -14,13 +14,14 @@ const {
 	findAllCoursesByFilter,
 	findCourseByFilter,
 	deleteCoursesByFilter,
+	countCourseByFilter,
 } = require("../services/courses");
 const {
-	countFilter,
 	upsertReg,
 	findRegByFilter,
 	extractRegIdByFilter,
 	deleteRegByFilter,
+	getCourseAvailability,
 } = require("../services/registration");
 
 module.exports.importCourse = async function importCourse(req, res) {
@@ -200,15 +201,24 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 	try {
 		const { select, courses } = req.body;
 		if (courses.length == 0) throw error.CourseIDNotValid;
-		let toSelect = await countFilter({ _id: { $in: courses } });
+		let toSelect = await countCourseByFilter({ _id: { $in: courses } });
 		console.log(toSelect);
 		if (toSelect != courses.length) {
 			throw error.CourseIDNotValid;
 		}
+
+		let fullList = courses
+			.map((course) => {
+				return getCourseAvailability(course);
+			})
+			.filter((course) => {
+				return course.isFull;
+			});
+
 		let collision = await checkCollision(req.user, courses);
 		console.log("collision:", collision);
-		if (collision.length != 0) {
-			return res.status(500).json(collision);
+		if (collision.length != 0 || fullList.length != 0) {
+			return res.status(500).json({ collision, full: fullList });
 		}
 
 		for (let course of courses) {

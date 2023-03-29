@@ -1,6 +1,10 @@
 const { Tutorial, Lecture, Course } = require("../database/models/courses");
 const error = require("../utils/errors");
 
+module.exports.countCourseByFilter = async function (filter) {
+	return await Course.countDocuments(filter);
+};
+
 module.exports.upsertLesson = async function upsertLesson(lesson) {
 	let type = lesson.type;
 	try {

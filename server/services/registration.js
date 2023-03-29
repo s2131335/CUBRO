@@ -74,7 +74,7 @@ module.exports.deleteRegByFilter = async function (filter) {
 	}
 };
 
-(async () => {
-	let a = await exports.getCourseAvailability("6422d4f2dc5a8a14ec416149");
-	console.log(a);
-})();
+// (async () => {
+// 	let a = await exports.getCourseAvailability("6422d4f2dc5a8a14ec416149");
+// 	console.log(a);
+// })();

@@ -19,7 +19,7 @@ const {
 	countFilter,
 	upsertReg,
 	findRegByFilter,
-	getRegIdByFilter,
+	extractRegIdByFilter,
 	deleteRegByFilter,
 } = require("../services/regCourse");
 
@@ -247,7 +247,7 @@ module.exports.dropCourse = async function dropCourse(req, res) {
 		for (let course of courses) {
 			if (!isValidObjectId(course)) throw error.CourseIDNotValid;
 		}
-		let toDrop = await getRegIdByFilter({
+		let toDrop = await extractRegIdByFilter({
 			courseID: { $in: courses },
 			studentID: req.user._id,
 		});

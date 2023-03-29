@@ -1,5 +1,6 @@
 const registration = require("../database/models/registration");
 const { findAllCoursesByFilter } = require("../services/courses");
+const { extractCourseIdByFilter } = require("../services/registration");
 
 // courses = [
 // 	{
@@ -119,10 +120,10 @@ function collisionDetection(meetings) {
 }
 
 module.exports.checkCollision = async function checkCollision(user, courses) {
-	let userCourses = await registration
-		.find({ studentID: user._id, selected: true })
-		.populate("courseID")
-		.select("courseID -_id");
+	let userCourses = await extractCourseIdByFilter({
+		studentID: user._id,
+		selected: true,
+	});
 	let meetings = [];
 	for (let userCourse of userCourses) {
 		meetings.push(...userCourse["courseID"]["meetings"]);

@@ -21,7 +21,7 @@ const {
 	findRegByFilter,
 	extractRegIdByFilter,
 	deleteRegByFilter,
-} = require("../services/regCourse");
+} = require("../services/registration");
 
 module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;

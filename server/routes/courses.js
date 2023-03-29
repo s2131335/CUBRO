@@ -16,15 +16,15 @@ const Auth = require("../middleware/auth");
 
 // router.post("/add");
 
-router.post("/import-courses", upload, importCourse);
+router.post("/import-courses", Auth.checkAuth(), upload, importCourse);
 
 router.get("/browse", Auth.checkAuth(), browseCourse);
 router.get("/info/:id", Auth.checkAuth(), courseInfo);
 router.post("/select", Auth.checkAuth(), selectCourse);
 router.post("/drop", Auth.checkAuth(), dropCourse);
 
-router.post("/create", createCourse);
-router.post("/delete", deleteCourse);
+router.post("/create", Auth.checkAuth(), createCourse);
+router.post("/delete", Auth.checkAuth(), deleteCourse);
 router.post("/update", Auth.checkAuth(), editCourse);
 
 router.get("/getTimetableInfo", getTimetableInfo);

@@ -5,9 +5,14 @@ module.exports = {
 		message: "Something Wrong",
 	},
 	NotPermitted: {
-		status: 500,
+		status: 403,
 		code: 4001,
 		message: "Not Permitted",
+	},
+	NeedToLogin: {
+		status: 403,
+		code: 4002,
+		message: "Login Required",
 	},
 	ValidatorError: {
 		status: 500,

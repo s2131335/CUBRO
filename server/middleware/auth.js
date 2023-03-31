@@ -1,10 +1,13 @@
+const error = require("../utils/errors");
 module.exports.checkAuth = function checkAuth(permission) {
 	return (req, res, next) => {
 		if (!req.isAuthenticated())
-			return res.status(403).send("Need to login");
+			return res.status(error.NeedToLogin.status).send(error.NeedToLogin);
 
 		if (permission && !req.user.role.includes(permission))
-			return res.status(403).send("Not permitted");
+			return res
+				.status(error.NotPermitted.status)
+				.send(error.NotPermitted);
 
 		return next();
 	};

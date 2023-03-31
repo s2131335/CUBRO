@@ -36,23 +36,28 @@ global.CUBRO.TIMESLOTS = [
 ];
 
 /////////////// complete global setup //////////////////////////////////
+// view engine setup
+let app = express();
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 // Routers
-let usersRouter = require("./routes/users");
-let testingRouter = require("./routes/testing");
-let coursesRouter = require("./routes/courses");
+let usersRouter = require("./routes/api/users");
+let testingRouter = require("./routes/api/testing");
+let coursesRouter = require("./routes/api/courses");
+
+var loginregRouter = require("./routes/loginreg");
 
 //
-let app = express();
-app.use(
-	cors({
-		origin: [
-			"http://localhost:" + process.env.FRONTEND_PORT,
-			"http://127.0.0.1:" + process.env.FRONTEND_PORT,
-		],
-		credentials: true,
-	})
-);
+// app.use(
+// 	cors({
+// 		origin: [
+// 			"http://localhost:" + process.env.FRONTEND_PORT,
+// 			"http://127.0.0.1:" + process.env.FRONTEND_PORT,
+// 		],
+// 		credentials: true,
+// 	})
+// );
 
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -84,6 +89,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", usersRouter);
 app.use("/api/courses", coursesRouter);
 app.use("/api/testing", testingRouter);
+
+app.use("/", loginregRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

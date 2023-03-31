@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const validation = require("../middleware/validations/userValidation");
+const validation = require("../../middleware/validations/userValidation");
 const {
 	register,
 	login,
@@ -14,8 +14,8 @@ const {
 	activateAccount,
 	addUser,
 	showUsers,
-} = require("../controllers/users");
-const Auth = require("../middleware/auth");
+} = require("../../controllers/users");
+const Auth = require("../../middleware/auth");
 
 router.post("/login", login);
 

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            <%= title %>
+            </title>
+            <!-- Font Awesome -->
+            <link
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+                rel="stylesheet"
+                />
+            <!-- Google Fonts -->
+            <link
+                href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                rel="stylesheet"
+                />
+            <!-- MDB -->
+            <link
+                href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css"
+                rel="stylesheet"
+                />
+            <link rel="stylesheet" href="/stylesheets/tablestyle.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+            </script>
+        </head>
+
+
+        <body>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="schedule-table">
+                            <table class="table bg-white">
+                                <thead>
+                                    <tr>
+                                        <th>Routine</th>
+                                        <th>Mon</th>
+                                        <th>Tue</th>
+                                        <th>Wed</th>
+                                        <th>Thu</th>
+                                        <th>Fri</th>
+                                        <th>Sat</th>
+                                        <th class="last">Sun</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="day">08:30</td>
+                                        <% for (var i=0; i<7; i++) { %>
+                                            <% course.forEach((c)=>{ %>
+                                                <% if (i==c.ts[0]) { %>
+                                                    
+                                                    <% if (c.displayed==false){ %>
+                                                    <td class="active" id=<%=i
+                                                        %> rowspan=<%=c.ts.length
+                                                            %>>
+                                                            <h4><%=
+                                                                    c.courseCode
+                                                                    %></h4>
+                                                                <p><%=
+                                                                        c.start
+                                                                        %> -
+                                                                        <%=
+                                                                            c.end
+                                                                            %></p>
+                                                                    </td>
+                                                                    <% c.displayed=true; %>
+                                                                    <% console.log(c.displayed); %>
+                                                    <% c.ts.splice(0,1); %>
+                                                    <% console.log(c); %>
+                                                    <% console.log("1"); %>
+                                                    <% } %>
+                                                                    <% } else { %>
+                                                                        <td id=<%= i %>></td>
+                                                                        <% } %>
+                                                                            <% }) %>
+                                                                                <% } %>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="day">09:30</td>
+                                                                                    <% for (var i=7; i<14; i++) { %>
+                                                                                        <% course.forEach((c)=>{ %>
+                                                                                            <% if (i==c.ts[0]) { %>
+                                                                                                
+                                                                                                <% if (c.displayed==false){ %>
+                                                                                                <td class="active" id=<%=i
+                                                                                                    %> rowspan=<%=c.ts.length
+                                                                                                        %>>
+                                                                                                        <h4><%=
+                                                                                                                c.courseCode
+                                                                                                                %></h4>
+                                                                                                            <p><%=
+                                                                                                                    c.start
+                                                                                                                    %> -
+                                                                                                                    <%=
+                                                                                                                        c.end
+                                                                                                                        %></p>
+                                                                                                                </td>
+                                                                                                                <% c.displayed=true; %>
+                                                                                                                <% console.log(c.displayed); %>
+                                                                                                <% c.ts.splice(0,1); %>
+                                                                                                <% console.log(c); %>
+                                                                                                <% console.log("1"); %>
+                                                                                                <% } %>
+                                                                                                                <% } else { %>
+                                                                                                                    <td id=<%= i %>></td>
+                                                                                                                    <% } %>
+                                                                                                                        <% }) %>
+                                                                                                                            <% } %>
+                                                                                                                            </tr>
+                                                                                                                            
+                                                                                                                                                                    </tbody>
+                                                                                                                                                                </table>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            </body>
+
+                                                                                                                                            <script>
+                                                                                                                                                $(document).ready(()=>{
+                                                                                                                                                        console.log("hi");
+                                                                                                                                                            }
+                                                                                                                                                        );
+                                                                                                                                                
+
+
+            </script>
+                                                                                                                                            

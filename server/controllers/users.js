@@ -8,8 +8,7 @@ const Token = require("../utils/tokenUtil");
 
 module.exports.login = function (req, res, next) {
 	// If user already logged in
-	if (req.isAuthenticated())
-		return res.status(201).send({ message: "Login" });
+	if (req.isAuthenticated()) return res.status(200).send("Login");
 
 	passport.authenticate("local", function (err, user, info) {
 		if (err) {
@@ -80,6 +79,7 @@ module.exports.addUser = async function (req, res) {
 
 module.exports.activateAccount = async function activateAccount(req, res) {
 	const reqToken = req.params.token;
+	let success = true;
 	try {
 		let userId = await Token.verifyUserToken(reqToken, Token.MODE_ACTIVATE);
 		await userService.findUserAndUpdate(
@@ -88,9 +88,12 @@ module.exports.activateAccount = async function activateAccount(req, res) {
 		);
 	} catch (err) {
 		console.log("🚀 ~ file: users.js:136 ~ err:", err);
-		return res.status(err.status).send(err);
+		success = false;
 	}
-	res.status(200).send("ok");
+	res.status(200).render("public/activate_account", {
+		title: "Activation",
+		success,
+	});
 };
 
 module.exports.logout = function (req, res, next) {

@@ -9,10 +9,10 @@ const {
 	selectCourse,
 	dropCourse,
 	getTimetableInfo,
-} = require("../controllers/courses");
-const upload = require("../middleware/upload");
-const { importCourse } = require("../controllers/courses");
-const Auth = require("../middleware/auth");
+} = require("../../controllers/courses");
+const upload = require("../../middleware/upload");
+const { importCourse } = require("../../controllers/courses");
+const Auth = require("../../middleware/auth");
 
 // router.post("/add");
 

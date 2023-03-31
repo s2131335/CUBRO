@@ -1,0 +1,35 @@
+<%- include('./head.ejs') %>
+
+<body>
+    <div
+        class="text-center text-primary"
+        id="success"
+        style="margin-top: 20%; display: none"
+    >
+        <h1>Account activated. Redirecting you to login page.</h1>
+    </div>
+
+    <div
+        class="text-center text-primary"
+        id="err"
+        style="margin-top: 20%; display: none"
+    >
+        <h1>Invalid token. Redirecting you to login page.</h1>
+    </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    function submitInfo() {
+        
+            if (success) {
+                document.getElementById("success").style.display = "block";
+                setTimeout(() => window.location.replace("/"), 5000);
+            } else {
+                document.getElementById("err").style.display = "block";
+                setTimeout(() => window.location.replace("/"), 5000);
+            }
+        };
+    submitInfo();
+</script>

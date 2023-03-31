@@ -23,7 +23,7 @@ module.exports.sendMail = async function (recipient, data) {
 					subject: "CUBRO - Password Reset",
 					html: `
                             <h2>Click this link to reset password</h2>
-                            <p>http://${process.env.DOMAIN}:${process.env.FRONTEND_PORT}/reset_password/token=${data.payload}</p>
+                            <a href='http://${process.env.DOMAIN}:${process.env.PORT}/reset_password/token=${data.payload}'> Password Reset Link </a>
                             <p>This link only last for 10 min</p>`,
 				};
 				break;
@@ -33,7 +33,7 @@ module.exports.sendMail = async function (recipient, data) {
 					subject: "CUBRO - Account Activation",
 					html: `
                             <h2>Click this link to activate your account</h2>
-                            <p>http://${process.env.DOMAIN}:${process.env.FRONTEND_PORT}/activate_account/token=${data.payload}</p>
+                            <a href='http://${process.env.DOMAIN}:${process.env.PORT}/api/users/activate-account/${data.payload}'> Activation Link </a>
 							`,
 				};
 				break;

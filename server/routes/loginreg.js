@@ -3,11 +3,9 @@ var router = express.Router();
 
 /* GET login page. */
 router.get("/", function (req, res, next) {
-	res.render("public/login", { title: "Login" });
-});
+	if (req.isAuthenticated()) return res.redirect("/profile");
 
-router.get("/profile", function (req, res, next) {
-	res.render("internal/profile", { title: "Profile", profile: req.user });
+	res.render("public/login", { title: "Login" });
 });
 
 /* GET register page*/
@@ -20,15 +18,10 @@ router.get("/forget", function (req, res, next) {
 	res.render("public/forget", { title: "Forget" });
 });
 
-/* GET activated page*/
-router.get("/activate_account/:token", function (req, res, next) {
-	res.render("public/activate_account", { title: "Activate account" });
-});
-
-/* GET password reset authentication*/
+/* GET password reset */
 router.get("/reset_password/:token", function (req, res, next) {
 	res.render("public/reset_password", {
-		title: "Password Reset Authentication",
+		title: "Password Reset",
 	});
 });
 

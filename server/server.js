@@ -40,6 +40,7 @@ global.CUBRO.TIMESLOTS = [
 let app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routers
 let usersRouter = require("./routes/api/users");
@@ -47,6 +48,9 @@ let testingRouter = require("./routes/api/testing");
 let coursesRouter = require("./routes/api/courses");
 
 var loginregRouter = require("./routes/loginreg");
+var internalRouter = require("./routes/internal");
+var tableRouter = require("./routes/timetable");
+var adminRouter = require("./routes/admin");
 
 //
 // app.use(
@@ -91,6 +95,9 @@ app.use("/api/courses", coursesRouter);
 app.use("/api/testing", testingRouter);
 
 app.use("/", loginregRouter);
+app.use("/internal", internalRouter);
+app.use("/table", tableRouter);
+app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

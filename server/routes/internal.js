@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const Auth = require("../middleware/auth");
 
 const profile = {
 	fullName: "CHAN TAI MAN",
@@ -14,8 +15,18 @@ router.get("/home", function (req, res, next) {
 });
 
 /* GET user profile page. */
-router.get("/profile", function (req, res, next) {
-	res.render("internal/profile", { title: "Profile", profile });
+router.get("/profile", Auth.checkAuth(), function (req, res, next) {
+	if (req.user.role.includes(Auth.ADMIN)) {
+		res.render("admin/profile", {
+			title: "Admin Profile",
+			data: req.user,
+		});
+	} else {
+		res.render("internal/profile", {
+			title: "Profile",
+			profile: req.user,
+		});
+	}
 });
 
 /* GET user search page. */

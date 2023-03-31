@@ -165,7 +165,7 @@
                             ).then(async (data) => {
                                 if (data.status == "200") {
                                     window.location.replace(
-                                        "/profile"
+                                        "/internal/profile"
                                     );
                                 } else {
                                     let res = await data.json();

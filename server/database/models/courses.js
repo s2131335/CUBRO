@@ -8,6 +8,9 @@ const courseSchema = new Schema({
 	courseName: {
 		type: String,
 	},
+	department: {
+		type: String,
+	},
 	semester: {
 		type: Number,
 		required: true,

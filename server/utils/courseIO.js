@@ -20,6 +20,7 @@ const HEADERS = [
 	"semester",
 	"courseCode",
 	"courseName",
+	"department",
 	"type",
 	"classNum",
 	"venue",
@@ -30,7 +31,7 @@ const HEADERS = [
 	"description",
 ];
 
-const IGNORE_SPACE = ["instructor", "courseName", "description"];
+const IGNORE_SPACE = ["instructor", "courseName", "description", "department"];
 
 module.exports.parseTime = function parseTime() {};
 

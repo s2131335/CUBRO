@@ -85,11 +85,11 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 			throw error.CourseIDNotValid;
 		}
 		const c = await findCourseByFilter({ _id: cid });
-		res.status(200).json(c != null ? c : {});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
 	}
+	res.status(200).render("internal/course_info", c != null ? c : {});
 };
 
 // async function checkCourseCollision(user, courses, selected) {

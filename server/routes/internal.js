@@ -202,4 +202,79 @@ router.get("/regcourse", function (req, res, next) {
 	});
 });
 
+/* GET user mycourse page. */
+router.get("/table", function (req, res, next) {
+	const course = [
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["001", "002", "300", "301"],
+			type: "Lecture",
+		},
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["100"],
+			type: "Tutorial",
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["101", "102", "201", "202"],
+			type: "Lecture",
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["302"],
+			type: "Tutorial",
+		},
+	];
+	// var data = course.map(c =>{
+    //     return {
+    //         courseCode: c.courseCode,
+    //         venue: c.venue,
+    //         class: c.class,
+    //         timeSlot: c.timeSlot,
+    //         type: c.type,
+    //         displayed: false,
+    //     };
+    // });
+    // function separateTimeSlots(arr) {
+    //     let result = [];
+    //     arr.forEach(obj => {
+    //         for(var i=0; i<obj.timeSlot.length; i++){
+    //             let firstChar = obj.timeSlot[i][0];
+    //             let newObj = {...obj};
+    //             newObj.timeSlot = obj.timeSlot.filter(slot => slot[0] === firstChar);
+    //             if (i>0){
+    //                 if (obj.timeSlot[i-1][0]!=firstChar){
+    //                     result.push(newObj);
+    //                 }
+    //             }else if(i==0){
+    //                 result.push(newObj);
+    //             }
+    //         }
+    //     });
+    //     return result;
+    // };
+    // var courses= separateTimeSlots(data);
+	res.render("internal/table", {
+		title: "My Courses",
+		data : course,
+	});
+});
+
+/* GET user mycourse page. */
+router.get("/drop", function (req, res, next) {
+	res.render("internal/drop", {
+		title: "Drop Courses",
+	});
+});
+
+
 module.exports = router;

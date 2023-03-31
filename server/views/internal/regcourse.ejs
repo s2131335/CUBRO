@@ -82,6 +82,13 @@
             <% }) %>
             </div>
         </div>
+        <div class="row">
+            <div>
+                <button type="button" class="btn btn-primary" id="valid">Validate</button>
+                <button type="button" class="btn btn-secondary" id="submit">Submit</button>
+                <button type="button" class="btn btn-link" data-mdb-ripple-color="dark" id="reset">Reset</button>
+            </div>
+        </div>
     </div>
     </body>
     <script>
@@ -164,8 +171,11 @@
                 };
             });
             courses= separateTimeSlots(course);
-            // $('input[type="checkbox"]:checked').each(function() {
-                
-            // });
+            $('input[type="checkbox"]:checked').each(function(button) {
+                button.attr({
+                            "rowspan" : `${span}`,
+                            "class" : "active",
+                        });
+            });
     })
     </script>

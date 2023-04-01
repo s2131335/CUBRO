@@ -25,4 +25,10 @@ router.get("/reset_password/:token", function (req, res, next) {
 	});
 });
 
+/* GET password reset */
+router.get("/logout", function (req, res, next) {
+	res.render("public/logout", {
+		title: "Logout",
+	});
+});
 module.exports = router;

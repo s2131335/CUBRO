@@ -104,7 +104,7 @@ module.exports.logout = function (req, res, next) {
 		}
 
 		// res.send("Logout");
-		res.redirect("/");
+		res.redirect("/logout");
 	});
 };
 

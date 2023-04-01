@@ -26,4 +26,8 @@ router.get("/reset_password/:token", function (req, res, next) {
 	res.render("public/reset_password", { title: "Password Reset Authentication" });
 });
 
+/* GET redirect page*/
+router.get("/redirect", function (req, res, next) {
+	res.render("public/redirect", { title: "Redirect" });
+});
 module.exports = router;

@@ -23,7 +23,7 @@ router.post("/register", validation.register, validation.password, register);
 
 router.post("/add-user", Auth.checkAuth(Auth.ADMIN), addUser);
 
-router.post("/logout", logout);
+router.get("/logout", Auth.checkAuth(), logout);
 
 router.post(
 	"/update-password",

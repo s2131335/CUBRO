@@ -103,7 +103,8 @@ module.exports.logout = function (req, res, next) {
 			return next(err);
 		}
 
-		res.send("Logout");
+		// res.send("Logout");
+		res.redirect("/");
 	});
 };
 

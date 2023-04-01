@@ -6,6 +6,7 @@ let logger = require("morgan");
 const passport = require("passport");
 const cors = require("cors");
 require("dotenv").config({ path: `${__dirname}/.env` });
+const Auth = require("./middleware/auth");
 
 ///////////////// setup global //////////////////
 let CUBRO = {};
@@ -98,6 +99,16 @@ app.use("/", loginregRouter);
 app.use("/internal", internalRouter);
 app.use("/table", tableRouter);
 app.use("/admin", adminRouter);
+
+/* GET redirect login page*/
+app.get("/redirect_login", function (req, res, next) {
+	res.render("public/redirect_login", { title: "Redirect Login" });
+});
+
+/* GET redirect home page*/
+app.get("/redirect_home", Auth.checkAuth(), function (req, res, next) {
+	res.render("public/redirect_home", { title: "Redirect Home" });
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

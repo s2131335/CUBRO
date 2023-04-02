@@ -6,7 +6,6 @@ const {
 	login,
 	logout,
 	getUserProfile,
-	showStudents,
 	changePassword,
 	modRoles,
 	resetPassword,
@@ -14,6 +13,7 @@ const {
 	activateAccount,
 	addUser,
 	showUsers,
+	deleteUser,
 } = require("../../controllers/users");
 const Auth = require("../../middleware/auth");
 
@@ -33,9 +33,12 @@ router.post(
 );
 
 // router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);
+
 router.get("/get-current-user", Auth.checkAuth(), getUserProfile);
 
 router.post("/show-users", Auth.checkAuth(Auth.ADMIN), showUsers);
+
+router.post("/delete-user", Auth.checkAuth(), deleteUser);
 
 router.post("/modify-role", Auth.checkAuth(Auth.ADMIN), modRoles);
 

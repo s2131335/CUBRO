@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET login page. */
 router.get("/", function (req, res, next) {
-	if (req.isAuthenticated()) return res.redirect("/profile");
+	if (req.isAuthenticated()) return res.redirect("/internal/profile");
 
 	res.render("public/login", { title: "Login" });
 });
@@ -18,14 +18,14 @@ router.get("/forget", function (req, res, next) {
 	res.render("public/forget", { title: "Forget" });
 });
 
-/* GET password reset */
+/* GET password reset page*/
 router.get("/reset_password/:token", function (req, res, next) {
 	res.render("public/reset_password", {
 		title: "Password Reset",
 	});
 });
 
-/* GET password reset */
+/* GET logout page */
 router.get("/logout", function (req, res, next) {
 	res.render("public/logout", {
 		title: "Logout",

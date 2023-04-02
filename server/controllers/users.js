@@ -172,7 +172,7 @@ module.exports.changePassword = async function (req, res, next) {
 	} catch (err) {
 		return res.status(err.status).send(err);
 	}
-	res.redirect(307, "logout");
+	res.status(200).send("ok");
 };
 
 module.exports.modRoles = async function (req, res, next) {

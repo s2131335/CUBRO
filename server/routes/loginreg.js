@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET login page. */
 router.get("/", function (req, res, next) {
-	if (req.isAuthenticated()) return res.redirect("/profile");
+	if (req.isAuthenticated()) return res.redirect("/internal/profile");
 
 	res.render("public/login", { title: "Login" });
 });

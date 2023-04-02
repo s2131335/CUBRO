@@ -1,4 +1,4 @@
-<%- include('./head.ejs') %>
+<%- include('../public/head.ejs') %>
 
 <body>
     <div
@@ -16,7 +16,7 @@
     </div>
     <div class="container text-center" style="width: 65%">
         <div class="text-center text-primary" style="margin-top: 10%">
-            <h1>Sign up now</h1>
+            <h1>Create new account</h1>
         </div>
         <form class="requires-validation" id="registerForm" novalidate>
             <!-- Name input -->
@@ -81,6 +81,30 @@
                             >Nickname</label
                         >
                     </div>
+                </div>
+                
+                <div class="col"></div>
+            </div>
+
+            <!-- Role selection -->
+            <div class="row justify-content-md-center">
+                <div class="col"></div>
+                
+                <div class="col-1">
+                    <label class="form-label mb-3 mt-4" for="gender"
+                        >*Role:</label
+                    >
+                </div>
+                <div class="col-5">
+                    <select
+                        class="form-select mb-3 mt-3"
+                        id="gender"
+                        style="border-radius: 4px; height: 35.81px"
+                    >   
+                        <option value=""></option>
+                        <option value="STUDENT">Student</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
                 </div>
                 <div class="col"></div>
             </div>
@@ -161,10 +185,10 @@
                         class="btn btn-primary btn-block mb-4 mt-2"
                         id="submitbutton"
                     >
-                        Sign up
+                        Create
                     </button>
-                    <a href="./" class="row justify-content-center"
-                        >Already have an account?</a
+                    <a href="./users" class="row justify-content-center"
+                        >Return to user management page</a
                     >
                 </div>
                 <div class="col"></div>

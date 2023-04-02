@@ -105,7 +105,8 @@ router.get("/home", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 		title: "Home",
 	});
 });
-router.get("/add-user", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
+
+router.get("/add_user", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 	res.render("admin/add_user", {
 		title: "New User",
 	});

@@ -5,7 +5,9 @@
 			<div class="col-6">
 				<h3>Course Management</h3>
 			</div>
+			<div class="col-6 d-flex justify-content-end"><a class="btn btn-sm btn-primary align-self-center" href="/admin/add-course">+ Add Course</a></div>
 		</div>
+		
 		<hr class="my-2" />
 		<table class="table stripe mt-0" id="table" style="width: 100%">
 			<thead>
@@ -39,23 +41,25 @@
 							Edit
 						</button>
 						<button
-							id="d+<%=course._id%>"
+							id="d+<%=course._id%>+<%=course.courseCode%>"
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
-							data-toggle="modal"
-							data-target="#exampleModal4"
+							data-mdb-toggle = "modal"
+							data-mdb-target="#exampleModal"
 							type="button"
-							data-mdb-ripple-color="dark"
-							onclick="handleDelete(this)"
+							onclick="confirmDelete(this)"
 						>
 							Delete
 						</button>
+
 					</td>
 				</tr>
 				<%}%>
 			</tbody>
 		</table>
+
 	</div>
 </body>
+
 <script>
 	$(document).ready(function () {
 		$("#table").DataTable({
@@ -68,9 +72,34 @@
 		});
 	});
 
-	function handleDelete(event) {
-		alert("Delete");
+	function confirmDelete(btn) {
+		let data = btn.id.split("+");
+        let confirmAction = confirm(`Are you sure to delete the course ${data[2]} ?`);
+        if (confirmAction) {
+			fetch(
+				"/api/courses/delete",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({_id:data[1]}),
+				}
+			).then(async (data) => {
+				if (data.status == "200") {
+					window.location.replace(
+						"/admin/courses"
+					);
+					alert("success!");
+				} else {
+					alert("error!");
+				}
+			});
+      }
 	}
+	// function handleDelete(event) {
+	// 	// alert("Delete");
+	// }
 
 
 </script>

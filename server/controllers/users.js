@@ -132,7 +132,11 @@ module.exports.showAdmins = async function (req, res, next) {
 
 module.exports.showAllUsers = async function (req, res, next) {
 	let users = await userService.findAllUserByFilter();
-	res.status(200).json(users);
+	return res.render("admin/user_management", {
+		title: "User Management",
+		data: { users },
+	});
+	// res.status(200).json(users);
 };
 
 module.exports.changePassword = async function (req, res, next) {
@@ -216,6 +220,7 @@ module.exports.showUsers = async function (req, res) {
 		if (role) {
 			users = users.filter((user) => user.role.includes(role));
 		}
+
 		return res.status(200).json(users);
 	} catch (err) {
 		res.status(err.status).json(err);

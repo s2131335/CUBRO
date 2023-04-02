@@ -139,6 +139,21 @@ module.exports.showAllUsers = async function (req, res, next) {
 	// res.status(200).json(users);
 };
 
+module.exports.deleteUser = async (req, res) => {
+	const _id = req.body._id;
+	try {
+		if (req.body._id == req.user._id) {
+			throw error.Unknown;
+		}
+
+		await userService.deleteUsersByFilter({ _id });
+	} catch (error) {
+		console.error(error);
+		return res.status(error.status).send(error);
+	}
+	res.status(200).send("ok");
+};
+
 module.exports.changePassword = async function (req, res, next) {
 	let err = validationResult(req);
 	if (!err.isEmpty()) {

@@ -172,11 +172,22 @@ module.exports.createCourse = (req, res) => {
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	res.status(200).send("ok");
 };
-module.exports.deleteCourse = (req, res) => {
+module.exports.deleteCourse = async (req, res) => {
 	const _id = req.body._id;
 	try {
-		deleteCoursesByFilter({ _id });
+		let course = await findCourseByFilter({ _id });
+		await deleteCoursesByFilter({ _id });
+		let key = `${course.courseCode}${course.semester}${
+			course.__t === "lecture" ? "L" : "T"
+		}${course.classNum}`;
+
+		delete global.CUBRO.CourseFile[key];
+		writeJSON(
+			path.join(__dirname, "../courses.json"),
+			global.CUBRO.CourseFile
+		);
 	} catch (error) {
+		console.error(error);
 		res.status(error.status).send(error);
 	}
 	res.status(200).send("ok");

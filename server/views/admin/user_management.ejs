@@ -35,12 +35,13 @@
 							Reset Password
 						</button>
 						<button
+							id="d+<%=user._id%>+<%=user.fullName%>"
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal4"
 							type="button"
 							data-mdb-ripple-color="dark"
-							onclick=""
+							onclick="confirmDelete(this)"
 						>
 							Delete
 						</button>
@@ -62,5 +63,31 @@
 			],
 		});
 	});
+
+	function confirmDelete(btn) {
+		let data = btn.id.split("+");
+        let confirmAction = confirm(`Are you sure to delete the user ${data[2]} ?`);
+        if (confirmAction) {
+			fetch(
+				"/api/users/delete-user",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({_id:data[1]}),
+				}
+			).then(async (data) => {
+				if (data.status == "200") {
+					window.location.replace(
+						"/admin/users"
+					);
+					alert("success!");
+				} else {
+					alert("error!");
+				}
+			});
+      }
+	}
 </script>
 <%- include('./nav_end.ejs') %>

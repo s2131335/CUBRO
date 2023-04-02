@@ -58,3 +58,13 @@ module.exports.findUserAndUpdate = async function (filter, update) {
 		throw error.DatabaseUpdate;
 	}
 };
+
+module.exports.deleteUsersByFilter = async function (filter) {
+	try {
+		await Users.deleteMany(filter);
+		return null;
+	} catch (err) {
+		console.warn("❗️ ~ module.exports.deleteUsersByFilter ~ err:", err);
+		throw error.DatabaseUpdate;
+	}
+};

@@ -201,4 +201,9 @@ router.get("/regcourse", Auth.checkAuth(), function (req, res, next) {
 	});
 });
 
+/* GET update password page. */
+router.get("/update_password", Auth.checkAuth(), function (req, res, next) {
+	res.render("internal/update_password", { title: "Update password" });
+});
+
 module.exports = router;

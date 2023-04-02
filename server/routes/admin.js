@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const Auth = require("../middleware/auth");
+const { manageCourse } = require("../controllers/courses");
+const { showAllUsers } = require("../controllers/users");
 
 const profile = {
 	fullName: "Tuan Sung Chi",
@@ -96,12 +98,7 @@ router.get("/profile", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 });
 
 /* GET admin user_edit page */
-router.get("/users", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
-	res.render("admin/user_management", {
-		title: "User Management",
-		data: { users },
-	});
-});
+router.get("/users", Auth.checkAuth(Auth.ADMIN), showAllUsers);
 /* GET admin home page */
 router.get("/home", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 	res.render("admin/home", {
@@ -111,12 +108,7 @@ router.get("/home", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 
 /* GET admin course_edit page. */
 
-router.get("/courses", Auth.checkAuth(Auth.ADMIN), (req, res) => {
-	res.render("admin/course_management", {
-		title: "Course Management",
-		courses,
-	});
-});
+router.get("/courses", Auth.checkAuth(Auth.ADMIN), manageCourse);
 
 /* GET course edit page. */
 router.get(

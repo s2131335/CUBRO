@@ -10,7 +10,7 @@
 		<table class="table stripe mt-0" id="table" style="width: 100%">
 			<thead>
 				<tr>
-					<th scope="col">ID</th>
+					<th scope="col">Email</th>
 					<th scope="col">Name</th>
 					<th scope="col">Role</th>
 					<th scope="col">Action</th>
@@ -19,8 +19,8 @@
 			<tbody>
 				<% data.users.forEach((user)=> { %>
 				<tr>
-					<td><%= user.id%></td>
-					<td><%= user.name%></td>
+					<td><%= user.email%></td>
+					<td><%= user.fullName%></td>
 					<td><%=user.role%></td>
 					<td>
 						<button

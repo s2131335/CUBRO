@@ -28,6 +28,7 @@
 					<td><%=course.seat%></td>
 					<td>
 						<button
+							id="e+<%=course._id%>"
 							class="btn btn-light btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal3"
@@ -38,12 +39,13 @@
 							Edit
 						</button>
 						<button
+							id="d+<%=course._id%>"
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal4"
 							type="button"
 							data-mdb-ripple-color="dark"
-							onclick=""
+							onclick="handleDelete(this)"
 						>
 							Delete
 						</button>
@@ -65,5 +67,11 @@
 			],
 		});
 	});
+
+	function handleDelete(event) {
+		alert("Delete");
+	}
+
+
 </script>
 <%- include('./nav_end.ejs') %>

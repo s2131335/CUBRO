@@ -71,7 +71,33 @@ module.exports.browseCourse = async function browseCourse(req, res) {
 		}
 		console.log(filter);
 		let result = await findAllCoursesByFilter(filter);
-		res.status(200).json(result != null ? result : {});
+		res.render("admin/course_management", {
+			title: "Course Management",
+			courses: result,
+		});
+		// res.status(200).json(result != null ? result : {});
+	} catch (err) {
+		console.error(err);
+		res.status(err.status).send(err);
+	}
+};
+module.exports.manageCourse = async function manageCourse(req, res) {
+	try {
+		const { courseCode, courseName } = req.query;
+		let filter = {};
+		if (courseCode) {
+			filter["courseCode"] = { $regex: ".*" + courseCode + ".*" };
+		}
+		if (courseName) {
+			filter["courseName"] = { $regex: ".*" + courseName + ".*" };
+		}
+		console.log(filter);
+		let result = await findAllCoursesByFilter(filter);
+		res.render("admin/course_management", {
+			title: "Course Management",
+			courses: result,
+		});
+		// res.status(200).json(result != null ? result : {});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);

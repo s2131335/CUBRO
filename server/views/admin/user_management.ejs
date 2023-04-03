@@ -20,12 +20,12 @@
 			<tbody>
 				<% data.users.forEach((user)=> { %>
 				<tr>
-					<td><%= user.email%></td>
-					<td><%= user.fullName%></td>
-					<td><%=user.role%></td>
+					<td style="vertical-align: middle"><%= user.email%></td>
+					<td style="vertical-align: middle"><%= user.fullName%></td>
+					<td style="vertical-align: middle"><%=user.role%></td>
 					<td>
 						<button
-							class="btn btn-light btn-rounded btn-sm fw-bold"
+							class="btn btn-secondary btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal3"
 							type="button"
@@ -47,7 +47,7 @@
 						</button>
 					</td>
 				</tr>
-				<% }) %>
+				<% }) %>	
 			</tbody>
 		</table>
 	</div>

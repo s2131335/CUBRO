@@ -31,19 +31,12 @@
 					<td><%=course.seat%></td>
 					<td>
 						<button
-							class="btn btn-outline-danger btn-rounded btn-sm fw-bold"
-							type="button"
-							data-mdb-ripple-color="dark"
-							onclick=""
-						>
-							Info
-						</button>
-						<button
-							id="e+<%=course._id%>"
+							id=<%=course._id%>E
 							class="btn btn-light btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal3"
 							type="button"
+							name="edit"
 							data-mdb-ripple-color="dark"
 							onclick=""
 						>
@@ -120,6 +113,28 @@
 	// function handleDelete(event) {
 	// 	// alert("Delete");
 	// }
+	$("[name='edit']").click(function(){
+		var data=$(this).attr("id");
+		console.log(data);
+		fetch(
+			`/api/courses/info/${data}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				// param: {_id:data},
+			}
+		).then(async (data) => {
+			if (data.status == "200") {
+				window.location.replace(
+					"/admin/courses/edit"
+				);
+			} else {
+				alert("error!");
+			}
+		})
+	})
 
 	
 </script>

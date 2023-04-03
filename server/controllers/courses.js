@@ -105,17 +105,19 @@ module.exports.manageCourse = async function manageCourse(req, res) {
 };
 
 module.exports.courseInfo = async function courseInfo(req, res) {
+	let c;
 	try {
 		const cid = req.params.id;
-		if (!isValidObjectId(cid)) {
-			throw error.CourseIDNotValid;
-		}
-		const c = await findCourseByFilter({ _id: cid });
+		// if (!isValidObjectId(cid))
+		// {
+		// 	throw error.CourseIDNotValid;
+		// }
+		c = await findCourseByFilter({ _id: cid });
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
 	}
-	res.status(200).render("internal/course_info", c != null ? c : {});
+	res.status(200).send(c != null ? c : {});
 };
 
 // async function checkCourseCollision(user, courses, selected) {
@@ -292,7 +294,7 @@ module.exports.dropCourse = async function dropCourse(req, res) {
 	try {
 		let { courses } = req.body;
 		for (let course of courses) {
-			if (!isValidObjectId(course)) throw error.CourseIDNotValid;
+			// if (!isValidObjectId(course)) throw error.CourseIDNotValid;
 		}
 		let toDrop = await extractRegIdByFilter({
 			courseID: { $in: courses },

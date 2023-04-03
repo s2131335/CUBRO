@@ -1,51 +1,6 @@
 <%- include('./nav.ejs') %>
 <body>
-	<button
-							class="btn btn-danger btn-rounded btn-sm fw-bold"
-							data-toggle="modal"
-							data-target="#Mdelete"
-							type="button"
-							data-mdb-ripple-color="dark"
-
-						>
-							Delete
-						</button>
-	<div class="modal fade" id="Mdelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
-					<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">Confirm delete?</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-light" data-mdb-dismiss="modal" data-mdb-ripple-color="dark">Cancel</button>
-					<button type="button" class="btn btn-danger">Confirm</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
-		Launch demo modal
-	</button>
 	
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-			<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">...</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Save changes</button>
-			</div>
-		</div>
-		</div>
-	</div>
 	<div class="container pt-4 pb-5">
 		<div class="row">
 			<div class="col-6">
@@ -95,16 +50,28 @@
 							Edit
 						</button>
 						<button
-							id="d+<%=course._id%>+<%=course.courseCode%>"
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
 							data-mdb-toggle = "modal"
-							data-mdb-target="#exampleModal"
+							data-mdb-target=#<%=course.courseCode %>D
 							type="button"
-							onclick="confirmDelete(this)"
 						>
 							Delete
 						</button>
-
+						<div class="modal fade" id=<%=course.courseCode%>D tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+							  <div class="modal-content">
+								<div class="modal-header">
+								  <h5 class="modal-title" id="exampleModalLabel"></h5>
+								</div>
+								<div class="modal-body">Confirm delete <%=course.courseCode %>?</div>
+								<div class="modal-footer">
+								  <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+								  <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" 
+								 id=<%=course._id %> data-mdb-dismiss="modal" name="delete" >Save changes</button>
+								</div>
+							  </div>
+							</div>
+						  </div>
 					</td>
 				</tr>
 				<%}%>
@@ -115,6 +82,7 @@
 </body>
 
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$("#table").DataTable({
@@ -126,36 +94,33 @@
 			],
 		});
 	});
-
-	function confirmDelete(btn) {
-		let data = btn.id.split("+");
-        let confirmAction = confirm(`Are you sure to delete the course ${data[2]} ?`);
-        if (confirmAction) {
-			fetch(
-				"/api/courses/delete",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({_id:data[1]}),
-				}
-			).then(async (data) => {
-				if (data.status == "200") {
-					window.location.replace(
-						"/admin/courses"
-					);
-					alert("success!");
-				} else {
-					alert("error!");
-				}
-			});
-      }
-	}
+	$("[name='delete']").click(function(){
+		var data=$(this).attr("id");
+		console.log(data);
+		fetch(
+			"/api/courses/delete",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({_id:data}),
+			}
+		).then(async (data) => {
+			if (data.status == "200") {
+				window.location.replace(
+					"/admin/courses"
+				);
+				alert("success!");
+			} else {
+				alert("error!");
+			}
+		});
+	})
 	// function handleDelete(event) {
 	// 	// alert("Delete");
 	// }
 
-
+	
 </script>
 <%- include('./nav_end.ejs') %>

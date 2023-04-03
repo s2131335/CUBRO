@@ -1,6 +1,7 @@
 const XLSX = require("xlsx");
 const path = require("path");
 const hash = require("object-hash");
+const fs = require("fs");
 const { intToChar, charToInt, writeJSON, readJSON } = require("./utils");
 
 // const DAYS = Object.freeze({
@@ -136,6 +137,8 @@ module.exports.parseExcel = function parseExcel(
 
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	// global.CUBRO.CourseFile = CourseFile;
+	fs.unlinkSync(path.join(__dirname, "../uploads/" + filename));
+
 	return courses;
 };
 

@@ -11,8 +11,7 @@
         id="success"
         style="display: none; border-radius: 0"
     >
-        Register successful, please check your email to activate your account.
-        Redirecting you to login page.
+        Create user successfully, email sent to the user.
     </div>
     <div class="container text-center" style="width: 65%">
         <div class="text-center text-primary" style="margin-top: 10%">
@@ -91,17 +90,16 @@
                 <div class="col"></div>
                 
                 <div class="col-1">
-                    <label class="form-label mb-3 mt-4" for="gender"
+                    <label class="form-label mb-3 mt-4" for="role"
                         >*Role:</label
                     >
                 </div>
                 <div class="col-5">
                     <select
                         class="form-select mb-3 mt-3"
-                        id="gender"
+                        id="role"
                         style="border-radius: 4px; height: 35.81px"
                     >   
-                        <option value=""></option>
                         <option value="STUDENT">Student</option>
                         <option value="ADMIN">Admin</option>
                     </select>
@@ -188,7 +186,7 @@
                         Create
                     </button>
                     <a href="./users" class="row justify-content-center"
-                        >Return to user management page</a
+                        >Return </a
                     >
                 </div>
                 <div class="col"></div>
@@ -222,12 +220,13 @@
                     } else {
                         const update = {
                             fullName:
-                                document.getElementById("firstname").value +
+                                document.getElementById("firstname").value + " "+
                                 document.getElementById("lastname").value,
                             nickname: document.getElementById("nickname").value,
                             email: document.getElementById("email").value,
-                            contactNumber: "98761234",
+                            // contactNumber: document.getElementById("contactNumber").value,
                             password: document.getElementById("password").value,
+                            role: [document.getElementById("role").value]
                         };
 
                         const options = {
@@ -236,7 +235,7 @@
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify(update),
-                        };
+                        }
                         function submitInfo() {
                             fetch(
                                 "/api/users/register",
@@ -255,9 +254,9 @@
                                     setTimeout(
                                         () =>
                                             window.location.replace(
-                                                "/"
+                                                "/admin/users"
                                             ),
-                                        5000
+                                            2000
                                     );
                                 } else {
                                     let res = await data.json();
@@ -302,4 +301,12 @@
             input.classList.add("is-valid");
         }
     }
+
+    let input = document.getElementById("registerForm");
+    input.addEventListener("keypress", function (event) {
+        if (event.key == "Enter") {
+            event.preventDefault();
+            document.getElementById("submitbutton").click();
+        }
+    });
 </script>

@@ -1,5 +1,6 @@
 const { Course } = require("../database/models/courses");
 const error = require("../utils/errors");
+const mongoose = require("mongoose");
 
 module.exports.countCourseByFilter = async function (filter) {
 	return await Course.countDocuments(filter);
@@ -41,8 +42,10 @@ module.exports.findCourseByFilter = async function (fields) {
 
 module.exports.findCourseAndUpdate = async function (filter, update) {
 	try {
-		// console.log(update);
-		await Course.findOneAndUpdate(filter, update);
+		let d = await Course.findOne(filter);
+		if (!d) throw error.DatabaseUpdate;
+		Object.assign(d, update);
+		d.save();
 		return null;
 	} catch (err) {
 		console.log("🚀 ~ file: courses.js:41 ~ err:", err);

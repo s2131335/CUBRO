@@ -115,7 +115,8 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 		console.error(err);
 		res.status(err.status).send(err);
 	}
-	res.status(200).render("internal/course_info", c != null ? c : {});
+	// res.status(200).render("internal/course_info", c != null ? c : {});
+	res.status(200).send(c != null ? c : {});
 };
 
 // async function checkCourseCollision(user, courses, selected) {

@@ -11,8 +11,13 @@ var storage = multer.diskStorage({
 	},
 });
 
-var uploads = multer({
+var uploadLocal = multer({
 	storage: storage, //enable it if local storage is needed
 });
 
-module.exports = uploads.single("file");
+var uploadDb = multer({
+	// storage: storage, //enable it if local storage is needed
+});
+
+module.exports.uploadLocal = uploadLocal.single("file");
+module.exports.uploadDb = uploadDb.single("file");

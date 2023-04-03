@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+	uploadOutline,
 	editPage,
 	createCourse,
 	deleteCourse,
@@ -11,13 +12,13 @@ const {
 	dropCourse,
 	getTimetableInfo,
 } = require("../../controllers/courses");
-const upload = require("../../middleware/upload");
+const { uploadLocal, uploadDb } = require("../../middleware/upload");
 const { importCourse } = require("../../controllers/courses");
 const Auth = require("../../middleware/auth");
 
 // router.post("/add");
 
-router.post("/import-courses", Auth.checkAuth(), upload, importCourse);
+router.post("/import-courses", Auth.checkAuth(), uploadLocal, importCourse);
 
 router.get("/browse", Auth.checkAuth(), browseCourse);
 router.get("/info/:id", Auth.checkAuth(), courseInfo);
@@ -30,6 +31,8 @@ router.post("/delete", Auth.checkAuth(), deleteCourse);
 router.post("/update", Auth.checkAuth(), editCourse);
 
 router.get("/getTimetableInfo", getTimetableInfo);
+
+router.post("/upload", Auth.checkAuth(), uploadDb, uploadOutline);
 // router.get("/excel");
 
 module.exports = router;

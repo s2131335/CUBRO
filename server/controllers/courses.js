@@ -108,8 +108,7 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 	let c;
 	try {
 		const cid = req.params.id;
-		// if (!isValidObjectId(cid))
-		// {
+		// if (!isValidObjectId(cid)) {
 		// 	throw error.CourseIDNotValid;
 		// }
 		c = await findCourseByFilter({ _id: cid });
@@ -117,7 +116,23 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 		console.error(err);
 		res.status(err.status).send(err);
 	}
-	res.status(200).send(c != null ? c : {});
+	res.status(200).render("internal/course_info", c != null ? c : {});
+	// res.status(200).send(c != null ? c : {});
+};
+
+module.exports.editPage = async function editPage(req, res) {
+	let c;
+	try {
+		const cid = req.params.id;
+		// if (!isValidObjectId(cid)) {
+		// 	throw error.CourseIDNotValid;
+		// }
+		c = await findCourseByFilter({ _id: cid });
+	} catch (err) {
+		console.error(err);
+		res.status(err.status).send(err);
+	}
+	res.status(200).render("admin/course_edit", c != null ? c : {});
 };
 
 // async function checkCourseCollision(user, courses, selected) {

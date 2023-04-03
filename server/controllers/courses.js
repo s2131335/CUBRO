@@ -71,7 +71,33 @@ module.exports.browseCourse = async function browseCourse(req, res) {
 		}
 		console.log(filter);
 		let result = await findAllCoursesByFilter(filter);
-		res.status(200).json(result != null ? result : {});
+		res.render("admin/course_management", {
+			title: "Course Management",
+			courses: result,
+		});
+		// res.status(200).json(result != null ? result : {});
+	} catch (err) {
+		console.error(err);
+		res.status(err.status).send(err);
+	}
+};
+module.exports.manageCourse = async function manageCourse(req, res) {
+	try {
+		const { courseCode, courseName } = req.query;
+		let filter = {};
+		if (courseCode) {
+			filter["courseCode"] = { $regex: ".*" + courseCode + ".*" };
+		}
+		if (courseName) {
+			filter["courseName"] = { $regex: ".*" + courseName + ".*" };
+		}
+		console.log(filter);
+		let result = await findAllCoursesByFilter(filter);
+		res.render("admin/course_management", {
+			title: "Course Management",
+			courses: result,
+		});
+		// res.status(200).json(result != null ? result : {});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
@@ -85,11 +111,11 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 			throw error.CourseIDNotValid;
 		}
 		const c = await findCourseByFilter({ _id: cid });
-		res.status(200).json(c != null ? c : {});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
 	}
+	res.status(200).render("internal/course_info", c != null ? c : {});
 };
 
 // async function checkCourseCollision(user, courses, selected) {
@@ -146,11 +172,22 @@ module.exports.createCourse = (req, res) => {
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	res.status(200).send("ok");
 };
-module.exports.deleteCourse = (req, res) => {
+module.exports.deleteCourse = async (req, res) => {
 	const _id = req.body._id;
 	try {
-		deleteCoursesByFilter({ _id });
+		let course = await findCourseByFilter({ _id });
+		await deleteCoursesByFilter({ _id });
+		let key = `${course.courseCode}${course.semester}${
+			course.__t === "lecture" ? "L" : "T"
+		}${course.classNum}`;
+
+		delete global.CUBRO.CourseFile[key];
+		writeJSON(
+			path.join(__dirname, "../courses.json"),
+			global.CUBRO.CourseFile
+		);
 	} catch (error) {
+		console.error(error);
 		res.status(error.status).send(error);
 	}
 	res.status(200).send("ok");

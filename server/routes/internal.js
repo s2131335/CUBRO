@@ -10,7 +10,7 @@ const profile = {
 };
 
 /* GET user home page. */
-router.get("/home", function (req, res, next) {
+router.get("/home", Auth.checkAuth(), function (req, res, next) {
 	res.render("internal/home", { title: "CUBRO" });
 });
 
@@ -30,7 +30,7 @@ router.get("/profile", Auth.checkAuth(), function (req, res, next) {
 });
 
 /* GET user search page. */
-router.get("/search", function (req, res, next) {
+router.get("/search", Auth.checkAuth(), function (req, res, next) {
 	const course = [
 		{
 			courseCode: "CSCI1234",
@@ -90,7 +90,7 @@ router.get("/search", function (req, res, next) {
 });
 
 /* GET user search page. */
-router.get("/course/info/:id", function (req, res, next) {
+router.get("/course/info/:id", Auth.checkAuth(), function (req, res, next) {
 	res.render("internal/course_info", {
 		title: "Course Info",
 		courseCode: "CSCI3100",
@@ -137,7 +137,7 @@ router.get("/course/info/:id", function (req, res, next) {
 });
 
 /* GET user regcourse page. */
-router.get("/regcourse", function (req, res, next) {
+router.get("/regcourse", Auth.checkAuth(), function (req, res, next) {
 	const course = [
 		{
 			courseCode: "CSCI1234",

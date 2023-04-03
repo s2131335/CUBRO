@@ -1,5 +1,8 @@
 var express = require("express");
 var router = express.Router();
+const Auth = require("../middleware/auth");
+const { manageCourse } = require("../controllers/courses");
+const { showAllUsers } = require("../controllers/users");
 
 const profile = {
 	fullName: "Tuan Sung Chi",
@@ -87,7 +90,7 @@ const courses = [
 ];
 
 /* GET admin profile page */
-router.get("/profile", function (req, res, next) {
+router.get("/profile", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 	res.render("admin/profile", {
 		title: "Profile",
 		data: profile,
@@ -95,73 +98,73 @@ router.get("/profile", function (req, res, next) {
 });
 
 /* GET admin user_edit page */
-router.get("/users", function (req, res, next) {
-	res.render("admin/user_management", {
-		title: "User Management",
-		data: { users },
-	});
-});
+router.get("/users", Auth.checkAuth(Auth.ADMIN), showAllUsers);
 /* GET admin home page */
-router.get("/home", function (req, res, next) {
+router.get("/home", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 	res.render("admin/home", {
 		title: "Home",
 	});
 });
 
+router.get("/add_user", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
+	res.render("admin/add_user", {
+		title: "New User",
+	});
+});
+
 /* GET admin course_edit page. */
 
-router.get("/courses", (req, res) => {
-	res.render("admin/course_management", {
-		title: "Course Management",
-		courses,
-	});
-});
+router.get("/courses", Auth.checkAuth(Auth.ADMIN), manageCourse);
 
 /* GET course edit page. */
-router.get("/courses/edit", function (req, res, next) {
-	res.render("admin/course_edit", {
-		title: "Course Edit",
-		courseCode: "CSCI3100",
-		classNo: 1,
-		courseName: "Software Engineering",
-		description:
-			"This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
-		instructor: "Prof. Michael LYU",
-		meetings: [
-			{
-				dates: ["2023-02-02"],
-				_id: {
-					$oid: "64099edd8f618f1d44b91dbe",
+router.get(
+	"/courses/edit",
+	Auth.checkAuth(Auth.ADMIN),
+	function (req, res, next) {
+		res.render("admin/course_edit", {
+			title: "Course Edit",
+			courseCode: "CSCI3100",
+			classNo: 1,
+			courseName: "Software Engineering",
+			description:
+				"This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
+			instructor: "Prof. Michael LYU",
+			meetings: [
+				{
+					dates: ["2023-02-02"],
+					_id: {
+						$oid: "64099edd8f618f1d44b91dbe",
+					},
+					courseCode: "ABCD1234",
+					day: 4,
+					start: "12:00",
+					end: "13:30",
 				},
-				courseCode: "ABCD1234",
-				day: 4,
-				start: "12:00",
-				end: "13:30",
-			},
-			{
-				dates: ["2023-02-01", "2023-02-08"],
-				_id: {
-					$oid: "64099edd8f618f1d44b91dbf",
+				{
+					dates: ["2023-02-01", "2023-02-08"],
+					_id: {
+						$oid: "64099edd8f618f1d44b91dbf",
+					},
+					courseCode: "ABCD1234",
+					day: 3,
+					start: "11:00",
+					end: "12:30",
 				},
-				courseCode: "ABCD1234",
-				day: 3,
-				start: "11:00",
-				end: "12:30",
-			},
-			{
-				dates: ["2023-02-03"],
-				_id: {
-					$oid: "64099edd8f618f1d44b91dc0",
+				{
+					dates: ["2023-02-03"],
+					_id: {
+						$oid: "64099edd8f618f1d44b91dc0",
+					},
+					courseCode: "ABCD1234",
+					day: 5,
+					start: "10:50",
+					end: "11:50",
 				},
-				courseCode: "ABCD1234",
-				day: 5,
-				start: "10:50",
-				end: "11:50",
-			},
-		],
-		seat: 210,
-		venue: "SHB",
-	});
-});
+			],
+			seat: 210,
+			venue: "SHB",
+		});
+	}
+);
 
 module.exports = router;

@@ -26,4 +26,13 @@ router.get("/reset_password/:token", function (req, res, next) {
 	res.render("public/reset_password", { title: "Password Reset Authentication" });
 });
 
+/* GET redirect login page*/
+router.get("/redirect_login", function (req, res, next) {
+	res.render("public/redirect_login", { title: "Redirect Login" });
+});
+
+/* GET redirect home page*/
+router.get("/redirect_home", function (req, res, next) {
+	res.render("public/redirect_home", { title: "Redirect Home" });
+});
 module.exports = router;

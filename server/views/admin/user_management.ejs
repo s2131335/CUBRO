@@ -5,12 +5,13 @@
 			<div class="col-6">
 				<h3>User Management</h3>
 			</div>
-		</div>
+			<div class="col-6 d-flex justify-content-end"><a class="btn btn-sm btn-primary align-self-center" href="/admin/add_user">+ New User</a></div>
+		  </div>
 		<hr class="my-2" />
 		<table class="table stripe mt-0" id="table" style="width: 100%">
 			<thead>
 				<tr>
-					<th scope="col">ID</th>
+					<th scope="col">Email</th>
 					<th scope="col">Name</th>
 					<th scope="col">Role</th>
 					<th scope="col">Action</th>
@@ -19,8 +20,8 @@
 			<tbody>
 				<% data.users.forEach((user)=> { %>
 				<tr>
-					<td><%= user.id%></td>
-					<td><%= user.name%></td>
+					<td><%= user.email%></td>
+					<td><%= user.fullName%></td>
 					<td><%=user.role%></td>
 					<td>
 						<button
@@ -34,12 +35,13 @@
 							Reset Password
 						</button>
 						<button
+							id="d+<%=user._id%>+<%=user.fullName%>"
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal4"
 							type="button"
 							data-mdb-ripple-color="dark"
-							onclick=""
+							onclick="confirmDelete(this)"
 						>
 							Delete
 						</button>
@@ -61,5 +63,31 @@
 			],
 		});
 	});
+
+	function confirmDelete(btn) {
+		let data = btn.id.split("+");
+        let confirmAction = confirm(`Are you sure to delete the user ${data[2]} ?`);
+        if (confirmAction) {
+			fetch(
+				"/api/users/delete-user",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({_id:data[1]}),
+				}
+			).then(async (data) => {
+				if (data.status == "200") {
+					window.location.replace(
+						"/admin/users"
+					);
+					alert("success!");
+				} else {
+					alert("error!");
+				}
+			});
+      }
+	}
 </script>
 <%- include('./nav_end.ejs') %>

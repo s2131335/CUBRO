@@ -2,7 +2,7 @@
 
 <body>
     <div
-        class="text-center text-primary"
+        class="text-center text-success"
         id="success"
         style="margin-top: 20%; display: none"
     >
@@ -10,7 +10,7 @@
     </div>
 
     <div
-        class="text-center text-primary"
+        class="text-center text-danger"
         id="err"
         style="margin-top: 20%; display: none"
     >
@@ -25,10 +25,10 @@
         
             if (success) {
                 document.getElementById("success").style.display = "block";
-                setTimeout(() => window.location.replace("/"), 5000);
+                setTimeout(() => window.location.replace("/"), 3000);
             } else {
                 document.getElementById("err").style.display = "block";
-                setTimeout(() => window.location.replace("/"), 5000);
+                setTimeout(() => window.location.replace("/"), 3000);
             }
         };
     submitInfo();

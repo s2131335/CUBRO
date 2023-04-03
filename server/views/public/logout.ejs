@@ -1,0 +1,12 @@
+<%- include('./head.ejs') %>
+
+<body>
+	<div class="text-center text-success" id="err" style="margin-top: 20%">
+		<h1>Logout successful. Redirecting you to login page.</h1>
+	</div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+<script>
+    setTimeout(() => window.location.replace("/"), 3000);
+</script>

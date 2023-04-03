@@ -103,7 +103,8 @@ module.exports.logout = function (req, res, next) {
 			return next(err);
 		}
 
-		res.send("Logout");
+		// res.send("Logout");
+		res.redirect("/logout");
 	});
 };
 
@@ -131,7 +132,26 @@ module.exports.showAdmins = async function (req, res, next) {
 
 module.exports.showAllUsers = async function (req, res, next) {
 	let users = await userService.findAllUserByFilter();
-	res.status(200).json(users);
+	return res.render("admin/user_management", {
+		title: "User Management",
+		data: { users },
+	});
+	// res.status(200).json(users);
+};
+
+module.exports.deleteUser = async (req, res) => {
+	const _id = req.body._id;
+	try {
+		if (req.body._id == req.user._id) {
+			throw error.Unknown;
+		}
+
+		await userService.deleteUsersByFilter({ _id });
+	} catch (error) {
+		console.error(error);
+		return res.status(error.status).send(error);
+	}
+	res.status(200).send("ok");
 };
 
 module.exports.changePassword = async function (req, res, next) {
@@ -152,7 +172,7 @@ module.exports.changePassword = async function (req, res, next) {
 	} catch (err) {
 		return res.status(err.status).send(err);
 	}
-	res.redirect(307, "logout");
+	res.status(200).send("ok");
 };
 
 module.exports.modRoles = async function (req, res, next) {
@@ -215,6 +235,7 @@ module.exports.showUsers = async function (req, res) {
 		if (role) {
 			users = users.filter((user) => user.role.includes(role));
 		}
+
 		return res.status(200).json(users);
 	} catch (err) {
 		res.status(err.status).json(err);

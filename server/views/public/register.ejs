@@ -2,12 +2,12 @@
 
 <body>
     <div
-        class="alert alert-danger fade show"
+        class="alert alert-danger fade show text-center"
         id="err"
         style="display: none; border-radius: 0"
     ></div>
     <div
-        class="alert alert-success fade show"
+        class="alert alert-success fade show text-center"
         id="success"
         style="display: none; border-radius: 0"
     >
@@ -58,14 +58,6 @@
             <!-- Nickname and gender input -->
             <div class="row justify-content-md-center">
                 <div class="col"></div>
-                <div class="col-3">
-                    <div class="form-outline mb-3 mt-3">
-                        <input type="text" id="nickname" class="form-control" />
-                        <label class="form-label" for="nickname"
-                            >Nickname</label
-                        >
-                    </div>
-                </div>
                 <div class="col-1">
                     <label class="form-label mb-3 mt-4" for="gender"
                         >Gender:</label
@@ -77,10 +69,18 @@
                         id="gender"
                         style="border-radius: 4px; height: 35.81px"
                     >
-                        <option value="">None</option>
-                        <option value="male">M</option>
-                        <option value="female">F</option>
+                        <option value=""></option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                     </select>
+                </div>
+                <div class="col-3">
+                    <div class="form-outline mb-3 mt-3">
+                        <input type="text" id="nickname" class="form-control" />
+                        <label class="form-label" for="nickname"
+                            >Nickname</label
+                        >
+                    </div>
                 </div>
                 <div class="col"></div>
             </div>
@@ -233,7 +233,7 @@
                                             window.location.replace(
                                                 "/"
                                             ),
-                                        5000
+                                        3000
                                     );
                                 } else {
                                     let res = await data.json();

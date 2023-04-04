@@ -31,7 +31,7 @@
 					<td><%=course.seat%></td>
 					<td>
 						<button
-							id=<%=course._id%>E
+							id=<%=course._id%>
 							class="btn btn-light btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal3"
@@ -116,25 +116,24 @@
 	$("[name='edit']").click(function(){
 		var data=$(this).attr("id");
 		console.log(data);
-		fetch(
-			`/api/courses/info/${data}`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				// param: {_id:data},
-			}
-		).then(async (data) => {
-			if (data.status == "200") {
-				window.location.replace(
-					"/admin/courses/edit"
-				);
-			} else {
-				alert("error!");
-			}
+		window.location.replace(`/api/courses/edit/${data}`);
+		// 	{
+		// 		method: "GET",
+		// 		headers: {
+		// 			"Content-Type": "application/json",
+		// 		},
+		// 		// param: {_id:data},
+		// 	}
+		// )
+		// .then(async (data) => {
+		// 	if (data.status == "200") {
+		// 		// window.location.replace(
+		// 		// 	"/admin/courses/edit"
+		// 		// );
+		// 	} else {
+		// 		alert("error!");
+		// 	}
 		})
-	})
 
 	
 </script>

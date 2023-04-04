@@ -123,16 +123,22 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 module.exports.editPage = async function editPage(req, res) {
 	let c;
 	try {
-		const cid = req.params.id;
+		const _id = req.params.id;
+		console.log(`==========${_id}=========`);
 		// if (!isValidObjectId(cid)) {
 		// 	throw error.CourseIDNotValid;
 		// }
-		c = await findCourseByFilter({ _id: cid });
+		c = await findCourseByFilter({ _id });
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
 	}
-	res.status(200).render("admin/course_edit", c != null ? c : {});
+	if (!c) c = {};
+	console.log(c);
+	res.render("admin/course_edit", {
+		title: "Course Edit",
+		c,
+	});
 };
 
 // async function checkCourseCollision(user, courses, selected) {

@@ -84,18 +84,21 @@
     				<th scope="col">Action</th>
     			</tr>
     		</thead>
-    		<% var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday",
-    		"Thursday", "Friday", "Saturday"] %>
-    		<tbody>
+    		<% var weekdays = ["Monday", "Tuesday", "Wednesday",
+    		"Thursday", "Friday", "Saturday","Sunday"] %>
+    		<tbody id="meetbody">
     			<% for (let meeting of c.meetings) { %>
     			<tr>
     				<td>
-    					<input
-    						type="text"
-    						class="form-control"
-    						value="<%= weekdays[meeting.day]%>"
-    						
-    					/>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select">
+								<% for (let i=0; i<7; i++){ %>
+									<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
+										<%= weekdays[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
     				</td>
     				<td>
     					<input
@@ -114,28 +117,26 @@
     					/>
     				</td>
     				<td>
-    					<input
+						<div class="form">
+							<select class="form-select form-select-lg" type="select" >
+								<% for (let i=0; i<7; i++){ %>
+									<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
+										<%= weekdays[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+    					<input name="date"
     						type="text"
     						class="form-control"
     						value="<%=meeting.dates%>"
-    						
     					/>
     				</td>
     				<td>
-    					<!-- <button
-    						class="btn btn-light btn-rounded btn-sm fw-bold"
-    						type="button"
-    						data-mdb-ripple-color="dark"
-    						onclick=""
-    					>
-    						Save Changes
-    					</button> -->
     					<button
     						class="btn btn-danger btn-rounded btn-sm fw-bold"
-    						data-toggle="modal"
-    						data-target="#exampleModal4"
     						type="button"
-    						data-mdb-ripple-color="dark"
+							name="del"
     					>
     						Delete
     					</button>
@@ -153,7 +154,66 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script>
 	$("#add").click(()=>{
+		$("#meetbody").append(
+			`<tr>
+    				<td>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select">
+								<% for (let i=0; i<7; i++){ %>
+									<option  value=<%= i %>>
+										<%= weekdays[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+    				</td>
+    				<td>
+    					<input
+    						type="text"
+    						class="form-control"
+    						value=""
+    						
+    					/>
+    				</td>
+					<td>
+    					<input
+    						type="text"
+    						class="form-control"
+    						value=""
+    						
+    					/>
+    				</td>
+    				<td>
+    					<input
+							name="date"
+    						type="text"
+    						class="form-control"
+    						value=""
+    						
+    					/>
+    				</td>
+    				<td>
+    					<button
+    						class="btn btn-danger btn-rounded btn-sm fw-bold"
+    						type="button"
+							name="del"
+    					>
+    						Delete
+    					</button>
+    				</td>
+    			</tr>
+			`
+		)
+		$("[name='del']").click(function() {
+  			$(this).closest("tr").remove();
+		});
 		
-	})
+	});
+	$("[name='del']").click(function() {
+  			$(this).closest("tr").remove();
+	});
+	$("[name='date']").click(function() {
+			console.log("click");
+		});
 </script>
 <%- include('./nav_end.ejs') %>

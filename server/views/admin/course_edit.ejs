@@ -123,17 +123,17 @@
     					>
     						Delete
     					</button>
-						<div class="modal fade" id=<%=course.courseCode%>D tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal fade" id=<%=c.courseCode%>D tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 							  <div class="modal-content">
 								<div class="modal-header">
 								  <h5 class="modal-title" id="exampleModalLabel"></h5>
 								</div>
-								<div class="modal-body">Confirm delete <%=course.courseCode %>?</div>
+								<div class="modal-body">Confirm delete <%=c.courseCode %>?</div>
 								<div class="modal-footer">
 								  <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
 								  <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" 
-								 id=<%=course._id %> data-mdb-dismiss="modal" name="delete" >Save changes</button>
+								 id=<%=c._id %> data-mdb-dismiss="modal" name="delete" >Save changes</button>
 								</div>
 							  </div>
 							</div>

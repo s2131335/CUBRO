@@ -17,7 +17,7 @@
 				/>
 			</div>
 			<div class="col-2">
-				<button class="btn btn-primary float-end" id=<%=c._id%> name="editi">Edit</button>
+				<button class="btn btn-primary float-end" id=<%=c._id%> name="editi">Save Changes</button>
 			</div>
 		</div>
 		<hr class="my-2" />
@@ -62,82 +62,84 @@
     			</tr>
     		</tbody>
     	</table>
-    	<h4 class="text-muted" style="display: inline">Meetings</h4>
-    	<button class="btn btn-link btn-floating" type="button">
-    		<i class="fa-solid fa-plus"></i>
-    	</button>
+		<div class="row">
+			<div class="col-10">
+				<h4 class="text-muted" style="display: inline">Meetings</h4>
+				<button class="btn btn-link btn-floating" type="button" id="add">
+					<i class="fa-solid fa-plus"></i>
+				</button>
+			</div>
+			<div class="col-2">
+				<button class="btn btn-primary float-end" id=<%=c._id%> name="editm">Save Changes</button>
+			</div>
+		</div>
+    	
     	<table class="table">
     		<thead>
     			<tr>
     				<th scope="col">Weekday</th>
-    				<th scope="col">Time</th>
+    				<th scope="col">Start</th>
+					<th scope="col">End</th>
     				<th scope="col">Dates</th>
     				<th scope="col">Action</th>
     			</tr>
     		</thead>
-    		<% var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday",
-    		"Thursday", "Friday", "Saturday"] %>
-    		<tbody>
+    		<% var weekdays = ["Monday", "Tuesday", "Wednesday",
+    		"Thursday", "Friday", "Saturday","Sunday"] %>
+    		<tbody id="meetbody">
     			<% for (let meeting of c.meetings) { %>
     			<tr>
     				<td>
-    					<input
-    						type="text"
-    						class="form-control"
-    						value="<%= weekdays[meeting.day]%>"
-    						
-    					/>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select">
+								<% for (let i=0; i<7; i++){ %>
+									<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
+										<%= weekdays[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
     				</td>
     				<td>
     					<input
     						type="text"
     						class="form-control"
-    						value="<%=meeting.start%> - <%=meeting.end%>"
+    						value="<%=meeting.start%>"
+    						
+    					/>
+    				</td>
+					<td>
+    					<input
+    						type="text"
+    						class="form-control"
+    						value="<%=meeting.end%>"
     						
     					/>
     				</td>
     				<td>
-    					<input
+						<div class="form">
+							<select class="form-select form-select-lg" type="select" >
+								<% for (let i=0; i<7; i++){ %>
+									<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
+										<%= weekdays[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+    					<input name="date"
     						type="text"
     						class="form-control"
     						value="<%=meeting.dates%>"
-    						
     					/>
     				</td>
     				<td>
     					<button
-    						class="btn btn-light btn-rounded btn-sm fw-bold"
-    						type="button"
-    						data-mdb-ripple-color="dark"
-    						onclick=""
-    					>
-    						Save Changes
-    					</button>
-    					<button
     						class="btn btn-danger btn-rounded btn-sm fw-bold"
-    						data-toggle="modal"
-    						data-target="#exampleModal4"
     						type="button"
-    						data-mdb-ripple-color="dark"
-    						onclick=""
+							name="del"
     					>
     						Delete
     					</button>
-						<div class="modal fade" id=<%=course.courseCode%>D tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog">
-							  <div class="modal-content">
-								<div class="modal-header">
-								  <h5 class="modal-title" id="exampleModalLabel"></h5>
-								</div>
-								<div class="modal-body">Confirm delete <%=course.courseCode %>?</div>
-								<div class="modal-footer">
-								  <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-								  <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" 
-								 id=<%=course._id %> data-mdb-dismiss="modal" name="delete" >Save changes</button>
-								</div>
-							  </div>
-							</div>
-						</div>
     				</td>
     			</tr>
     			<%}%>
@@ -151,6 +153,67 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script>
-
+	$("#add").click(()=>{
+		$("#meetbody").append(
+			`<tr>
+    				<td>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select">
+								<% for (let i=0; i<7; i++){ %>
+									<option  value=<%= i %>>
+										<%= weekdays[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+    				</td>
+    				<td>
+    					<input
+    						type="text"
+    						class="form-control"
+    						value=""
+    						
+    					/>
+    				</td>
+					<td>
+    					<input
+    						type="text"
+    						class="form-control"
+    						value=""
+    						
+    					/>
+    				</td>
+    				<td>
+    					<input
+							name="date"
+    						type="text"
+    						class="form-control"
+    						value=""
+    						
+    					/>
+    				</td>
+    				<td>
+    					<button
+    						class="btn btn-danger btn-rounded btn-sm fw-bold"
+    						type="button"
+							name="del"
+    					>
+    						Delete
+    					</button>
+    				</td>
+    			</tr>
+			`
+		)
+		$("[name='del']").click(function() {
+  			$(this).closest("tr").remove();
+		});
+		
+	});
+	$("[name='del']").click(function() {
+  			$(this).closest("tr").remove();
+	});
+	$("[name='date']").click(function() {
+			console.log("click");
+		});
 </script>
 <%- include('./nav_end.ejs') %>

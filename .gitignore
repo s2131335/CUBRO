@@ -6,6 +6,5 @@ frontend-server/node_modules
 .vscode
 doc
 
-// courses
 server/courses.json
 uploads/

@@ -31,14 +31,11 @@ module.exports.importCourse = async function importCourse(req, res) {
 
 	let failed = [];
 	for (let course of courses) {
-		let type = course.type;
 		try {
 			await upsertLesson(course);
 		} catch (err) {
 			console.log("🚀 ~ file: courses.js:30 ~ importCourse ~ err:", err);
-			failed.push(
-				`${course.courseCode}${course.semester}${course.type}${course.classNum}`
-			);
+			failed.push(`${course.courseCode}`);
 			continue;
 		}
 	}
@@ -158,18 +155,13 @@ module.exports.editPage = async function editPage(req, res) {
 module.exports.createCourse = (req, res) => {
 	// courseCode
 	//courseName
-	//semester
 	//venue
-	//class
 	//meetings
 	//seat
 	// expect frontend give us whole course object like the one from excel
 	const course = ({
-		semester,
 		courseCode,
 		courseName,
-		type,
-		classNum,
 		venue,
 		instructor,
 		seat,
@@ -187,9 +179,7 @@ module.exports.createCourse = (req, res) => {
 			upsertLesson(course);
 		}
 	} catch (err) {
-		delete global.CUBRO.CourseFile[
-			`${course.courseCode}${course.semester}${course.type}${course.class}`
-		];
+		delete global.CUBRO.CourseFile[`${course.courseCode}`];
 		return res.status(err.status).send(err);
 	}
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
@@ -200,9 +190,7 @@ module.exports.deleteCourse = async (req, res) => {
 	try {
 		let course = await findCourseByFilter({ _id });
 		await deleteCoursesByFilter({ _id });
-		let key = `${course.courseCode}${course.semester}${
-			course.__t === "lecture" ? "L" : "T"
-		}${course.classNum}`;
+		let key = `${course.courseCode}`;
 
 		delete global.CUBRO.CourseFile[key];
 		writeJSON(
@@ -218,11 +206,8 @@ module.exports.deleteCourse = async (req, res) => {
 module.exports.editCourse = (req, res) => {
 	const {
 		_id,
-		semester,
 		courseCode,
 		courseName,
-		type,
-		classNum,
 		venue,
 		instructor,
 		seat,
@@ -239,10 +224,7 @@ module.exports.editCourse = (req, res) => {
 		findCourseAndUpdate(
 			{ _id },
 			{
-				semester,
 				courseName,
-				type,
-				classNum,
 				venue,
 				instructor,
 				seat,
@@ -314,9 +296,9 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 module.exports.dropCourse = async function dropCourse(req, res) {
 	try {
 		let { courses } = req.body;
-		for (let course of courses) {
-			// if (!isValidObjectId(course)) throw error.CourseIDNotValid;
-		}
+		// for (let course of courses) {
+		// 	// if (!isValidObjectId(course)) throw error.CourseIDNotValid;
+		// }
 		let toDrop = await extractRegIdByFilter({
 			courseID: { $in: courses },
 			studentID: req.user._id,

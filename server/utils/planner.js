@@ -139,8 +139,6 @@ module.exports.checkCollision = async function checkCollision(user, courses) {
 module.exports.getTimetable = function (course) {
 	const timetable = {
 		courseCode: course.courseCode,
-		type: course.__t,
-		classNum: course.classNum,
 		venue: course.venue,
 	};
 	let timeSlot = [];

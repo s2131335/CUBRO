@@ -142,61 +142,62 @@ router.get("/regcourse", Auth.checkAuth(), function (req, res, next) {
 		{
 			courseCode: "CSCI1234",
 			venue: "LSKLSKSLSKSKL",
-			class: 1,
-			day: 1,
-			start: "0830",
-			end: "1015",
-			ts: [0, 7],
-			displayed: false,
-			checked: true,
+			class: "A",
+			timeSlot: ["001", "002", "300", "301"],
+			type: "Lecture",
 		},
 		{
 			courseCode: "CSCI1234",
 			venue: "LSKLSKSLSKSKL",
-			class: 1,
-			day: 1,
-			start: "0830",
-			end: "1015",
-			ts: [5, 12],
-			displayed: false,
-			checked: false,
+			class: "A",
+			timeSlot: ["100"],
+			type: "Tutorial",
 		},
 		{
 			courseCode: "CSCI1234",
 			venue: "LSKLSKSLSKSKL",
-			class: 1,
-			day: 1,
-			start: "0830",
-			end: "1015",
-			ts: [8, 15],
-			displayed: false,
-			checked: false,
+			class: "B",
+			timeSlot: ["200", "201", "400", "401"],
+			type: "Lecture",
+		},
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: "B",
+			timeSlot: ["100"],
+			type: "Tutorial",
 		},
 		{
 			courseCode: "CSCI4321",
 			venue: "LSKLSKSLSKSKL",
-			class: 1,
-			day: 1,
-			start: "0830",
-			end: "1015",
-			ts: [8],
-			displayed: false,
-			checked: true,
+			class: "A",
+			timeSlot: ["101", "102", "201", "202"],
+			type: "Lecture",
 		},
 		{
-			courseCode: "CENG1234",
-			venue: "NONONONO",
-			class: 1,
-			day: 1,
-			start: "0830",
-			end: "1015",
-			ts: [21, 28],
-			displayed: false,
-			checked: true,
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["302"],
+			type: "Tutorial",
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: "B",
+			timeSlot: ["001", "002", "101", "102"],
+			type: "Lecture",
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: "B",
+			timeSlot: ["302"],
+			type: "Tutorial",
 		},
 	];
 	res.render("internal/regcourse", {
-		title: "Timetable Planner",
+		title: "Register Course",
 		data: { course },
 	});
 });
@@ -204,6 +205,80 @@ router.get("/regcourse", Auth.checkAuth(), function (req, res, next) {
 /* GET update password page. */
 router.get("/update_password", Auth.checkAuth(), function (req, res, next) {
 	res.render("internal/update_password", { title: "Update password" });
+});
+
+/* GET user mycourse page. */
+router.get("/table", function (req, res, next) {
+	const course = [
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["001", "002", "300", "301"],
+			type: "Lecture",
+		},
+		{
+			courseCode: "CSCI1234",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["100"],
+			type: "Tutorial",
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["101", "102", "201", "202"],
+			type: "Lecture",
+		},
+		{
+			courseCode: "CSCI4321",
+			venue: "LSKLSKSLSKSKL",
+			class: "A",
+			timeSlot: ["302"],
+			type: "Tutorial",
+		},
+	];
+	// var data = course.map(c =>{
+	//     return {
+	//         courseCode: c.courseCode,
+	//         venue: c.venue,
+	//         class: c.class,
+	//         timeSlot: c.timeSlot,
+	//         type: c.type,
+	//         displayed: false,
+	//     };
+	// });
+	// function separateTimeSlots(arr) {
+	//     let result = [];
+	//     arr.forEach(obj => {
+	//         for(var i=0; i<obj.timeSlot.length; i++){
+	//             let firstChar = obj.timeSlot[i][0];
+	//             let newObj = {...obj};
+	//             newObj.timeSlot = obj.timeSlot.filter(slot => slot[0] === firstChar);
+	//             if (i>0){
+	//                 if (obj.timeSlot[i-1][0]!=firstChar){
+	//                     result.push(newObj);
+	//                 }
+	//             }else if(i==0){
+	//                 result.push(newObj);
+	//             }
+	//         }
+	//     });
+	//     return result;
+	// };
+	// var courses= separateTimeSlots(data);
+	res.render("internal/table", {
+		title: "My Courses",
+		data: course,
+	});
+});
+
+/* GET user mycourse page. */
+router.get("/drop", function (req, res, next) {
+	res.render("internal/drop", {
+		title: "Drop Courses",
+	});
 });
 
 module.exports = router;

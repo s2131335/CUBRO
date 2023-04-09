@@ -39,6 +39,7 @@ module.exports.findAllCoursesByFilter = async function (filter = {}) {
 
 module.exports.findCourseByFilter = async function (fields) {
 	try {
+		console.log(fields);
 		let c = await Course.findOne(fields);
 		return c;
 	} catch (err) {

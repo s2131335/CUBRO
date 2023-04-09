@@ -27,7 +27,7 @@
 						<button
 							class="btn btn-secondary btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
-							data-target="#exampleModal3"
+							data-target=""
 							type="button"
 							data-mdb-ripple-color="dark"
 							onclick=""
@@ -35,16 +35,28 @@
 							Reset Password
 						</button>
 						<button
-							id="d+<%=user._id%>+<%=user.fullName%>"
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
-							data-toggle="modal"
-							data-target="#exampleModal4"
+							data-mdb-toggle = "modal"
+							data-mdb-target=#del<%= user._id %>
 							type="button"
-							data-mdb-ripple-color="dark"
-							onclick="confirmDelete(this)"
 						>
 							Delete
 						</button>
+						<div class="modal fade" id=del<%=user._id%> tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+							  <div class="modal-content">
+								<div class="modal-header">
+								  <h5 class="modal-title" id="exampleModalLabel"></h5>
+								</div>
+								<div class="modal-body">Confirm delete <%=user.fullName %>?</div>
+								<div class="modal-footer">
+								  <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+								  <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" 
+								 id=<%=user._id %> data-mdb-dismiss="modal" name="delete" >Save changes</button>
+								</div>
+							  </div>
+							</div>
+						  </div>
 					</td>
 				</tr>
 				<% }) %>	
@@ -52,6 +64,7 @@
 		</table>
 	</div>
 </body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$("#table").DataTable({
@@ -63,31 +76,53 @@
 			],
 		});
 	});
-
-	function confirmDelete(btn) {
-		let data = btn.id.split("+");
-        let confirmAction = confirm(`Are you sure to delete the user ${data[2]} ?`);
-        if (confirmAction) {
-			fetch(
-				"/api/users/delete-user",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({_id:data[1]}),
-				}
-			).then(async (data) => {
-				if (data.status == "200") {
-					window.location.replace(
-						"/admin/users"
-					);
-					alert("success!");
-				} else {
-					alert("error!");
-				}
-			});
-      }
-	}
+	$("[name='delete']").click(function(){
+		var data=$(this).attr("id");
+		console.log(data);
+		fetch(
+			"/api/users/delete-user",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({_id:data}),
+			}
+		).then(async (data) => {
+			if (data.status == "200") {
+				window.location.replace(
+					"/admin/users"
+				);
+				alert("success!");
+			} else {
+				alert("error!");
+			}
+		});
+	})
+	// function confirmDelete(btn) {
+	// 	let data = btn.id.split("+");
+    //     let confirmAction = confirm(`Are you sure to delete the user ${data[2]} ?`);
+    //     if (confirmAction) {
+	// 		fetch(
+	// 			"/api/users/delete-user",
+	// 			{
+	// 				method: "POST",
+	// 				headers: {
+	// 					"Content-Type": "application/json",
+	// 				},
+	// 				body: JSON.stringify({_id:data[1]}),
+	// 			}
+	// 		).then(async (data) => {
+	// 			if (data.status == "200") {
+	// 				window.location.replace(
+	// 					"/admin/users"
+	// 				);
+	// 				alert("success!");
+	// 			} else {
+	// 				alert("error!");
+	// 			}
+	// 		});
+    //   }
+	// }
 </script>
 <%- include('./nav_end.ejs') %>

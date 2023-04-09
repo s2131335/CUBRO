@@ -1,5 +1,6 @@
 <%- include('./nav.ejs') %>
 <body>
+	
 	<div class="container pt-4 pb-5">
 		<div class="row">
 			<div class="col-6">
@@ -30,27 +31,40 @@
 					<td><%=course.seat%></td>
 					<td>
 						<button
-							id="e+<%=course._id%>"
+							id=<%=course._id%>
 							class="btn btn-light btn-rounded btn-sm fw-bold"
 							data-toggle="modal"
 							data-target="#exampleModal3"
 							type="button"
+							name="edit"
 							data-mdb-ripple-color="dark"
 							onclick=""
 						>
 							Edit
 						</button>
 						<button
-							id="d+<%=course._id%>+<%=course.courseCode%>"
 							class="btn btn-danger btn-rounded btn-sm fw-bold"
 							data-mdb-toggle = "modal"
-							data-mdb-target="#exampleModal"
+							data-mdb-target=#<%=course.courseCode %>D
 							type="button"
-							onclick="confirmDelete(this)"
 						>
 							Delete
 						</button>
-
+						<div class="modal fade" id=<%=course.courseCode%>D tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+							  <div class="modal-content">
+								<div class="modal-header">
+								  <h5 class="modal-title" id="exampleModalLabel"></h5>
+								</div>
+								<div class="modal-body">Confirm delete <%=course.courseCode %>?</div>
+								<div class="modal-footer">
+								  <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+								  <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold" 
+								 id=<%=course._id %> data-mdb-dismiss="modal" name="delete" >Save changes</button>
+								</div>
+							  </div>
+							</div>
+						  </div>
 					</td>
 				</tr>
 				<%}%>
@@ -60,6 +74,8 @@
 	</div>
 </body>
 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$("#table").DataTable({
@@ -71,36 +87,54 @@
 			],
 		});
 	});
-
-	function confirmDelete(btn) {
-		let data = btn.id.split("+");
-        let confirmAction = confirm(`Are you sure to delete the course ${data[2]} ?`);
-        if (confirmAction) {
-			fetch(
-				"/api/courses/delete",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({_id:data[1]}),
-				}
-			).then(async (data) => {
-				if (data.status == "200") {
-					window.location.replace(
-						"/admin/courses"
-					);
-					alert("success!");
-				} else {
-					alert("error!");
-				}
-			});
-      }
-	}
+	$("[name='delete']").click(function(){
+		var data=$(this).attr("id");
+		console.log(data);
+		fetch(
+			"/api/courses/delete",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({_id:data}),
+			}
+		).then(async (data) => {
+			if (data.status == "200") {
+				window.location.replace(
+					"/admin/courses"
+				);
+				alert("success!");
+			} else {
+				alert("error!");
+			}
+		});
+	})
 	// function handleDelete(event) {
 	// 	// alert("Delete");
 	// }
+	$("[name='edit']").click(function(){
+		var data=$(this).attr("id");
+		console.log(data);
+		window.location.replace(`/api/courses/edit/${data}`);
+		// 	{
+		// 		method: "GET",
+		// 		headers: {
+		// 			"Content-Type": "application/json",
+		// 		},
+		// 		// param: {_id:data},
+		// 	}
+		// )
+		// .then(async (data) => {
+		// 	if (data.status == "200") {
+		// 		// window.location.replace(
+		// 		// 	"/admin/courses/edit"
+		// 		// );
+		// 	} else {
+		// 		alert("error!");
+		// 	}
+		})
 
-
+	
 </script>
 <%- include('./nav_end.ejs') %>

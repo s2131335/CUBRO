@@ -4,25 +4,30 @@ const hash = require("object-hash");
 const { intToChar, charToInt, writeJSON, readJSON } = require("./utils");
 
 // const DAYS = Object.freeze({
-// 	SUN: 0,
-// 	MON: 1,
-// 	TUE: 2,
-// 	WED: 3,
-// 	THU: 4,
-// 	FRI: 5,
-// 	SAT: 6,
+// 	SUNDAY: 0,
+// 	MONDAY: 1,
+// 	TUESDAY: 2,
+// 	WEDNESDAY: 3,
+// 	THURSDAY: 4,
+// 	FRIDAY: 5,
+// 	SATURDAY: 6,
 // });
 
-// const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const DAYS = [
+	"SUNDAY",
+	"MONDAY",
+	"TUESDAY",
+	"WEDNESDAY",
+	"THURSDAY",
+	"FRIDAY",
+	"SATURDAY",
+];
 const HEADERS = [
 	// need to match the order of the excel headers
 	// need to match the fields in course schema
-	"semester",
 	"courseCode",
 	"courseName",
 	"department",
-	"type",
-	"classNum",
 	"venue",
 	"instructor",
 	"seat",
@@ -75,7 +80,7 @@ module.exports.getMeeting = function getMeeting(courseCode, dates, timeSlot) {
 // return true when courseFile has updated.
 module.exports.updateCourseFile = function updateCourseFile(course) {
 	let hashValue = hash(course);
-	let key = `${course.courseCode}${course.semester}${course.type}${course.classNum}`;
+	let key = `${course.courseCode}`;
 	//If entry is already saved
 	if (global.CUBRO.CourseFile[key] === hashValue) {
 		return false;
@@ -193,11 +198,9 @@ const c = {
 	_id: {
 		$oid: "641dd25cdc5a8a14ecc37cca",
 	},
-	__t: "lecture",
 	courseCode: "ABCD1234",
 	__v: 0,
 	courseName: "intro to fucking",
-	classNum: "A",
 	description: "This is fucking good class",
 	instructor: "KKL",
 	meetings: [
@@ -221,7 +224,6 @@ const c = {
 		},
 	],
 	seat: 100,
-	semester: 1,
 	venue: "SHB",
 };
 

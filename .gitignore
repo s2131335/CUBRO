@@ -8,3 +8,4 @@ doc
 
 // courses
 server/courses.json
+server/uploads/*

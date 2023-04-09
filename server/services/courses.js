@@ -7,7 +7,7 @@ module.exports.countCourseByFilter = async function (filter) {
 
 module.exports.upsertLesson = async function upsertLesson(lesson) {
 	try {
-		await Lecture.updateOne({ courseCode: lesson.courseCode }, lesson, {
+		await Course.updateOne({ courseCode: lesson.courseCode }, lesson, {
 			upsert: true,
 		});
 		return null;

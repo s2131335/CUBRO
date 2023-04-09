@@ -28,11 +28,11 @@ const HEADERS = [
 	"courseCode",
 	"courseName",
 	"department",
-	"venue",
 	"instructor",
-	"seat",
 	"dates",
+	"seat",
 	"time",
+	"venue",
 	"description",
 ];
 

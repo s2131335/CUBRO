@@ -113,7 +113,6 @@ router.get("/add_user", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 });
 
 /* GET admin course_edit page. */
-
 router.get("/courses", Auth.checkAuth(Auth.ADMIN), manageCourse);
 
 /* GET course edit page. */
@@ -167,4 +166,10 @@ router.get(
 	}
 );
 
+/* GET admin home page */
+router.get("/add_course", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
+	res.render("admin/add_course", {
+		title: "Home,",
+	});
+});
 module.exports = router;

@@ -24,12 +24,12 @@
 			<tbody>
 				<% for (var course of courses){ %>
 				<tr>
-					<td><%=course.courseCode%></td>
-					<td><%=course.courseName%></td>
-					<td><%=course.instructor%></td>
-					<td><%=course.venue%></td>
-					<td><%=course.seat%></td>
-					<td>
+					<td style="vertical-align: middle"><%=course.courseCode%></td>
+					<td style="vertical-align: middle"><%=course.courseName%></td>
+					<td style="vertical-align: middle"><%=course.instructor%></td>
+					<td style="vertical-align: middle"><%=course.venue%></td>
+					<td style="vertical-align: middle"><%=course.seat%></td>
+					<td style="vertical-align: middle">
 						<button
 							id=<%=course._id%>
 							class="btn btn-light btn-rounded btn-sm fw-bold"

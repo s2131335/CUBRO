@@ -14,46 +14,46 @@
 						<h4 class="text-muted" style="display: inline">Basic Information</h4>
 					  <div class="col-12 col-md-6 mb-4">
 						<div class="form-outline">
-						  <input type="text" id="form6Example1" class="form-control" value="<%=c.courseCode%>"/>
-						  <label class="form-label" for="form6Example1" >Course Code</label>
+						  <input type="text" id="ccode" class="form-control" value="<%=c.courseCode%>"/>
+						  <label class="form-label" for="ccode" >Course Code</label>
 						</div>
 					  </div>
 					  <div class="col-12 col-md-6 mb-4">
 						<div class="form-outline">
-						  <input type="text" id="form6Example2" class="form-control" value="<%=c.courseName%>"/>
-						  <label class="form-label" for="form6Example2">Course Name</label>
+						  <input type="text" id="cname" class="form-control" value="<%=c.courseName%>"/>
+						  <label class="form-label" for="cname">Course Name</label>
 						</div>
 					  </div>
 					</div>
   
 					<!-- Text input -->
 					<div class="form-outline mb-4">
-					  <input type="text" id="form6Example3" class="form-control" value="<%=c.department%>"/>
-					  <label class="form-label" for="form6Example3">Department</label>
+					  <input type="text" id="cdepartment" class="form-control" value="<%=c.department%>"/>
+					  <label class="form-label" for="cdepartment">Department</label>
 					</div>
   
 					<!-- Text input -->
 					<div class="form-outline mb-4">
-					  <input type="text" id="form6Example4" class="form-control" />
-					  <label class="form-label" for="form6Example4">Instructor</label>
+					  <input type="text" id="cinstructor" class="form-control" value="<%=c.instructor%>"/>
+					  <label class="form-label" for="cinstructor">Instructor</label>
 					</div>
   
 					<!-- Email input -->
 					<div class="form-outline mb-4">
-					  <input type="email" id="form6Example5" class="form-control" />
-					  <label class="form-label" for="form6Example5">Venue</label>
+					  <input type="text" id="cvenue" class="form-control" value="<%=c.venue%>"/>
+					  <label class="form-label" for="cvenue">Venue</label>
 					</div>
   
 					<!-- Number input -->
 					<div class="form-outline mb-4">
-					  <input type="number" id="form6Example6" class="form-control" />
-					  <label class="form-label" for="form6Example6">Capacity</label>
+					  <input type="number" id="cseat" class="form-control" value="<%=c.seat%>"/>
+					  <label class="form-label" for="cseat">Capacity</label>
 					</div>
   
 					<!-- Message input -->
 					<div class="form-outline mb-4">
-					  <textarea class="form-control" id="form6Example7" rows="4"></textarea>
-					  <label class="form-label" for="form6Example7">Description</label>
+					  <textarea class="form-control" id="cdescription" rows="4" value="<%=c.description%>"></textarea>
+					  <label class="form-label" for="cdescription">Description</label>
 					</div>
 					<div class="row mb-1">
 						<div class="col-10 d-flex aligns-items-center">
@@ -69,49 +69,73 @@
 							  <th scope="col">Weekday</th>
 							  <th scope="col">Start</th>
 							  <th scope="col">End</th>
-							  <th scope="col">Dates</th>
 							  <th scope="col">Action</th>
 						  </tr>
 					  </thead>
 					  <% var weekdays = ["Monday", "Tuesday", "Wednesday",
 					  "Thursday", "Friday", "Saturday","Sunday"] %>
+					  <% var timeslots = [
+					  "08:30",
+					  "09:30",
+					  "10:30",
+					  "11:30",
+					  "12:30",
+					  "13:30",
+					  "14:30",
+					  "15:30",
+					  "16:30",
+					  "17:30",
+					  "18:30",
+					  "19:30",
+					  "20:30",
+					  "21:30",
+					  "22:30"
+				  ] %>
 					  <tbody id="meetbody">
-			  
+						<% for (let meeting of c.meetings) { %>
+							<% for (var i = 0; i < meeting.timeSlot.length; i++) { %>
+							<%	meeting.timeSlot[i] = parseInt(meeting.timeSlot[i]); %>
+							<%	} %>
+							<%  if (meeting.timeSlot.length > 1) { %>
+							<%	meeting.timeSlot.splice(1, meeting.timeSlot.length - 2); %>
+							<%  	} else { %>
+							<%	meeting.timeSlot.push(meeting.timeSlot[0]); %>
+							<%  } %>
+							<%  meeting.timeSlot[meeting.timeSlot.length - 1] += 1; %>
 						  <tr>
 							  <td>
 								  <div class="form">
 									  <select class="form-select form-select-lg" type="select">
 										  <% for (let i=0; i<7; i++){ %>
-											  <option  value=<%= i %> >
-												  <%= weekdays[i] %>
-											  </option>
+											<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
+												<%= weekdays[i] %>
+											</option>
 										  <% } %>
 									  </select>
 								  </div>
 							  </td>
 							  <td>
-								  <input
-									  type="text"
-									  class="form-control"
-									  value=""
-									  
-								  />
-							  </td>
-							  <td>
-								  <input
-									  type="text"
-									  class="form-control"
-									  value=""
-									  
-								  />
-							  </td>
-							  <td>
-								  <input name="date"
-									  type="text"
-									  class="form-control"
-									  value=""
-								  />
-							  </td>
+								<div class="form">
+									<select class="form-select form-select-lg" type="select">
+										<% for (let i=0; i<14; i++){ %>
+										  <option  value=<%= i %> <%if (meeting.timeSlot[0]==i){ %>selected<% } %>>
+											  <%= timeslots[i] %>
+										  </option>
+										<% } %>
+									</select>
+								</div>
+							</td>
+							<td>
+								<div class="form">
+									<select class="form-select form-select-lg" type="select">
+										<% for (let i=0; i<15; i++){ %>
+										  <option  value=<%= i %> <%if (meeting.timeSlot[1]==i){ %>selected<% } %>>
+											  <%= timeslots[i] %>
+										  </option>
+										<% } %>
+									</select>
+								</div>
+							</td>
 							  <td>
 								  <button
 									  class="btn btn-danger btn-rounded btn-sm fw-bold"
@@ -122,15 +146,16 @@
 								  </button>
 							  </td>
 						  </tr>
+						  <%}%>
 					  </tbody>
 				  </table>
 					<!-- Submit button -->
 					<div class="row">
 						<div class="col-12 col-md-6 mb-4">
-							<button type="submit" class="btn btn-secondary btn-rounded btn-block">Reset</button>
+							<button type="submit" class="btn btn-secondary btn-rounded btn-block" id="reset">Reset</button>
 						</div>
 						<div class="col-12 col-md-6 mb-4">
-							<button type="submit" class="btn btn-primary btn-rounded btn-block">Save Change</button>
+							<button type="button" class="btn btn-primary btn-rounded btn-block" id="<%=c._id %>" name="save">Save Change</button>
 						</div>
 					</div>
 				  </form>
@@ -146,6 +171,24 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script>
+	(() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach((form) => {
+            form.addEventListener('submit', (event) => {
+                //- console.log(event);
+                form.checkValidity();
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+                
+            }, false);
+        });
+        })();
 	$("#add").click(()=>{
 		$("#meetbody").append(
 			`<tr>
@@ -161,29 +204,26 @@
 						</div>
     				</td>
     				<td>
-    					<input
-    						type="text"
-    						class="form-control"
-    						value=""
-    						
-    					/>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select">
+								<% for (let i=0; i<15; i++){ %>
+									<option  value=<%= i %>>
+										<%= timeslots[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
     				</td>
 					<td>
-    					<input
-    						type="text"
-    						class="form-control"
-    						value=""
-    						
-    					/>
-    				</td>
-    				<td>
-    					<input
-							name="date"
-    						type="text"
-    						class="form-control"
-    						value=""
-    						
-    					/>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select">
+								<% for (let i=0; i<15; i++){ %>
+									<option  value=<%= i %>>
+										<%= timeslots[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
     				</td>
     				<td>
     					<button
@@ -198,15 +238,26 @@
 			`
 		)
 		$("[name='del']").click(function() {
-  			$(this).closest("tr").remove();
+			$(this).closest("tr").remove();
 		});
 		
 	});
 	$("[name='del']").click(function() {
-  			$(this).closest("tr").remove();
+		$(this).closest("tr").remove();
 	});
-	$("[name='date']").click(function() {
-			console.log("click");
-		});
+	$("[name='save']").click(function() {
+		
+		var course={
+			courseCode: $("#ccode").val(),
+			courseName: $("#cname").val(),
+			department: $("#cdepartment").val(),
+			instructor: $("#cinstructor").val(),
+			venue: $("#cvenue").val(),
+			seat: $("#cseat").val(),
+			description: $("#cdescription").val(),
+		}	
+		console.log(course);
+
+	})
 </script>
 <%- include('./nav_end.ejs') %>

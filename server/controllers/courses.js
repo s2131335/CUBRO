@@ -167,13 +167,11 @@ module.exports.createCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		dates,
 		time,
 		description,
 	} = req.body);
 	console.log(course);
-	course.meeting = getMeeting(course.courseCode, course.dates, course.time);
-	delete course.dates;
+	course.meeting = getMeeting(course.courseCode, course.time);
 	delete course.time;
 
 	try {
@@ -213,14 +211,13 @@ module.exports.editCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		dates,
 		time,
 		description,
 	} = req.body;
 
 	let meeting;
-	if (time && dates) {
-		meeting = getMeeting(courseCode, dates, time);
+	if (time) {
+		meeting = getMeeting(courseCode, time);
 	}
 	try {
 		findCourseAndUpdate(
@@ -230,7 +227,6 @@ module.exports.editCourse = (req, res) => {
 				venue,
 				instructor,
 				seat,
-				dates,
 				description,
 				meeting,
 			}

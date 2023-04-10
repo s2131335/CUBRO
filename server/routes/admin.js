@@ -22,13 +22,9 @@ router.get("/add_user", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 /* GET admin course management page. */
 router.get("/courses", Auth.checkAuth(Auth.ADMIN), manageCourse);
 
-router.get(
-	"/add_course",
-	Auth.checkAuth(Auth.ADMIN),
-	function (req, res, next) {
-		res.render("admin/add_course", {
-			title: "New Course",
-		});
-	}
-);
+router.get("/add_course",Auth.checkAuth(Auth.ADMIN),function (req, res, next) {
+	res.render("admin/add_course", {
+		title: "New Course",
+	});
+});
 module.exports = router;

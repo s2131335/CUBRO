@@ -1,118 +1,143 @@
 <%- include('./nav.ejs') %>
 <section class="intro">
+	<div
+        class="alert alert-danger fade show text-center"
+        id="err"
+        style="display: none; border-radius: 0"
+    ></div>
+    <div
+        class="alert alert-success fade show text-center"
+        id="success"
+        style="display: none; border-radius: 0"
+    >
+        Added course successfully.
+    </div>
 	  <!-- <div class="mask d-flex align-items-center h-100"> -->
 		<div class="container">
-		  <div class="row justify-content-center">
-			<div class="col-12 col-lg-10">
-			  <div class="card" style="border-radius: 1rem;">
-				<div class="card-body p-5">
-				<a href="/admin/courses">Back</a>
-				  <h1 class="mb-5 text-center">Add Course</h1>
-  
-				  <form>
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-10">
+					<div class="card" style="border-radius: 1rem;">
+						<div class="card-body p-5">
+							<a href="/admin/courses">Back</a>
+								<h1 class="mb-5 text-center">Add Course</h1>
+									<form>
 					<!-- 2 column grid layout with text inputs for the first and last names -->
-					<div class="row">
-						<h4 class="text-muted" style="display: inline">Basic Information</h4>
-					  <div class="col-12 col-md-6 mb-4">
-						<div class="form-outline">
-						  <input type="text" id="form6Example1" class="form-control" />
-						  <label class="form-label" for="form6Example1">Course Code</label>
-						</div>
-					  </div>
-					  <div class="col-12 col-md-6 mb-4">
-						<div class="form-outline">
-						  <input type="text" id="form6Example2" class="form-control" />
-						  <label class="form-label" for="form6Example2">Course Name</label>
-						</div>
-					  </div>
-					</div>
-  
-					<!-- Text input -->
-					<div class="form-outline mb-4">
-					  <input type="text" id="form6Example3" class="form-control" />
-					  <label class="form-label" for="form6Example3">Department</label>
-					</div>
-  
-					<!-- Text input -->
-					<div class="form-outline mb-4">
-					  <input type="text" id="form6Example4" class="form-control" />
-					  <label class="form-label" for="form6Example4">Instructor</label>
-					</div>
-  
-					<!-- Email input -->
-					<div class="form-outline mb-4">
-					  <input type="email" id="form6Example5" class="form-control" />
-					  <label class="form-label" for="form6Example5">Venue</label>
-					</div>
-  
-					<!-- Number input -->
-					<div class="form-outline mb-4">
-					  <input type="number" id="form6Example6" class="form-control" />
-					  <label class="form-label" for="form6Example6">Capacity</label>
-					</div>
-  
-					<!-- Message input -->
-					<div class="form-outline mb-4">
-					  <textarea class="form-control" id="form6Example7" rows="4"></textarea>
-					  <label class="form-label" for="form6Example7">Description</label>
-					</div>
-					<div class="row mb-1">
-						<div class="col-10 d-flex aligns-items-center">
-							<h4 class="text-muted" style="display: inline">Meetings</h4>
-							<button class="btn btn-link btn-floating" type="button" id="add">
-								<i class="fa-solid fa-plus"></i>
-							</button>
-						</div>
-					</div>
-					<table class="table">
-					  <thead>
-						  <tr>
+										<div class="row">
+										<h4 class="text-muted" style="display: inline">Basic Information</h4>
+											<div class="col-12 col-md-6 mb-4">
+												<div class="form-outline">
+													<input type="text" id="ccode" class="form-control" value=""/>
+													<label class="form-label" for="ccode" >Course Code</label>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 mb-4">
+												<div class="form-outline">
+													<input type="text" id="cname" class="form-control" value=""/>
+													<label class="form-label" for="cname">Course Name</label>
+												</div>
+											</div>
+										</div>
+
+										<!-- Text input -->
+										<div class="form-outline mb-4">
+											<input type="text" id="cdepartment" class="form-control" value=""/>
+											<label class="form-label" for="cdepartment">Department</label>
+										</div>
+
+										<!-- Text input -->
+										<div class="form-outline mb-4">
+											<input type="text" id="cinstructor" class="form-control" value=""/>
+											<label class="form-label" for="cinstructor">Instructor</label>
+										</div>
+
+										<!-- Email input -->
+										<div class="form-outline mb-4">
+											<input type="text" id="cvenue" class="form-control" value=""/>
+											<label class="form-label" for="cvenue">Venue</label>
+										</div>
+
+										<!-- Number input -->
+										<div class="form-outline mb-4">
+											<input type="number" id="cseat" class="form-control" value=""/>
+											<label class="form-label" for="cseat">Capacity</label>
+										</div>
+
+										<!-- Message input -->
+										<div class="form-outline mb-4">
+											<textarea class="form-control" id="cdescription" rows="4"></textarea>
+											<label class="form-label" for="cdescription">Description</label>
+										</div>
+										<div class="row mb-1">
+											<div class="col-10 d-flex aligns-items-center">
+												<h4 class="text-muted" style="display: inline">Meetings</h4>
+												<button class="btn btn-link btn-floating" type="button" id="add">
+													<i class="fa-solid fa-plus"></i>
+												</button>
+											</div>
+										</div>
+										<table class="table">
+											<thead>
+												<tr>
 							  <th scope="col">Weekday</th>
 							  <th scope="col">Start</th>
 							  <th scope="col">End</th>
-							  <th scope="col">Dates</th>
 							  <th scope="col">Action</th>
 						  </tr>
 					  </thead>
 					  <% var weekdays = ["Monday", "Tuesday", "Wednesday",
 					  "Thursday", "Friday", "Saturday","Sunday"] %>
+					  <% var timeslots = [
+					  "08:30",
+					  "09:30",
+					  "10:30",
+					  "11:30",
+					  "12:30",
+					  "13:30",
+					  "14:30",
+					  "15:30",
+					  "16:30",
+					  "17:30",
+					  "18:30",
+					  "19:30",
+					  "20:30",
+					  "21:30",
+					  "22:30"
+				  ] %>
 					  <tbody id="meetbody">
-			  
-						  <tr>
+						  <tr name="meets">
 							  <td>
 								  <div class="form">
-									  <select class="form-select form-select-lg" type="select">
+									  <select class="form-select form-select-lg" type="select" name="wday">
 										  <% for (let i=0; i<7; i++){ %>
-											  <option  value=<%= i %> >
-												  <%= weekdays[i] %>
-											  </option>
+											<option  value=<%= i %>>
+												<%= weekdays[i] %>
+											</option>
 										  <% } %>
 									  </select>
 								  </div>
 							  </td>
 							  <td>
-								  <input
-									  type="text"
-									  class="form-control"
-									  value=""
-									  
-								  />
-							  </td>
-							  <td>
-								  <input
-									  type="text"
-									  class="form-control"
-									  value=""
-									  
-								  />
-							  </td>
-							  <td>
-								  <input name="date"
-									  type="text"
-									  class="form-control"
-									  value=""
-								  />
-							  </td>
+								<div class="form">
+									<select class="form-select form-select-lg" type="select" name="start">
+										<% for (let i=0; i<14; i++){ %>
+										  <option  value=<%= i %>>
+											  <%= timeslots[i] %>
+										  </option>
+										<% } %>
+									</select>
+								</div>
+							</td>
+							<td>
+								<div class="form">
+									<select class="form-select form-select-lg" type="select" name="end">
+										<% for (let i=0; i<15; i++){ %>
+										  <option  value=<%= i %>>
+											  <%= timeslots[i] %>
+										  </option>
+										<% } %>
+									</select>
+								</div>
+							</td>
 							  <td>
 								  <button
 									  class="btn btn-danger btn-rounded btn-sm fw-bold"
@@ -123,15 +148,16 @@
 								  </button>
 							  </td>
 						  </tr>
+						  <%}%>
 					  </tbody>
 				  </table>
 					<!-- Submit button -->
 					<div class="row">
 						<div class="col-12 col-md-6 mb-4">
-							<button type="submit" class="btn btn-secondary btn-rounded btn-block">Reset</button>
+							<button type="submit" class="btn btn-secondary btn-rounded btn-block" id="reset">Reset</button>
 						</div>
 						<div class="col-12 col-md-6 mb-4">
-							<button type="submit" class="btn btn-primary btn-rounded btn-block">Save Change</button>
+							<button type="button" class="btn btn-primary btn-rounded btn-block" name="submit">Add Course</button>
 						</div>
 					</div>
 				  </form>
@@ -143,167 +169,34 @@
 		<!-- </div> -->
 	  <!-- </div> -->
 	</div>
-
-	
-	<div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Sign up</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <form>
-			<!-- 2 column grid layout with text inputs for the first and last names -->
-			<div class="row">
-				<h4 class="text-muted" style="display: inline">Basic Information</h4>
-			  <div class="col-12 col-md-6 mb-4">
-				<div class="form-outline">
-				  <input type="text" id="form6Example1" class="form-control" />
-				  <label class="form-label" for="form6Example1">Course Code</label>
-				</div>
-			  </div>
-			  <div class="col-12 col-md-6 mb-4">
-				<div class="form-outline">
-				  <input type="text" id="form6Example2" class="form-control" />
-				  <label class="form-label" for="form6Example2">Course Name</label>
-				</div>
-			  </div>
-			</div>
-
-			<!-- Text input -->
-			<div class="form-outline mb-4">
-			  <input type="text" id="form6Example3" class="form-control" />
-			  <label class="form-label" for="form6Example3">Department</label>
-			</div>
-
-			<!-- Text input -->
-			<div class="form-outline mb-4">
-			  <input type="text" id="form6Example4" class="form-control" />
-			  <label class="form-label" for="form6Example4">Instructor</label>
-			</div>
-
-			<!-- Email input -->
-			<div class="form-outline mb-4">
-			  <input type="email" id="form6Example5" class="form-control" />
-			  <label class="form-label" for="form6Example5">Venue</label>
-			</div>
-
-			<!-- Number input -->
-			<div class="form-outline mb-4">
-			  <input type="number" id="form6Example6" class="form-control" />
-			  <label class="form-label" for="form6Example6">Capacity</label>
-			</div>
-
-			<!-- Message input -->
-			<div class="form-outline mb-4">
-			  <textarea class="form-control" id="form6Example7" rows="4"></textarea>
-			  <label class="form-label" for="form6Example7">Description</label>
-			</div>
-			<div class="row mb-1">
-				<div class="col-10 d-flex aligns-items-center">
-					<h4 class="text-muted" style="display: inline">Meetings</h4>
-					<button class="btn btn-link btn-floating" type="button" id="add">
-						<i class="fa-solid fa-plus"></i>
-					</button>
-				</div>
-			</div>
-			<table class="table">
-			  <thead>
-				  <tr>
-					  <th scope="col">Weekday</th>
-					  <th scope="col">Start</th>
-					  <th scope="col">End</th>
-					  <th scope="col">Dates</th>
-					  <th scope="col">Action</th>
-				  </tr>
-			  </thead>
-			  <% var weekdays = ["Monday", "Tuesday", "Wednesday",
-			  "Thursday", "Friday", "Saturday","Sunday"] %>
-			  <tbody id="meetbody">
-	  
-				  <tr>
-					  <td>
-						  <div class="form">
-							  <select class="form-select form-select-lg" type="select">
-								  <% for (let i=0; i<7; i++){ %>
-									  <option  value=<%= i %> >
-										  <%= weekdays[i] %>
-									  </option>
-								  <% } %>
-							  </select>
-						  </div>
-					  </td>
-					  <td>
-						  <input
-							  type="text"
-							  class="form-control"
-							  value=""
-							  
-						  />
-					  </td>
-					  <td>
-						  <input
-							  type="text"
-							  class="form-control"
-							  value=""
-							  
-						  />
-					  </td>
-					  <td>
-						  <input name="date"
-							  type="text"
-							  class="form-control"
-							  value=""
-						  />
-					  </td>
-					  <td>
-						  <button
-							  class="btn btn-danger btn-rounded btn-sm fw-bold"
-							  type="button"
-							  name="del"
-						  >
-							  Delete
-						  </button>
-					  </td>
-				  </tr>
-			  </tbody>
-		  </table>
-			<!-- Submit button -->
-			<div class="row">
-				<div class="col-12 col-md-6 mb-4">
-					<button type="submit" class="btn btn-secondary btn-rounded btn-block">Reset</button>
-				</div>
-				<div class="col-12 col-md-6 mb-4">
-					<button type="submit" class="btn btn-primary btn-rounded btn-block">Save Change</button>
-				</div>
-			</div>
-		  </form>
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-deep-orange">Sign up</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="text-center">
-  <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalRegisterForm">Launch
-    Modal Register Form</a>
-</div>
   </section>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
 <script>
+	(() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach((form) => {
+            form.addEventListener('submit', (event) => {
+                //- console.log(event);
+                form.checkValidity();
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+                
+            }, false);
+        });
+        })();
 	$("#add").click(()=>{
 		$("#meetbody").append(
-			`<tr>
+			`<tr name="meets">
     				<td>
     					<div class="form">
-							<select class="form-select form-select-lg" type="select">
+							<select class="form-select form-select-lg" type="select" name="wday">
 								<% for (let i=0; i<7; i++){ %>
 									<option  value=<%= i %>>
 										<%= weekdays[i] %>
@@ -313,29 +206,26 @@
 						</div>
     				</td>
     				<td>
-    					<input
-    						type="text"
-    						class="form-control"
-    						value=""
-    						
-    					/>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select" name="start">
+								<% for (let i=0; i<15; i++){ %>
+									<option  value=<%= i %>>
+										<%= timeslots[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
     				</td>
 					<td>
-    					<input
-    						type="text"
-    						class="form-control"
-    						value=""
-    						
-    					/>
-    				</td>
-    				<td>
-    					<input
-							name="date"
-    						type="text"
-    						class="form-control"
-    						value=""
-    						
-    					/>
+    					<div class="form">
+							<select class="form-select form-select-lg" type="select" name="end">
+								<% for (let i=0; i<15; i++){ %>
+									<option  value=<%= i %>>
+										<%= timeslots[i] %>
+									</option>
+								<% } %>
+							</select>
+						</div>
     				</td>
     				<td>
     					<button
@@ -350,15 +240,94 @@
 			`
 		)
 		$("[name='del']").click(function() {
-  			$(this).closest("tr").remove();
+			$(this).closest("tr").remove();
 		});
-		
 	});
+	//for delete a meeting
 	$("[name='del']").click(function() {
-  			$(this).closest("tr").remove();
+		$(this).closest("tr").remove();
 	});
-	$("[name='date']").click(function() {
-			console.log("click");
-		});
+
+	//trigger add course button
+	$("[name='submit']").click(function() {
+		var meetings=[];
+		$("[name='meets']").each(function(){
+			var melement={};
+			var ts=[];
+			melement.day=$(this).find("[name='wday'] option:selected").val()
+			ts.push($(this).find("[name='start'] option:selected").val());
+			ts.push($(this).find("[name='end'] option:selected").val());
+			ts[1]=ts[1]-1;
+			if (ts[0]==ts[1]) {
+				ts.pop();
+			}else if (ts[0]<=ts[1]-2){
+				var count=ts[1]-ts[0]-1;
+				for(var i=1;i<=count;i++){
+					var y=parseInt(ts[0])+parseInt(i);
+					ts.splice(i,0,y);
+				}
+			}
+			for (var i=0; i<ts.length;i++){
+				ts[i]=parseInt(ts[i]);
+				if (ts[i]>=10){
+					ts[i]=ts[i].toString();
+				}else{
+					ts[i]=ts[i].toString();
+					ts[i]=ts[i].padStart(2,'0');
+				}
+			}
+			melement.timeSlot=ts;
+			meetings.push(melement);
+		})
+		var course={
+			courseCode: $("#ccode").val(),
+			courseName: $("#cname").val(),
+			department: $("#cdepartment").val(),
+			instructor: $("#cinstructor").val(),
+			venue: $("#cvenue").val(),
+			seat: $("#cseat").val(),
+			description: $("#cdescription").val(),
+			meetings:meetings,
+		}	
+		console.log(course);
+		//fetch add course api
+		const options = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(course),
+		}
+        function submitInfo() {
+			fetch(
+				"",
+				options
+			).then(async (data) => {
+				if (data.status == "200") {
+					document.getElementById(
+						"err"
+					).style.display = "none";
+					document.getElementById(
+						"success"
+					).style.display = "block";
+					setTimeout(
+						() =>
+							window.location.replace(
+								"/admin/courses"
+							),
+							2000
+					);
+				} else {
+					let res = await data.json();
+					document.getElementById("err").textContent =
+						res.message;
+					document.getElementById(
+						"err"
+					).style.display = "block";
+				}
+			});
+		}
+		submitInfo();
+	})
 </script>
 <%- include('./nav_end.ejs') %>

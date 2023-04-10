@@ -167,7 +167,7 @@
 							<button type="submit" class="btn btn-secondary btn-rounded btn-block" id="reset">Reset</button>
 						</div>
 						<div class="col-12 col-md-6 mb-4">
-							<button type="button" class="btn btn-primary btn-rounded btn-block" id="<%=c._id %>" name="save">Save Change</button>
+							<button type="button" class="btn btn-primary btn-rounded btn-block" id="<%=c._id %>" name="submit">Save Change</button>
 						</div>
 					</div>
 				  </form>
@@ -301,12 +301,12 @@
 	});
 
 	//save changes for submit
-	$("[name='save']").click(function() {
+	$("[name='submit']").click(function() {
 		var meetings=[];
 		$("[name='meets']").each(function(){
 			var melement={};
 			var ts=[];
-			melement.courseCode=$("[name='save']").attr('id');
+			melement.courseCode=$("#ccode").val();
 			melement.day=$(this).find("[name='wday'] option:selected").val()
 			ts.push($(this).find("[name='start'] option:selected").val());
 			ts.push($(this).find("[name='end'] option:selected").val());
@@ -333,6 +333,7 @@
 			meetings.push(melement);
 		})
 		var course={
+			_id:$("[name='save']").attr('id'),
 			courseCode: $("#ccode").val(),
 			courseName: $("#cname").val(),
 			department: $("#cdepartment").val(),

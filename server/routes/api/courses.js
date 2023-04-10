@@ -10,6 +10,8 @@ const {
 	selectCourse,
 	dropCourse,
 	getTimetableInfo,
+	myCourse,
+	addToCart,
 } = require("../../controllers/courses");
 const upload = require("../../middleware/upload");
 const { importCourse } = require("../../controllers/courses");
@@ -28,6 +30,9 @@ router.post("/drop", Auth.checkAuth(), dropCourse);
 router.post("/create", Auth.checkAuth(), createCourse);
 router.post("/delete", Auth.checkAuth(), deleteCourse);
 router.post("/update", Auth.checkAuth(), editCourse);
+
+router.post("/addToCart", Auth.checkAuth(), addToCart);
+router.post("/myCourse", Auth.checkAuth(), myCourse);
 
 router.get("/getTimetableInfo", getTimetableInfo);
 // router.get("/excel");

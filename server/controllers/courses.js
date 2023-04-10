@@ -238,6 +238,37 @@ module.exports.editCourse = (req, res) => {
 	res.status(200).send("ok");
 };
 
+module.exports.addToCart = async function addToCart(req, res) {
+	try {
+		const { courses } = req.body;
+		if (courses.length == 0) throw error.CourseIDNotValid;
+		let toSelect = await countCourseByFilter({ _id: { $in: courses } });
+		console.log(toSelect);
+		if (toSelect != courses.length) {
+			throw error.CourseIDNotValid;
+		}
+
+		for (let course of courses) {
+			await upsertReg(
+				{
+					courseID: course,
+					studentID: req.user._id,
+				},
+				{
+					courseID: course,
+					studentID: req.user._id,
+					selected: false,
+				}
+			);
+		}
+
+		res.status(200).send("ok");
+	} catch (err) {
+		console.error(err);
+		res.status(err.status || 500).send(err);
+	}
+};
+
 module.exports.selectCourse = async function selectCourse(req, res) {
 	try {
 		const { select, courses } = req.body;
@@ -345,4 +376,15 @@ module.exports.getTimetableInfo = async function (req, res) {
 		return res.status(err.status).send(err);
 	}
 	res.status(200).send(timetableInfo);
+};
+
+module.exports.myCourse = async function myCourse(req, res) {
+	let myCourse;
+	try {
+		myCourse = await findRegByFilter({ studentID: req.user._id });
+		return res.status(200).send(myCourse);
+	} catch (error) {
+		console.warn("❗️ ~ myCourse ~ error:", error);
+		res.status(error.status).send(error);
+	}
 };

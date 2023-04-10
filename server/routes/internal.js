@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Auth = require("../middleware/auth");
 const { findCourseByFilter } = require("../services/courses");
+const { departments } = require("../global_var.js");
 
 const profile = {
 	fullName: "CHAN TAI MAN",
@@ -34,6 +35,7 @@ router.get("/profile", Auth.checkAuth(), function (req, res, next) {
 router.get("/search", Auth.checkAuth(), function (req, res, next) {
 	res.render("internal/search", {
 		title: "Search",
+		departments: departments,
 	});
 });
 

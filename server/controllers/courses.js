@@ -58,15 +58,21 @@ module.exports.importCourse = async function importCourse(req, res) {
 
 module.exports.browseCourse = async function browseCourse(req, res) {
 	try {
-		const { keyword } = req.query;
+		const { keyword, limit, department, instructor } = req.query;
 		let filter = {
 			$or: [
-				{ courseCode: { $regex: keyword } },
-				{ courseName: { $regex: keyword } },
+				{ courseCode: { $regex: keyword, $options: "i" } },
+				{ courseName: { $regex: keyword, $options: "i" } },
 			],
 		};
+		if (department != "*") {
+			filter["department"] = department;
+		}
+		if (instructor != "") {
+			filter["instructor"] = { $regex: instructor, $options: "i" };
+		}
 		console.log(filter);
-		let result = await findAllCoursesByFilter(filter);
+		let result = await findAllCoursesByFilter(filter, parseInt(limit));
 		console.log(result);
 		res.status(200).json(result != null ? result : {});
 	} catch (err) {

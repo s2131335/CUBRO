@@ -18,9 +18,12 @@ module.exports.upsertLesson = async function upsertLesson(lesson) {
 	}
 };
 
-module.exports.findAllCoursesByFilter = async function (filter = {}) {
+module.exports.findAllCoursesByFilter = async function (
+	filter = {},
+	limit = 10
+) {
 	try {
-		let courses = await Course.find(filter);
+		let courses = await Course.find(filter).limit(limit);
 		return courses;
 	} catch (err) {
 		console.log("🚀 ~ file: courses.js:20 ~ err:", err);

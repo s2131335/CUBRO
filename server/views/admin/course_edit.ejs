@@ -252,48 +252,7 @@
 		$("[name='del']").click(function() {
 			$(this).closest("tr").remove();
 		});
-	// 	$("[name='save']").click(function() {
-	// 	var meetings=[];
-	// 	$("[name='meets']").each(function(){
-	// 		var melement={};
-	// 		var ts=[];
-	// 		melement.courseCode=$("[name='save']").attr('id');
-	// 		melement.day=$(this).find("[name='wday'] option:selected").val()
-	// 		ts.push($(this).find("[name='start'] option:selected").val());
-	// 		ts.push($(this).find("[name='end'] option:selected").val());
-	// 		ts[1]=ts[1]-1;
-	// 		if (ts[0]==ts[1]) {
-	// 			ts.pop();
-	// 		}else if (ts[0]<=ts[1]-2){
-	// 			var count=ts[1]-ts[0]-1;
-	// 			for(var i=1;i<=count;i++){
-	// 				var y=parseInt(ts[0])+parseInt(i);
-	// 				ts.splice(i,0,y);
-	// 			}
-	// 		}
-	// 		for (var i=0; i<ts.length;i++){
-	// 			ts[i]=parseInt(ts[i]);
-	// 			if (ts[i]>=10){
-	// 				ts[i]=ts[i].toString();
-	// 			}else{
-	// 				ts[i]=ts[i].toString();
-	// 				ts[i]=ts[i].padStart(2,'0');
-	// 			}
-	// 		}
-	// 		melement.timeSlot=ts;
-	// 		meetings.push(melement);
-	// 	})
-	// 	var course={
-	// 		courseCode: $("#ccode").val(),
-	// 		courseName: $("#cname").val(),
-	// 		department: $("#cdepartment").val(),
-	// 		instructor: $("#cinstructor").val(),
-	// 		venue: $("#cvenue").val(),
-	// 		seat: $("#cseat").val(),
-	// 		description: $("#cdescription").val(),
-	// 	}	
-	// 	console.log(meetings);
-	// })
+
 	});
 	//for delete a meeting
 	$("[name='del']").click(function() {
@@ -333,7 +292,7 @@
 			meetings.push(melement);
 		})
 		var course={
-			_id:$("[name='save']").attr('id'),
+			_id:$("[name='submit']").attr('id'),
 			courseCode: $("#ccode").val(),
 			courseName: $("#cname").val(),
 			department: $("#cdepartment").val(),

@@ -111,6 +111,7 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 		// 	throw error.CourseIDNotValid;
 		// }
 		c = await findCourseByFilter({ _id: cid });
+		c.availableSeat = await getCourseAvailability(cid);
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
@@ -167,13 +168,11 @@ module.exports.createCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		dates,
-		time,
+		meeting,
 		description,
 	} = req.body);
 	console.log(course);
-	course.meeting = getMeeting(course.courseCode, course.dates, course.time);
-	delete course.dates;
+	course.meeting = getMeeting(course.courseCode, course.time);
 	delete course.time;
 
 	try {
@@ -213,14 +212,13 @@ module.exports.editCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		dates,
 		time,
 		description,
 	} = req.body;
 
 	let meeting;
-	if (time && dates) {
-		meeting = getMeeting(courseCode, dates, time);
+	if (time) {
+		meeting = getMeeting(courseCode, time);
 	}
 	try {
 		findCourseAndUpdate(
@@ -230,7 +228,6 @@ module.exports.editCourse = (req, res) => {
 				venue,
 				instructor,
 				seat,
-				dates,
 				description,
 				meeting,
 			}
@@ -239,6 +236,37 @@ module.exports.editCourse = (req, res) => {
 		return res.status(error.status).send(error);
 	}
 	res.status(200).send("ok");
+};
+
+module.exports.addToCart = async function addToCart(req, res) {
+	try {
+		const { courses } = req.body;
+		if (courses.length == 0) throw error.CourseIDNotValid;
+		let toSelect = await countCourseByFilter({ _id: { $in: courses } });
+		console.log(toSelect);
+		if (toSelect != courses.length) {
+			throw error.CourseIDNotValid;
+		}
+
+		for (let course of courses) {
+			await upsertReg(
+				{
+					courseID: course,
+					studentID: req.user._id,
+				},
+				{
+					courseID: course,
+					studentID: req.user._id,
+					selected: false,
+				}
+			);
+		}
+
+		res.status(200).send("ok");
+	} catch (err) {
+		console.error(err);
+		res.status(err.status || 500).send(err);
+	}
 };
 
 module.exports.selectCourse = async function selectCourse(req, res) {
@@ -256,7 +284,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 				return getCourseAvailability(course);
 			})
 			.filter((course) => {
-				return course.isFull;
+				return course.available === 0;
 			});
 
 		let collision = await checkCollision(req.user, courses);
@@ -348,4 +376,15 @@ module.exports.getTimetableInfo = async function (req, res) {
 		return res.status(err.status).send(err);
 	}
 	res.status(200).send(timetableInfo);
+};
+
+module.exports.myCourse = async function myCourse(req, res) {
+	let myCourse;
+	try {
+		myCourse = await findRegByFilter({ studentID: req.user._id });
+		return res.status(200).send(myCourse);
+	} catch (error) {
+		console.warn("❗️ ~ myCourse ~ error:", error);
+		res.status(error.status).send(error);
+	}
 };

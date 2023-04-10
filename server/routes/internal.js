@@ -26,7 +26,7 @@ router.get("/profile", Auth.checkAuth(), function (req, res, next) {
 	} else {
 		res.render("internal/profile", {
 			title: "Profile",
-			profile: req.user,
+			data: req.user,
 		});
 	}
 });
@@ -171,7 +171,17 @@ router.get("/regcourse", Auth.checkAuth(), function (req, res, next) {
 
 /* GET update password page. */
 router.get("/update_password", Auth.checkAuth(), function (req, res, next) {
-	res.render("internal/update_password", { title: "Update password" });
+	if (req.user.role.includes(Auth.ADMIN)) {
+		res.render("admin/update_password", {
+			title: "Update Password",
+			data: req.user,
+		});
+	} else {
+		res.render("internal/update_password", {
+			title: "Update Password",
+			profile: req.user,
+		});
+	}
 });
 
 /* GET user mycourse page. */

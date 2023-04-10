@@ -1,56 +1,56 @@
 <%- include('./nav.ejs') %>
 
 <body>
-	<div class="container-fluid pt-5 row">
-		<div class="float-center d-flex justify-content-center">
-			<img
-				src="public/images/usericon.png"
-				class="card-img-top"
-				style="max-width: 15%"
-			/>
+	<section class="intro">
+		  <div class="container py-5 h-100">
+			<div class="row justify-content-center align-items-center">
+			  <div class="col-12 col-lg-10">
+				<div class="card" style="border-radius: 1rem;">
+					<div class="card-body p-5">
+						<div class="float-center d-flex justify-content-center">
+							<h4>User Profile</h4>
+						</div>
+						<br>
+						<div class="float-center d-flex justify-content-center">
+							<img
+							src="/images/usericon.png"
+							class="card-img-top"
+							style="max-width: 15%"
+							/>
+						</div>
+				<br />
+				<div class="float-center d-flex justify-content-cente px-5 pt-3">
+					<table class="table px-0">
+						<tbody>
+							<tr>
+								<td><strong>Name</strong></td>
+								<td><%= data.fullName %></td>
+							</tr>
+							<tr>
+								<td><strong>Email</strong></td>
+								<td><%= data.email %></td>
+							</tr>
+							<tr>
+								<td><strong>Contact Number</strong></td>
+								<td><%= data.contactNumber %></td>
+							</tr>
+						</tbody>
+					</table>	
+					
+				</div>
+				<div class="float-center d-flex justify-content-center">
+					<a class="align-self-center" href="./update_password" >Change Password</a>
+				</div>
+			</div>
 		</div>
-		<br />
-		<div class="float-center d-flex justify-content-cente px-5 pt-3">
-			<table class="table px-0">
-				<tbody>
-					<tr>
-						<td><strong>Name</strong></td>
-						<td><%= profile.fullName %></td>
-					</tr>
-					<tr>
-						<td><strong>Email</strong></td>
-						<td><%= profile.email %></td>
-					</tr>
-					<tr>
-						<td><strong>Contact Number</strong></td>
-						<td><%= profile.contactNumber %></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- <ul class="list-group list-group-light">
-					<li class="list-group-item text-center">
-						<a> Full Name : <%= profile.fullName %> </a>
-					</li>
-
-					<li class="list-group-item text-center">
-						<a> Email : <%= profile.email %> </a>
-					</li>
-
-					<li class="list-group-item text-center">
-						<a> Role : <%= profile.role %> </a>
-					</li>
-					<li class="list-group-item text-center">
-						<a> Contact Number : <%= profile.contactNumber %> </a>
-					</li>
-				</ul> -->
-		<div class="col"></div>
 	</div>
-	<div class="float-center d-flex justify-content-center">
-		<a class="btn btn-link" href="./update_password">Change Password</a>
-	</div>
+</div>
+</div>
+</section>
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-	console.log(profile);
+
 </script>
-<%- include('./nav_end.ejs') %>

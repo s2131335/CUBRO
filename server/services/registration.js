@@ -13,7 +13,7 @@ module.exports.getCourseAvailability = async function (courseID) {
 
 	let reg = await Registration.findOne({ courseID }).populate("courseID");
 	return {
-		isFull: currentSeat >= reg.courseID.seat,
+		availible: reg.courseID.seat - currentSeat,
 		courseCode: reg.courseID.courseCode,
 	};
 };

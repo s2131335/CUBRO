@@ -1,51 +1,51 @@
 <%- include('./nav.ejs') %>
 
 <body>
-	<div class="container-fluid pt-5 row">
-		<div class="float-center d-flex justify-content-center">
-			<img
-				src="/images/usericon.png"
-				class="card-img-top"
-				style="max-width: 15%"
-			/>
-		</div>
-		<br />
-		<div class="float-center d-flex justify-content-cente px-5 pt-3">
-			<table class="table px-0">
-				<tbody>
-					<tr>
-						<td><strong>Name</strong></td>
-						<td><%= data.fullName %></td>
-					</tr>
-					<tr>
-						<td><strong>Email</strong></td>
-						<td><%= data.email %></td>
-					</tr>
-					<tr>
-						<td><strong>Contact Number</strong></td>
-						<td><%= data.contactNumber %></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- <ul class="list-group list-group-light">
-					<li class="list-group-item text-center">
-						<a> Full Name :  </a>
-					</li>
-
-					<li class="list-group-item text-center">
-						<a> Email : </a>
-					</li>
-
-					<li class="list-group-item text-center">
-						<a> Role :  </a>
-					</li>
-					<li class="list-group-item text-center">
-						<a> Contact Number :  </a>
-					</li>
-				</ul> -->
-		<div class="col"></div>
-	</div>
+	<section class="intro">
+		  <div class="container py-5 h-100">
+			<div class="row justify-content-center align-items-center">
+			  <div class="col-12 col-lg-10">
+				<div class="card" style="border-radius: 1rem;">
+					<div class="card-body p-5">
+						<div class="float-center d-flex justify-content-center">
+							<h4>User Profile</h4>
+						</div>
+						<br>
+						<div class="float-center d-flex justify-content-center">
+							<img
+							src="/images/usericon.png"
+							class="card-img-top"
+							style="max-width: 15%"
+							/>
+						</div>
+				<br />
+				<div class="float-center d-flex justify-content-cente px-5 pt-3">
+					<table class="table px-0">
+						<tbody>
+							<tr>
+								<td><strong>Name</strong></td>
+								<td><%= data.fullName %></td>
+							</tr>
+							<tr>
+								<td><strong>Email</strong></td>
+								<td><%= data.email %></td>
+							</tr>
+							<tr>
+								<td><strong>Contact Number</strong></td>
+								<td><%= data.contactNumber %></td>
+							</tr>
+						</tbody>
+					</table>	
+	
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  <!-- </div> -->
+		<!-- </div> -->
+	  </div>
+  </div>
+	</section>
 </body>
 <script>
 	console.log(profile);

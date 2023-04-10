@@ -52,7 +52,7 @@
   
 					<!-- Message input -->
 					<div class="form-outline mb-4">
-					  <textarea class="form-control" id="cdescription" rows="4" value="<%=c.description%>"></textarea>
+					  <textarea class="form-control" id="cdescription" rows="4"><%=c.description%></textarea>
 					  <label class="form-label" for="cdescription">Description</label>
 					</div>
 					<div class="row mb-1">
@@ -102,10 +102,10 @@
 							<%	meeting.timeSlot.push(meeting.timeSlot[0]); %>
 							<%  } %>
 							<%  meeting.timeSlot[meeting.timeSlot.length - 1] += 1; %>
-						  <tr>
+						  <tr name="meets">
 							  <td>
 								  <div class="form">
-									  <select class="form-select form-select-lg" type="select">
+									  <select class="form-select form-select-lg" type="select" name="wday">
 										  <% for (let i=0; i<7; i++){ %>
 											<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
 												<%= weekdays[i] %>
@@ -116,7 +116,7 @@
 							  </td>
 							  <td>
 								<div class="form">
-									<select class="form-select form-select-lg" type="select">
+									<select class="form-select form-select-lg" type="select" name="start">
 										<% for (let i=0; i<14; i++){ %>
 										  <option  value=<%= i %> <%if (meeting.timeSlot[0]==i){ %>selected<% } %>>
 											  <%= timeslots[i] %>
@@ -127,7 +127,7 @@
 							</td>
 							<td>
 								<div class="form">
-									<select class="form-select form-select-lg" type="select">
+									<select class="form-select form-select-lg" type="select" name="end">
 										<% for (let i=0; i<15; i++){ %>
 										  <option  value=<%= i %> <%if (meeting.timeSlot[1]==i){ %>selected<% } %>>
 											  <%= timeslots[i] %>
@@ -191,10 +191,10 @@
         })();
 	$("#add").click(()=>{
 		$("#meetbody").append(
-			`<tr>
+			`<tr name="meets">
     				<td>
     					<div class="form">
-							<select class="form-select form-select-lg" type="select">
+							<select class="form-select form-select-lg" type="select" name="wday">
 								<% for (let i=0; i<7; i++){ %>
 									<option  value=<%= i %>>
 										<%= weekdays[i] %>
@@ -205,7 +205,7 @@
     				</td>
     				<td>
     					<div class="form">
-							<select class="form-select form-select-lg" type="select">
+							<select class="form-select form-select-lg" type="select" name="start">
 								<% for (let i=0; i<15; i++){ %>
 									<option  value=<%= i %>>
 										<%= timeslots[i] %>
@@ -216,7 +216,7 @@
     				</td>
 					<td>
     					<div class="form">
-							<select class="form-select form-select-lg" type="select">
+							<select class="form-select form-select-lg" type="select" name="end">
 								<% for (let i=0; i<15; i++){ %>
 									<option  value=<%= i %>>
 										<%= timeslots[i] %>
@@ -240,13 +240,86 @@
 		$("[name='del']").click(function() {
 			$(this).closest("tr").remove();
 		});
-		
+	// 	$("[name='save']").click(function() {
+	// 	var meetings=[];
+	// 	$("[name='meets']").each(function(){
+	// 		var melement={};
+	// 		var ts=[];
+	// 		melement.courseCode=$("[name='save']").attr('id');
+	// 		melement.day=$(this).find("[name='wday'] option:selected").val()
+	// 		ts.push($(this).find("[name='start'] option:selected").val());
+	// 		ts.push($(this).find("[name='end'] option:selected").val());
+	// 		ts[1]=ts[1]-1;
+	// 		if (ts[0]==ts[1]) {
+	// 			ts.pop();
+	// 		}else if (ts[0]<=ts[1]-2){
+	// 			var count=ts[1]-ts[0]-1;
+	// 			for(var i=1;i<=count;i++){
+	// 				var y=parseInt(ts[0])+parseInt(i);
+	// 				ts.splice(i,0,y);
+	// 			}
+	// 		}
+	// 		for (var i=0; i<ts.length;i++){
+	// 			ts[i]=parseInt(ts[i]);
+	// 			if (ts[i]>=10){
+	// 				ts[i]=ts[i].toString();
+	// 			}else{
+	// 				ts[i]=ts[i].toString();
+	// 				ts[i]=ts[i].padStart(2,'0');
+	// 			}
+	// 		}
+	// 		melement.timeSlot=ts;
+	// 		meetings.push(melement);
+	// 	})
+	// 	var course={
+	// 		courseCode: $("#ccode").val(),
+	// 		courseName: $("#cname").val(),
+	// 		department: $("#cdepartment").val(),
+	// 		instructor: $("#cinstructor").val(),
+	// 		venue: $("#cvenue").val(),
+	// 		seat: $("#cseat").val(),
+	// 		description: $("#cdescription").val(),
+	// 	}	
+	// 	console.log(meetings);
+	// })
 	});
+	//for delete a meeting
 	$("[name='del']").click(function() {
 		$(this).closest("tr").remove();
 	});
+
+	//save changes for submit
 	$("[name='save']").click(function() {
-		
+		var meetings=[];
+		$("[name='meets']").each(function(){
+			var melement={};
+			var ts=[];
+			melement.courseCode=$("[name='save']").attr('id');
+			melement.day=$(this).find("[name='wday'] option:selected").val()
+			ts.push($(this).find("[name='start'] option:selected").val());
+			ts.push($(this).find("[name='end'] option:selected").val());
+			ts[1]=ts[1]-1;
+			if (ts[0]==ts[1]) {
+				ts.pop();
+			}else if (ts[0]<=ts[1]-2){
+				var count=ts[1]-ts[0]-1;
+				for(var i=1;i<=count;i++){
+					var y=parseInt(ts[0])+parseInt(i);
+					ts.splice(i,0,y);
+				}
+			}
+			for (var i=0; i<ts.length;i++){
+				ts[i]=parseInt(ts[i]);
+				if (ts[i]>=10){
+					ts[i]=ts[i].toString();
+				}else{
+					ts[i]=ts[i].toString();
+					ts[i]=ts[i].padStart(2,'0');
+				}
+			}
+			melement.timeSlot=ts;
+			meetings.push(melement);
+		})
 		var course={
 			courseCode: $("#ccode").val(),
 			courseName: $("#cname").val(),
@@ -255,9 +328,9 @@
 			venue: $("#cvenue").val(),
 			seat: $("#cseat").val(),
 			description: $("#cdescription").val(),
+			meetings:meetings,
 		}	
 		console.log(course);
-
 	})
 </script>
 <%- include('./nav_end.ejs') %>

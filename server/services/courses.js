@@ -1,4 +1,4 @@
-const { Course } = require("../database/models/courses");
+const Course = require("../database/models/courses");
 const error = require("../utils/errors");
 
 module.exports.countCourseByFilter = async function (filter) {

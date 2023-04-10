@@ -15,6 +15,7 @@ const {
 	findCourseByFilter,
 	deleteCoursesByFilter,
 	countCourseByFilter,
+	findCourseAndUpdate,
 } = require("../services/courses");
 const {
 	upsertReg,
@@ -205,34 +206,13 @@ module.exports.deleteCourse = async (req, res) => {
 	res.status(200).send("ok");
 };
 module.exports.editCourse = (req, res) => {
-	const {
-		_id,
-		courseCode,
-		courseName,
-		venue,
-		instructor,
-		seat,
-		time,
-		description,
-	} = req.body;
-
-	let meeting;
-	if (time) {
-		meeting = getMeeting(courseCode, time);
-	}
+	const _id = req.body.course._id;
+	delete req.body.course._id;
 	try {
-		findCourseAndUpdate(
-			{ _id },
-			{
-				courseName,
-				venue,
-				instructor,
-				seat,
-				description,
-				meeting,
-			}
-		);
+		findCourseAndUpdate({ _id }, req.body.course);
 	} catch (error) {
+		console.warn("❗️ ~ error:", error);
+
 		return res.status(error.status).send(error);
 	}
 	res.status(200).send("ok");

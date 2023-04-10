@@ -111,6 +111,7 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 		// 	throw error.CourseIDNotValid;
 		// }
 		c = await findCourseByFilter({ _id: cid });
+		c.availableSeat = await getCourseAvailability(cid);
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
@@ -167,7 +168,7 @@ module.exports.createCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		time,
+		meeting,
 		description,
 	} = req.body);
 	console.log(course);
@@ -252,7 +253,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 				return getCourseAvailability(course);
 			})
 			.filter((course) => {
-				return course.isFull;
+				return course.available === 0;
 			});
 
 		let collision = await checkCollision(req.user, courses);

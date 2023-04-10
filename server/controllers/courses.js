@@ -240,7 +240,7 @@ module.exports.editCourse = (req, res) => {
 
 module.exports.addToCart = async function addToCart(req, res) {
 	try {
-		const { courses } = req.body;
+		const { course } = req.body;
 		let reg = await findRegByFilter({
 			courseID: course,
 			studentID: req.user._id,
@@ -259,7 +259,7 @@ module.exports.addToCart = async function addToCart(req, res) {
 			}
 		);
 
-		res.status(200).send("ok");
+		res.status(200).json({});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status || 500).send(err);

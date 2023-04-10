@@ -241,26 +241,23 @@ module.exports.editCourse = (req, res) => {
 module.exports.addToCart = async function addToCart(req, res) {
 	try {
 		const { courses } = req.body;
-		if (courses.length == 0) throw error.CourseIDNotValid;
-		let toSelect = await countCourseByFilter({ _id: { $in: courses } });
-		console.log(toSelect);
-		if (toSelect != courses.length) {
-			throw error.CourseIDNotValid;
-		}
+		let reg = await findRegByFilter({
+			courseID: course,
+			studentID: req.user._id,
+		});
+		if (reg.length > 0) throw error.RegistrationExists;
 
-		for (let course of courses) {
-			await upsertReg(
-				{
-					courseID: course,
-					studentID: req.user._id,
-				},
-				{
-					courseID: course,
-					studentID: req.user._id,
-					selected: false,
-				}
-			);
-		}
+		await upsertReg(
+			{
+				courseID: course,
+				studentID: req.user._id,
+			},
+			{
+				courseID: course,
+				studentID: req.user._id,
+				selected: false,
+			}
+		);
 
 		res.status(200).send("ok");
 	} catch (err) {

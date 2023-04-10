@@ -2,70 +2,70 @@
 <section class="intro">
 	  <!-- <div class="mask d-flex align-items-center h-100"> -->
 		<div class="container">
-		  <div class="row justify-content-center">
-			<div class="col-12 col-lg-10">
-			  <div class="card" style="border-radius: 1rem;">
-				<div class="card-body p-5">
-				<a href="/admin/courses">Back</a>
-				  <h1 class="mb-5 text-center">Edit Course</h1>
-				  <form>
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-10">
+					<div class="card" style="border-radius: 1rem;">
+						<div class="card-body p-5">
+							<a href="/admin/courses">Back</a>
+								<h1 class="mb-5 text-center">Edit Course</h1>
+									<form>
 					<!-- 2 column grid layout with text inputs for the first and last names -->
-					<div class="row">
-						<h4 class="text-muted" style="display: inline">Basic Information</h4>
-					  <div class="col-12 col-md-6 mb-4">
-						<div class="form-outline">
-						  <input type="text" id="ccode" class="form-control" value="<%=c.courseCode%>"/>
-						  <label class="form-label" for="ccode" >Course Code</label>
-						</div>
-					  </div>
-					  <div class="col-12 col-md-6 mb-4">
-						<div class="form-outline">
-						  <input type="text" id="cname" class="form-control" value="<%=c.courseName%>"/>
-						  <label class="form-label" for="cname">Course Name</label>
-						</div>
-					  </div>
-					</div>
-  
-					<!-- Text input -->
-					<div class="form-outline mb-4">
-					  <input type="text" id="cdepartment" class="form-control" value="<%=c.department%>"/>
-					  <label class="form-label" for="cdepartment">Department</label>
-					</div>
-  
-					<!-- Text input -->
-					<div class="form-outline mb-4">
-					  <input type="text" id="cinstructor" class="form-control" value="<%=c.instructor%>"/>
-					  <label class="form-label" for="cinstructor">Instructor</label>
-					</div>
-  
-					<!-- Email input -->
-					<div class="form-outline mb-4">
-					  <input type="text" id="cvenue" class="form-control" value="<%=c.venue%>"/>
-					  <label class="form-label" for="cvenue">Venue</label>
-					</div>
-  
-					<!-- Number input -->
-					<div class="form-outline mb-4">
-					  <input type="number" id="cseat" class="form-control" value="<%=c.seat%>"/>
-					  <label class="form-label" for="cseat">Capacity</label>
-					</div>
-  
-					<!-- Message input -->
-					<div class="form-outline mb-4">
-					  <textarea class="form-control" id="cdescription" rows="4"><%=c.description%></textarea>
-					  <label class="form-label" for="cdescription">Description</label>
-					</div>
-					<div class="row mb-1">
-						<div class="col-10 d-flex aligns-items-center">
-							<h4 class="text-muted" style="display: inline">Meetings</h4>
-							<button class="btn btn-link btn-floating" type="button" id="add">
-								<i class="fa-solid fa-plus"></i>
-							</button>
-						</div>
-					</div>
-					<table class="table">
-					  <thead>
-						  <tr>
+										<div class="row">
+										<h4 class="text-muted" style="display: inline">Basic Information</h4>
+											<div class="col-12 col-md-6 mb-4">
+												<div class="form-outline">
+													<input type="text" id="ccode" class="form-control" value="<%=c.courseCode%>"/>
+													<label class="form-label" for="ccode" >Course Code</label>
+												</div>
+											</div>
+											<div class="col-12 col-md-6 mb-4">
+												<div class="form-outline">
+													<input type="text" id="cname" class="form-control" value="<%=c.courseName%>"/>
+													<label class="form-label" for="cname">Course Name</label>
+												</div>
+											</div>
+										</div>
+
+										<!-- Text input -->
+										<div class="form-outline mb-4">
+											<input type="text" id="cdepartment" class="form-control" value="<%=c.department%>"/>
+											<label class="form-label" for="cdepartment">Department</label>
+										</div>
+
+										<!-- Text input -->
+										<div class="form-outline mb-4">
+											<input type="text" id="cinstructor" class="form-control" value="<%=c.instructor%>"/>
+											<label class="form-label" for="cinstructor">Instructor</label>
+										</div>
+
+										<!-- Email input -->
+										<div class="form-outline mb-4">
+											<input type="text" id="cvenue" class="form-control" value="<%=c.venue%>"/>
+											<label class="form-label" for="cvenue">Venue</label>
+										</div>
+
+										<!-- Number input -->
+										<div class="form-outline mb-4">
+											<input type="number" id="cseat" class="form-control" value="<%=c.seat%>"/>
+											<label class="form-label" for="cseat">Capacity</label>
+										</div>
+
+										<!-- Message input -->
+										<div class="form-outline mb-4">
+											<textarea class="form-control" id="cdescription" rows="4"><%=c.description%></textarea>
+											<label class="form-label" for="cdescription">Description</label>
+										</div>
+										<div class="row mb-1">
+											<div class="col-10 d-flex aligns-items-center">
+												<h4 class="text-muted" style="display: inline">Meetings</h4>
+												<button class="btn btn-link btn-floating" type="button" id="add">
+													<i class="fa-solid fa-plus"></i>
+												</button>
+											</div>
+										</div>
+										<table class="table">
+											<thead>
+												<tr>
 							  <th scope="col">Weekday</th>
 							  <th scope="col">Start</th>
 							  <th scope="col">End</th>

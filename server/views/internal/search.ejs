@@ -1,9 +1,9 @@
 <%- include('./nav.ejs') %>
-<body>
-    <div class="container pt-4 pb-5">
-        <div class="row pt-5 justify-content-center w-75 me-0">
+
+    <div class="container pt-4 pb-1">
+        <!-- <div class="row pt-5 justify-content-center w-75 me-0">
             <div class="col form-check form-check-inline d-flex justify-content-center p-0">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="option1"/>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="option1" />
                 <label class="form-check-label" for="option1"> By Course Code </label>
             </div>
             <div class="col form-check form-check-inline d-flex justify-content-center p-0">
@@ -18,61 +18,150 @@
                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="option4" />
                 <label class="form-check-label" for="option3"> By Department </label>
             </div>
-        </div>
-
-        <div class="d-flex row justify-content-center pt-3 pb-4">
-            <div class="input-group w-50 ">
-                <div class="form-outline border">
-                    <input type="search" id="form1" class="form-control" />
-                    <label class="form-label" for="form1">Search</label>
+        </div> -->
+        <div class="d-flex row justify-content-center pt-3 pb-0 px-5 ">
+            <div class="row w-50">
+                <div class="col-10">
+                    <div class="input-group ">
+                        <div class="form-outline border ">
+                            <input type="search" id="form1" class="form-control" name="form1" />
+                            <label class="form-label" for="form1">Search</label>
+                        </div>
+                        <button type="button" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary">
-                    <i class="fas fa-search"></i>
-                </button>
+                <div class="col-2">
+                    <select class="form-select" aria-label="Default select example" id="limit">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex row justify-content-center pt-0 pb-0 px-5 ">
+            <div class="row w-50 ">
+                <a type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                    aria-controls="collapseExample" style="text-align:right;">
+                    Advance Search With Filters <i class="fa fa-angle-down"></i>
+                </a>
+                <div class="collapse" id="collapseExample">
+                    <div class="pb-2 row">
+                        <div class="col-6">
+                            <div class="form-outline border ">
+                                <input type="search" id="instructor" class="form-control" name="form1" />
+                                <label class="form-label" for="form1">Instructor</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-select" aria-label="Default select example" id="dept">
+                                <option value="*" selected>Any Department</option>
+                                <%for (let dept of departments){%>
+                                    <option value="<%=dept%>">
+                                        <%=dept%>
+                                    </option>
+                                    <%}%>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row d-flex justify-content-center">
-            <ul class="list-group list-group-light justify-content-center w-50 border">
-                <% data.course.forEach((c)=>{ %>
-                    <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
-                        <div class="form-check col-2">
-                            <input class="form-check-input" type="checkbox" value="" id=<%=c.courseCode %> />
-                        </div>
-                        <div class="col-6">
-                            <div class="fw-bold"><%= c.courseCode %></div>
-                            <div class="text-muted"><%= c.courseName %></div>
-                        </div>
-                        <a class="btn btn-link col-3" data-mdb-ripple-color="dark">More Info</a>
-                    </li>
-                <% }) %>  
-            </ul>
-        </div>
-
-        <div class="d-flex row justify-content-center pt-3 pb-4">
-            <button type="button" class="btn btn-primary w-25 me-3">Add to cart</button>
-            <button type="button" class="btn btn-secondary w-25 ms-3">Clear</button>
-        </div>
     </div>
-    
-</body>
-<script>
-    var data = <%- JSON.stringify(data) %>;
-    var courses = data.course.map(c =>{
-        return {
-            courseCode: c.courseCode,
-            venue: c.venue,
-            class: c.class,
-            day: c.day,
-            start: c.start,
-            end: c.end,
-        };
-    });
-</script>
-<!-- .form                            
-                                        select#employment.form-select.form-select-lg(type='select' name='employment' required disabled=true)
-                                            option.fr(value='' disabled='' selected) 聘用模式*
-                                            option(value='0' selected=(onePosition[0].employMode == '0')) 全職
-                                            option(value='1' selected=(onePosition[0].employMode == '1')) 兼職
-                                        .invalid-feedback 
-                                            p.small 請選擇您的聘用模式。 -->
+
+
+    <div class="row d-flex justify-content-center">
+        <div class="loader"></div>
+        <ul class="list-group list-group-light justify-content-center w-50 border" id="courseList">
+        </ul>
+    </div>
+
+    <div class="d-flex row justify-content-center pt-3 pb-4">
+        <button type="button" class="btn btn-primary w-25 me-3">Add to cart</button>
+        <button type="button" class="btn btn-secondary w-25 ms-3">Clear</button>
+    </div>
+
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            /* Light grey */
+            border-top: 16px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('.loader').hide();
+            load()
+        });
+
+        function load() {
+            $('#courseList').hide();
+            $('.loader').show();
+            fetch('/api/courses/browse?' + new URLSearchParams({
+                keyword: $('#form1').val(),
+                department: $('#dept').val(),
+                instructor: $('#instructor').val(),
+                limit: $('#limit').val(),
+            })).then(response => response.json())
+                .then((res) => {
+                    let HTMLString = '';
+                    for (const course of res) {
+                        HTMLString += `
+                        <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+                            <div class="form-check col-1">
+                                <input class="form-check-input" type="checkbox" value="" id="${course._id}"/>
+                            </div>
+                            <div class="col-6">
+                                <div class="fw-bold">${course.courseCode}</div>
+                                <div class="text-muted">${course.courseName}</div>
+                            </div>
+                            <div class="col-3">
+                                <div class="fw-light fst-italic">${course.department}</div>
+                                <div class="fst-italic">${course.instructor}</div>
+                            </div>
+                            <a class="btn btn-link col-2" data-mdb-ripple-color="dark" href="/internal/course/info/${course._id}">More Info</a>
+                        </li>
+                        `;
+                    }
+                    if (HTMLString == '') {
+                        HTMLString = '<li class="list-group-item d-flex justify-content-between align-items-center ps-4">No courses found!</li>';
+                    }
+                    $('#courseList').html(HTMLString);
+                    $('.loader').hide();
+                    $('#courseList').show();
+                })
+        }
+
+        $('#form1').change(() => {
+            load()
+        })
+        $('#dept').change(() => {
+            load()
+        })
+        $('#instructor').change(() => {
+            load()
+        })
+        $('#limit').change(() => {
+            load()
+        })
+    </script>
+    </body>

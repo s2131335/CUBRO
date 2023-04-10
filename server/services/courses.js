@@ -1,4 +1,4 @@
-const { Tutorial, Lecture, Course } = require("../database/models/courses");
+const { Course } = require("../database/models/courses");
 const error = require("../utils/errors");
 
 module.exports.countCourseByFilter = async function (filter) {
@@ -6,19 +6,10 @@ module.exports.countCourseByFilter = async function (filter) {
 };
 
 module.exports.upsertLesson = async function upsertLesson(lesson) {
-	let type = lesson.type;
 	try {
-		if (type === "tutorial") {
-			await Tutorial.updateOne(
-				{ courseCode: lesson.courseCode },
-				lesson,
-				{ upsert: true }
-			);
-		} else
-			await Lecture.updateOne({ courseCode: lesson.courseCode }, lesson, {
-				upsert: true,
-			});
-		delete lesson.type;
+		await Course.updateOne({ courseCode: lesson.courseCode }, lesson, {
+			upsert: true,
+		});
 		return null;
 	} catch (err) {
 		console.log("🚀 ~ file: courses.js:20 ~ upsertLesson ~ err:", err);
@@ -27,9 +18,12 @@ module.exports.upsertLesson = async function upsertLesson(lesson) {
 	}
 };
 
-module.exports.findAllCoursesByFilter = async function (filter = {}) {
+module.exports.findAllCoursesByFilter = async function (
+	filter = {},
+	limit = 10
+) {
 	try {
-		let courses = await Course.find(filter);
+		let courses = await Course.find(filter).limit(limit);
 		return courses;
 	} catch (err) {
 		console.log("🚀 ~ file: courses.js:20 ~ err:", err);

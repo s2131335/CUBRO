@@ -1,33 +1,38 @@
 const XLSX = require("xlsx");
 const path = require("path");
 const hash = require("object-hash");
+const fs = require("fs");
 const { intToChar, charToInt, writeJSON, readJSON } = require("./utils");
 
 // const DAYS = Object.freeze({
-// 	SUN: 0,
-// 	MON: 1,
-// 	TUE: 2,
-// 	WED: 3,
-// 	THU: 4,
-// 	FRI: 5,
-// 	SAT: 6,
+// 	SUNDAY: 0,
+// 	MONDAY: 1,
+// 	TUESDAY: 2,
+// 	WEDNESDAY: 3,
+// 	THURSDAY: 4,
+// 	FRIDAY: 5,
+// 	SATURDAY: 6,
 // });
 
-// const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const DAYS = [
+	"SUNDAY",
+	"MONDAY",
+	"TUESDAY",
+	"WEDNESDAY",
+	"THURSDAY",
+	"FRIDAY",
+	"SATURDAY",
+];
 const HEADERS = [
 	// need to match the order of the excel headers
 	// need to match the fields in course schema
-	"semester",
 	"courseCode",
 	"courseName",
 	"department",
-	"type",
-	"classNum",
-	"venue",
 	"instructor",
 	"seat",
-	"dates",
 	"time",
+	"venue",
 	"description",
 ];
 
@@ -35,7 +40,7 @@ const IGNORE_SPACE = ["instructor", "courseName", "description", "department"];
 
 module.exports.parseTime = function parseTime() {};
 
-module.exports.getMeeting = function getMeeting(courseCode, dates, timeSlot) {
+module.exports.getMeeting = function getMeeting(courseCode, timeSlot) {
 	let meetings = [];
 	for (let t of timeSlot.split(",")) {
 		slots = t.split("-");
@@ -45,37 +50,16 @@ module.exports.getMeeting = function getMeeting(courseCode, dates, timeSlot) {
 			courseCode,
 			day,
 			timeSlot: slots,
-			dates: dates
-				.split(",")
-				.filter((item) => new Date(item).getDay() === day),
 		});
 	}
 	console.log(meetings);
 	return meetings;
 };
 
-// module.exports.getMeeting = function getMeeting(courseCode, dates, time) {
-// 	let meetings = [];
-// 	for (let t of time.split(",")) {
-// 		let tmp = t.split("-");
-// 		meetings.push({
-// 			courseCode,
-// 			day: DAYS[tmp[0]],
-// 			start: tmp[1],
-// 			end: tmp[2],
-// 			dates: dates
-// 				.split(",")
-// 				.filter((item) => new Date(item).getDay() == DAYS[tmp[0]]),
-// 		});
-// 	}
-// 	console.log(meetings);
-// 	return meetings;
-// };
-
 // return true when courseFile has updated.
 module.exports.updateCourseFile = function updateCourseFile(course) {
 	let hashValue = hash(course);
-	let key = `${course.courseCode}${course.semester}${course.type}${course.classNum}`;
+	let key = `${course.courseCode}`;
 	//If entry is already saved
 	if (global.CUBRO.CourseFile[key] === hashValue) {
 		return false;
@@ -88,13 +72,6 @@ module.exports.parseExcel = function parseExcel(
 	filename = path.join(__dirname, "../uploads/import.xlsx")
 ) {
 	// Keep information about saved entries
-	// let CourseFile = global.CUBRO.CourseFile;
-	// try {
-	// 	CourseFile = readJSON(path.join(__dirname, "../courses.json"));
-	// } catch (err) {
-	// 	if (err.code === "ENOENT") CourseFile = {};
-	// 	console.log("Create courses.json");
-	// }
 
 	let workbook = XLSX.readFile(
 		path.join(__dirname, "../uploads/" + filename)
@@ -124,28 +101,17 @@ module.exports.parseExcel = function parseExcel(
 		}
 
 		// Key example: CSCI13100L1
-		course["meetings"] = exports.getMeeting(
-			course.courseCode,
-			course.dates,
-			course.time
-		);
+		course["meetings"] = exports.getMeeting(course.courseCode, course.time);
 		delete course.time;
-		delete course.dates;
 		courses.push(course);
 	}
 
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	// global.CUBRO.CourseFile = CourseFile;
+	fs.unlinkSync(path.join(__dirname, "../uploads/" + filename));
+
 	return courses;
 };
-
-function getAllDates(meetings) {
-	let dates = [];
-	for (let m of meetings) {
-		dates = dates.concat(m.dates);
-	}
-	return dates.toString();
-}
 
 function getTimeSlots(meetings) {
 	timeSlots = "";
@@ -167,8 +133,6 @@ function toCsv(courses) {
 
 	for (let course of courses) {
 		course.time = getTimeSlots(course.meetings);
-		course.dates = getAllDates(course.meetings);
-		course.type = course.__t;
 		for (field in course) {
 			if (!HEADERS.includes(field)) {
 				delete course[field];
@@ -193,17 +157,14 @@ const c = {
 	_id: {
 		$oid: "641dd25cdc5a8a14ecc37cca",
 	},
-	__t: "lecture",
 	courseCode: "ABCD1234",
 	__v: 0,
 	courseName: "intro to fucking",
-	classNum: "A",
 	description: "This is fucking good class",
 	instructor: "KKL",
 	meetings: [
 		{
 			timeSlot: ["00", "02"],
-			dates: ["2023-02-02"],
 			_id: {
 				$oid: "641dd25d9c8944558db35428",
 			},
@@ -212,7 +173,6 @@ const c = {
 		},
 		{
 			timeSlot: ["03", "04"],
-			dates: ["2023-02-01", "2023-02-08"],
 			_id: {
 				$oid: "641dd25d9c8944558db35429",
 			},
@@ -221,7 +181,6 @@ const c = {
 		},
 	],
 	seat: 100,
-	semester: 1,
 	venue: "SHB",
 };
 

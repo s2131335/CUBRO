@@ -32,7 +32,7 @@ const userSchema = new Schema(
 		},
 		contactNumber: {
 			type: Number,
-			required: true,
+			required: false,
 		},
 		activated: {
 			type: Boolean,

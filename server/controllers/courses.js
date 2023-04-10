@@ -206,10 +206,10 @@ module.exports.deleteCourse = async (req, res) => {
 	res.status(200).send("ok");
 };
 module.exports.editCourse = (req, res) => {
-	const _id = req.body.course._id;
-	delete req.body.course._id;
+	const _id = req.body._id;
+	delete req.body._id;
 	try {
-		findCourseAndUpdate({ _id }, req.body.course);
+		findCourseAndUpdate({ _id }, req.body);
 	} catch (error) {
 		console.warn("❗️ ~ error:", error);
 

@@ -30,11 +30,6 @@ const courseSchema = new Schema({
 				type: Array,
 				of: String, // format: "00", "01"
 			},
-			dates: {
-				type: Array,
-				of: String,
-				default: [],
-			},
 		},
 	],
 	seat: {

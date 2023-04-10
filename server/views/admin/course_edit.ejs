@@ -1,5 +1,17 @@
 <%- include('./nav.ejs') %>
 <section class="intro">
+	<div
+        class="alert alert-danger fade show text-center"
+        id="err"
+        style="display: none; border-radius: 0"
+    ></div>
+    <div
+        class="alert alert-success fade show text-center"
+        id="success"
+        style="display: none; border-radius: 0"
+    >
+        Updated successfully.
+    </div>
 	  <!-- <div class="mask d-flex align-items-center h-100"> -->
 		<div class="container">
 			<div class="row justify-content-center">
@@ -331,6 +343,43 @@
 			meetings:meetings,
 		}	
 		console.log(course);
+		const options = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(course),
+		}
+        function submitInfo() {
+			fetch(
+				"/api/courses/update",
+				options
+			).then(async (data) => {
+				if (data.status == "200") {
+					document.getElementById(
+						"err"
+					).style.display = "none";
+					document.getElementById(
+						"success"
+					).style.display = "block";
+					setTimeout(
+						() =>
+							window.location.replace(
+								"/admin/courses"
+							),
+							2000
+					);
+				} else {
+					let res = await data.json();
+					document.getElementById("err").textContent =
+						res.message;
+					document.getElementById(
+						"err"
+					).style.display = "block";
+				}
+			});
+		}
+		submitInfo();
 	})
 </script>
 <%- include('./nav_end.ejs') %>

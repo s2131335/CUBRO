@@ -32,7 +32,7 @@ router.post("/delete", Auth.checkAuth(), deleteCourse);
 router.post("/update", Auth.checkAuth(), editCourse);
 
 router.post("/addToCart", Auth.checkAuth(), addToCart);
-router.post("/myCourse", Auth.checkAuth(), myCourse);
+router.get("/myCourse", Auth.checkAuth(), myCourse);
 
 router.get("/getTimetableInfo", getTimetableInfo);
 // router.get("/excel");

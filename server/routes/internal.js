@@ -185,7 +185,7 @@ router.get("/update_password", Auth.checkAuth(), function (req, res, next) {
 });
 
 /* GET user mycourse page. */
-router.get("/table", function (req, res, next) {
+router.get("/table", Auth.checkAuth(), function (req, res, next) {
 	const course = [
 		{
 			courseCode: "CSCI1234",

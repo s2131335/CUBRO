@@ -1,109 +1,132 @@
 <%- include('./nav.ejs') %>
 
-<body>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="schedule-table pt-5">
-                    <table class="bg-white">
-                        <thead class="border border-end-0 border-primary">
-                            <tr>
-                                <th>Routine</th>
-                                <th>Mon</th>
-                                <th>Tue</th>
-                                <th>Wed</th>
-                                <th>Thu</th>
-                                <th>Fri</th>
-                                <th>Sat</th>
-                                <th class="last">Sun</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="day">08:30</td>
-                                <% for (var i=0; i<7; i++) { %>
-
-                                    <td class="td" id=<%= i %>00></td>
-                                <% } %>
-                            </tr>
-                            <tr>
-                                <td class="day">09:30</td>
-                                <% for (var i=0; i<7; i++) { %>
-                                    <td class="td" id=<%= i %>01></td>
-                                <% } %>
-                            </tr>
-                            <tr>
-                                <td class="day">10:30</td>
-                                <% for (var i=0; i<7; i++) { %>
-                                    <td class="td" id=<%= i %>02></td>
-                                <% } %>
-                            </tr>
-                            <tr>
-                                <td class="day">11:30</td>
-                                <% for (var i=0; i<7; i++) { %>
-                                    <td class="td" id=<%= i %>03></td>
-                                <% } %>
-                            </tr>
-                            <tr>
-                                <td class="day">12:30</td>
-                                <% for (var i=0; i<7; i++) { %>
-                                    <td class="td" id=<%= i %>04></td>
-                                <% } %>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<div class="container">
+    <div class="loader"></div>
+    <div class="row">
+        <div class="schedule-table py-3">
+            <table class="bg-white">
+                <thead class="border border-end-0 border-primary">
+                    <tr>
+                        <th>Routine</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th class="last">Sun</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <% for(var i = 8; i <= 20; i++){ %>
+                        <tr style="height: 50%">
+                            <td class="day py-2"><%=i.toString().padStart(2, "0")%>:30</td>
+                            <% for (var j=0; j<7; j++) { %>
+                                <td class="td py-2" id="<%=j %><%=(i-8).toString().padStart(2, "0")%>"></td>
+                            <% } %>
+                        </tr>
+                    <% } %>
+                    
+                </tbody>
+            </table>
         </div>
     </div>
-</body>
+</div>
+</div>
+<style>
+    .loader {
+        border: 16px solid #f3f3f3;
+        /* Light grey */
+        border-top: 16px solid #3498db;
+        /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 <script>
-    $(document).ready(()=>{
-        var data = <%- JSON.stringify(data) %>;
-        var course = data.map(c =>{
-            return {
-                courseCode: c.courseCode,
-                venue: c.venue,
-                class: c.class,
-                timeSlot: c.timeSlot,
-                type: c.type,
-                displayed: false,
-            };
-        });
-        function separateTimeSlots(arr) {
-            let result = [];
-            arr.forEach(obj => {
-                for(var i=0; i<obj.timeSlot.length; i++){
-                    let firstChar = obj.timeSlot[i][0];
-                    let newObj = {...obj};
-                    newObj.timeSlot = obj.timeSlot.filter(slot => slot[0] === firstChar);
-                    if (i>0){
-                        if (obj.timeSlot[i-1][0]!=firstChar){
-                            result.push(newObj);
-                        }
-                    }else if(i==0){
-                        result.push(newObj);
+    $(document).ready(() => {
+        $('.schedule-table').hide();
+        $('.loader').show();
+        var response = fetch('/api/courses/myCourse').then(res => res.json()).then(data => {
+            $('.schedule-table').show();
+            $('.loader').hide();
+            console.log(data);
+            var course = data.map(c => {
+                if (c.selected){
+                // if (true){
+                    var timeslots = [];
+                    for (let meeting of c.courseID.meetings){
+                        for (let ts of meeting.timeSlot)
+                            timeslots.push(meeting.day.toString() + ts);
                     }
+                    return {
+                        courseCode: c.courseID.courseCode,
+                        venue: c.courseID.venue,
+                        timeSlot: timeslots,
+                        displayed: false,
+                    };
                 }
             });
-            return result;
-        }
-        var courses= separateTimeSlots(course);
-        courses.forEach((c)=>{
-                    if(c.displayed==false){
-                        var span=c.timeSlot.length;
-                        $(`#${c.timeSlot[0]}`).html(`<h4>${c.courseCode}</h4><p>${c.type}</p>`);
-                        $(`#${c.timeSlot[0]}`).attr({
-                            "rowspan" : `${span}`,
-                            "class" : "active",
-                        });
-                        c.timeSlot.shift();
-                        c.timeSlot.forEach((id)=>{
-                            $(`#${id}`).hide();
-                        });
-                        c.displayed=true;
+            function separateTimeSlots(arr) {
+                let result = [];
+                arr.forEach(obj => {
+                    obj.timeSlot = obj.timeSlot.sort();
+                    obj.timeSlot.push("-1");
+                    var length = 1;
+                    var prev = 0;
+                    var lens = [];
+                    for (var i = 1; i < obj.timeSlot.length; i++) {
+                        if((parseInt(obj.timeSlot[prev])+1).toString() !== obj.timeSlot[i] ){
+                            let newObj = { ...obj };
+                            newObj.timeSlot = obj.timeSlot.slice(prev, i);
+                            result.push(newObj);
+                            prev = i;
+                        }
+                        // let firstChar = obj.timeSlot[i][0];
+                        // let newObj = { ...obj };
+                        // newObj.timeSlot = obj.timeSlot.filter(slot => slot[0] === firstChar);
+                        // if (i > 0) {
+                        //     if (obj.timeSlot[i - 1][0] != firstChar) {
+                        //         result.push(newObj);
+                        //     }
+                        // } else if (i == 0) {
+                        //     result.push(newObj);
+                        // }
                     }
+
+                });
+                return result;
+            }
+            var courses = separateTimeSlots(course);
+            console.log(courses)
+            courses.forEach((c) => {
+                if (c.displayed == false) {
+                    var span = c.timeSlot.length;
+                    $(`#${c.timeSlot[0]}`).html(`<h4>${c.courseCode}</h4><p>${c.venue}</p>`);
+                    $(`#${c.timeSlot[0]}`).attr({
+                        "rowspan": `${span}`,
+                        "class": "active py-1",
+                    });
+                    c.timeSlot.shift();
+                    c.timeSlot.forEach((id) => {
+                        $(`#${id}`).hide();
+                    });
+                    c.displayed = true;
+                }
             })
+        });
     })
 
 

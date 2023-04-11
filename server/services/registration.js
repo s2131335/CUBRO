@@ -13,7 +13,7 @@ module.exports.getCourseAvailability = async function (courseID) {
 
 	let reg = await Registration.findOne({ courseID }).populate("courseID");
 	return {
-		availible: reg.courseID.seat - currentSeat,
+		available: reg.courseID.seat - currentSeat,
 		courseCode: reg.courseID.courseCode,
 	};
 };
@@ -39,7 +39,7 @@ module.exports.findOneRegByFilter = async function (filter) {
 
 module.exports.findRegByFilter = async function (filter) {
 	try {
-		let reg = await Registration.find(filter);
+		let reg = await Registration.find(filter).populate("courseID");
 		return reg;
 	} catch (err) {
 		console.log("🚀 ~ registration: findRegByFilter ~ err:", err);

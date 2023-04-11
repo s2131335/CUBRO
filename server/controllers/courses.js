@@ -379,7 +379,7 @@ module.exports.myCourse = async function myCourse(req, res) {
 	let myCourse;
 	try {
 		myCourse = await findRegByFilter({ studentID: req.user._id });
-		return res.status(200).send(myCourse);
+		return res.status(200).json(myCourse);
 	} catch (error) {
 		console.warn("❗️ ~ myCourse ~ error:", error);
 		res.status(error.status).send(error);

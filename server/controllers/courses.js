@@ -313,7 +313,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 				courses: courseList,
 			});
 		}
-		res.status(200).send("ok");
+		res.status(200).json({status: "success"});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status || 500).send(err);

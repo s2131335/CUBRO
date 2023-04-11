@@ -68,7 +68,6 @@ router.get(
 router.get("/regcourse", Auth.checkAuth(), function (req, res, next) {
 	res.render("internal/regcourse", {
 		title: "Shopping Cart",
-		data: { course },
 	});
 });
 

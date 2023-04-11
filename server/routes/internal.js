@@ -3,6 +3,9 @@ var router = express.Router();
 const Auth = require("../middleware/auth");
 const { findCourseByFilter } = require("../services/courses");
 const { departments } = require("../global_var.js");
+const {
+	getCourseAvailability,
+} = require("../services/registration");
 
 const profile = {
 	fullName: "CHAN TAI MAN",
@@ -48,6 +51,7 @@ router.get(
 		try {
 			const cid = req.params.id;
 			c = await findCourseByFilter({ _id: cid });
+			c.availableSeat = await getCourseAvailability(cid);
 		} catch (err) {
 			console.error(err);
 			res.status(err.status).send(err);

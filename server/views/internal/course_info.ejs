@@ -36,7 +36,7 @@
 					<%=course.department%>
 				</td>
 				<td>
-					<%=course.available%>/<%=course.seat%>
+					<%=course.availableSeat.available%>/<%=course.seat%>
 				</td>
 				<td>
 					<%=course.venue%>
@@ -50,7 +50,6 @@
 			<tr>
 				<th scope="col">Weekday</th>
 				<th scope="col">Time</th>
-				<th scope="col">Dates</th>
 			</tr>
 		</thead>
 		<% var weekdays=["Sunday", "Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" ] %>
@@ -61,10 +60,9 @@
 							<%= weekdays[meeting.day]%>
 						</td>
 						<td>
-							<%=meeting.start%> - <%=meeting.end%>
-						</td>
-						<td>
-							<%=meeting.dates%>
+							<%for (var ts of meeting.timeSlot){%>
+								<%=(parseInt(ts) + 8).toString().padStart(2, "0")%>:30 - <%=(parseInt(ts) + 9).toString().padStart(2, "0")%>:30,
+							<%}%>
 						</td>
 					</tr>
 					<%}%>

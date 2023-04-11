@@ -82,35 +82,26 @@
             function separateTimeSlots(arr) {
                 let result = [];
                 arr.forEach(obj => {
-                    obj.timeSlot = obj.timeSlot.sort();
-                    obj.timeSlot.push("-1");
-                    var length = 1;
-                    var prev = 0;
-                    var lens = [];
-                    for (var i = 1; i < obj.timeSlot.length; i++) {
-                        if((parseInt(obj.timeSlot[prev])+1).toString() !== obj.timeSlot[i] ){
-                            let newObj = { ...obj };
-                            newObj.timeSlot = obj.timeSlot.slice(prev, i);
-                            result.push(newObj);
-                            prev = i;
+                    if(obj){
+                        obj.timeSlot = obj.timeSlot.sort();
+                        obj.timeSlot.push("-1");
+                        var length = 1;
+                        var prev = 0;
+                        var lens = [];
+                        for (var i = 1; i < obj.timeSlot.length; i++) {
+                            if((parseInt(obj.timeSlot[prev])+1).toString() !== obj.timeSlot[i] ){
+                                let newObj = { ...obj };
+                                newObj.timeSlot = obj.timeSlot.slice(prev, i);
+                                result.push(newObj);
+                                prev = i;
+                            }
                         }
-                        // let firstChar = obj.timeSlot[i][0];
-                        // let newObj = { ...obj };
-                        // newObj.timeSlot = obj.timeSlot.filter(slot => slot[0] === firstChar);
-                        // if (i > 0) {
-                        //     if (obj.timeSlot[i - 1][0] != firstChar) {
-                        //         result.push(newObj);
-                        //     }
-                        // } else if (i == 0) {
-                        //     result.push(newObj);
-                        // }
                     }
 
                 });
                 return result;
             }
             var courses = separateTimeSlots(course);
-            console.log(courses)
             courses.forEach((c) => {
                 if (c.displayed == false) {
                     var span = c.timeSlot.length;

@@ -12,6 +12,7 @@ const {
 	getTimetableInfo,
 	myCourse,
 	addToCart,
+	AddEvaluation
 } = require("../../controllers/courses");
 const upload = require("../../middleware/upload");
 const { importCourse } = require("../../controllers/courses");
@@ -36,5 +37,8 @@ router.get("/myCourse", Auth.checkAuth(), myCourse);
 
 router.get("/getTimetableInfo", getTimetableInfo);
 // router.get("/excel");
+
+// evaluations
+router.post("/evaluation/:id", Auth.checkAuth(), AddEvaluation)
 
 module.exports = router;

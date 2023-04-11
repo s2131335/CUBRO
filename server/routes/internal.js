@@ -6,6 +6,7 @@ const { departments } = require("../global_var.js");
 const {
 	getCourseAvailability,
 } = require("../services/registration");
+const {findAllEvalByFilter} = require("../services/evaluation");
 
 const profile = {
 	fullName: "CHAN TAI MAN",
@@ -52,77 +53,19 @@ router.get(
 			const cid = req.params.id;
 			c = await findCourseByFilter({ _id: cid });
 			c.availableSeat = await getCourseAvailability(cid);
+			res.status(200).render("internal/course_info", {
+				title: "Course Info",
+				course: c,
+			});
 		} catch (err) {
 			console.error(err);
 			res.status(err.status).send(err);
 		}
-		res.status(200).render("internal/course_info", {
-			title: "Course Info",
-			course: c,
-		});
 	}
 );
 
 /* GET user regcourse page. */
 router.get("/regcourse", Auth.checkAuth(), function (req, res, next) {
-	const course = [
-		{
-			courseCode: "CSCI1234",
-			venue: "LSKLSKSLSKSKL",
-			class: "A",
-			timeSlot: ["001", "002", "300", "301"],
-			type: "Lecture",
-		},
-		{
-			courseCode: "CSCI1234",
-			venue: "LSKLSKSLSKSKL",
-			class: "A",
-			timeSlot: ["100"],
-			type: "Tutorial",
-		},
-		{
-			courseCode: "CSCI1234",
-			venue: "LSKLSKSLSKSKL",
-			class: "B",
-			timeSlot: ["200", "201", "400", "401"],
-			type: "Lecture",
-		},
-		{
-			courseCode: "CSCI1234",
-			venue: "LSKLSKSLSKSKL",
-			class: "B",
-			timeSlot: ["100"],
-			type: "Tutorial",
-		},
-		{
-			courseCode: "CSCI4321",
-			venue: "LSKLSKSLSKSKL",
-			class: "A",
-			timeSlot: ["101", "102", "201", "202"],
-			type: "Lecture",
-		},
-		{
-			courseCode: "CSCI4321",
-			venue: "LSKLSKSLSKSKL",
-			class: "A",
-			timeSlot: ["302"],
-			type: "Tutorial",
-		},
-		{
-			courseCode: "CSCI4321",
-			venue: "LSKLSKSLSKSKL",
-			class: "B",
-			timeSlot: ["001", "002", "101", "102"],
-			type: "Lecture",
-		},
-		{
-			courseCode: "CSCI4321",
-			venue: "LSKLSKSLSKSKL",
-			class: "B",
-			timeSlot: ["302"],
-			type: "Tutorial",
-		},
-	];
 	res.render("internal/regcourse", {
 		title: "Shopping Cart",
 		data: { course },
@@ -151,11 +94,24 @@ router.get("/table", Auth.checkAuth(), function (req, res, next) {
 	});
 });
 
-/* GET user mycourse page. */
-router.get("/drop", function (req, res, next) {
-	res.render("internal/drop", {
-		title: "Drop Courses",
-	});
+
+router.get("/course/evaluation/:id", Auth.checkAuth(), async function (req, res, next) {
+	let c;
+	try {
+		const cid = req.params.id;
+		let c = await findCourseByFilter({ _id: cid });
+		let e = await findAllEvalByFilter({courseID: cid});
+		console.log(e)
+		res.render("internal/course_evaluation", {
+			title: "Course Evaluation",
+			course: c,
+			evaluations: e,
+			self_id: req.user._id
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(err.status).send(err);
+	}
 });
 
 module.exports = router;

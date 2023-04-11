@@ -7,17 +7,22 @@ module.exports.countRegByFilter = async function (filter) {
 };
 
 module.exports.getCourseAvailability = async function (courseID) {
-	console.log(courseID);
-	let currentSeat = await exports.countRegByFilter({
-		courseID,
-		selected: true,
-	});
-
-	let reg = await findCourseByFilter({_id: courseID})
-	return {
-		available: reg.seat - currentSeat,
-		courseCode: reg.courseCode,
-	};
+	try{
+		let currentSeat = await exports.countRegByFilter({
+			courseID,
+			selected: true,
+		});
+	
+		let reg = await findCourseByFilter({_id: courseID})
+		return {
+			available: reg.seat - currentSeat,
+			courseCode: reg.courseCode,
+		};
+	}catch(e){
+		console.log(e);
+		return null;
+	}
+	
 };
 
 module.exports.upsertReg = async function (oldInfo, newInfo) {

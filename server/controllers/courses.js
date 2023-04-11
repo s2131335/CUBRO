@@ -24,6 +24,8 @@ const {
 	getCourseAvailability,
 } = require("../services/registration");
 
+const {createEval} =  require("../services/evaluation");
+
 module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;
 	let courses = parseExcel(filename);
@@ -381,3 +383,18 @@ module.exports.myCourse = async function myCourse(req, res) {
 		res.status(error.status).send(error);
 	}
 };
+
+
+module.exports.AddEvaluation = async function AddEvaluation(req, res){
+	try{
+		const cid = req.params.id;
+		const {text} = req.body;
+		var filter = {userID: req.user._id, courseID: cid, text: text};
+		console.log(filter)
+		await createEval(filter);
+		res.status(200).json({status: 'success'});
+	}catch(error){
+		console.log(error);
+		res.status(error.status).send(error);
+	}
+}

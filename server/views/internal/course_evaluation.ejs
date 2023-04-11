@@ -75,6 +75,7 @@
 </div>
 <script>
 	function addEval(){
+		if ($('#evaluation').val())
 		fetch('/api/courses/evaluation/<%=course._id%>', {
 			method: 'POST',
 			headers: {

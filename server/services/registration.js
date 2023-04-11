@@ -1,20 +1,22 @@
 const Registration = require("../database/models/registration");
 const error = require("../utils/errors");
+const { findCourseByFilter } = require("./courses");
 
 module.exports.countRegByFilter = async function (filter) {
 	return await Registration.countDocuments(filter);
 };
 
 module.exports.getCourseAvailability = async function (courseID) {
+	console.log(courseID);
 	let currentSeat = await exports.countRegByFilter({
 		courseID,
 		selected: true,
 	});
 
-	let reg = await Registration.findOne({ courseID }).populate("courseID");
+	let reg = await findCourseByFilter({_id: courseID})
 	return {
-		available: reg.courseID.seat - currentSeat,
-		courseCode: reg.courseID.courseCode,
+		available: reg.seat - currentSeat,
+		courseCode: reg.courseCode,
 	};
 };
 

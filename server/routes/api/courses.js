@@ -25,7 +25,7 @@ router.get("/browse", Auth.checkAuth(), browseCourse);
 router.get("/info/:id", Auth.checkAuth(), courseInfo);
 router.get("/edit/:id", Auth.checkAuth(), editPage);
 router.post("/select", Auth.checkAuth(), selectCourse);
-router.post("/drop", Auth.checkAuth(), dropCourse);
+router.get("/drop/:id", Auth.checkAuth(), dropCourse);
 
 router.post("/create", Auth.checkAuth(), createCourse);
 router.post("/delete", Auth.checkAuth(), deleteCourse);

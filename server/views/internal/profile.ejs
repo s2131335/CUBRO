@@ -1,56 +1,269 @@
 <%- include('./nav.ejs') %>
+<section class="intro">
+	<div class="container py-5 h-100">
+		<div class="row justify-content-center align-items-center">
+			<div class="col-12 col-lg-10">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="flip-card">
+								<div class="flip-card-inner">
+									<div class="flip-card-front">
+										<div
+											class="float-center d-flex justify-content-center"
+										>
+											<h4>User Profile</h4>
+										</div>
+										<br />
+										<div
+											class="float-center d-flex justify-content-center"
+										>
+											<img
+												src="/images/usericon.png"
+												class="card-img-top"
+												style="max-width: 15%"
+											/>
+										</div>
+										<br />
+										<div class="d-flex px-5 pt-3">
+											<table class="table px-0">
+												<tbody>
+													<tr>
+														<td class="text-start">
+															<strong
+																>Name</strong
+															>
+														</td>
+														<td class="text-start">
+															<%= data.fullName %>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start">
+															<strong
+																>Email</strong
+															>
+														</td>
+														<td class="text-start">
+															<%= data.email %>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start">
+															<strong
+																>Contact
+																Number</strong
+															>
+														</td>
+														<td class="text-start">
+															<%=
+															data.contactNumber
+															%>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start">
+															<strong
+																>Password</strong
+															>
+														</td>
+														<td class="text-start">
+															<a
+																class="align-self-center"
+																href="./update_password"
+																>Change
+																Password</a
+															>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div
+											class="float-center d-flex justify-content-center"
+										>
+											<button
+												type="button"
+												class="btn btn-primary"
+												onclick="flipCard()"
+											>
+												View Courses
+											</button>
+										</div>
+									</div>
+									<div class="flip-card-back">
+										<div
+											class="float-center d-flex justify-content-center"
+										>
+											<h4>Selected Courses</h4>
+										</div>
+										<br />
+										<ul
+											class="list-group list-group-light justify-content-center border mb-3"
+											id="courseList"
+										></ul>
+										<div
+											class="float-center d-flex justify-content-center"
+										>
+											<button
+												type="button"
+												class="btn btn-primary"
+												onclick="flipCard2()"
+											>
+												View Profile
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-<body>
-	<section class="intro">
-		  <div class="container py-5 h-100">
-			<div class="row justify-content-center align-items-center">
-			  <div class="col-12 col-lg-10">
-				<div class="card" style="border-radius: 1rem;">
-					<div class="card-body p-5">
-						<div class="float-center d-flex justify-content-center">
-							<h4>User Profile</h4>
-						</div>
-						<br>
-						<div class="float-center d-flex justify-content-center">
-							<img
-							src="/images/usericon.png"
-							class="card-img-top"
-							style="max-width: 15%"
-							/>
-						</div>
 				<br />
-				<div class="float-center d-flex justify-content-cente px-5 pt-3">
-					<table class="table px-0">
-						<tbody>
-							<tr>
-								<td><strong>Name</strong></td>
-								<td><%= data.fullName %></td>
-							</tr>
-							<tr>
-								<td><strong>Email</strong></td>
-								<td><%= data.email %></td>
-							</tr>
-							<tr>
-								<td><strong>Contact Number</strong></td>
-								<td><%= data.contactNumber %></td>
-							</tr>
-						</tbody>
-					</table>	
-					
-				</div>
-				<div class="float-center d-flex justify-content-center">
-					<a class="align-self-center" href="./update_password" >Change Password</a>
-				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Confirmation: Drop Course?</h5>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group list-group-light justify-content-center border" id="shoppingcart">
+					<li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+						<div class="col-8">
+							<div class="fw-bold" id="courseCode">
+							</div>
+							<div class="text-muted" id="courseName">
+							</div>
+						</div>
+						<div class="col-4">
+							<div class="fw-light fst-italic" id="department">
+							</div>
+							<div class="fst-italic" id="instructor">
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-danger" id="confirm-drop">Confirm</button>
 			</div>
 		</div>
 	</div>
 </div>
-</div>
-</section>
-</body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
+	function flipCard() {
+		$(".flip-card-inner").css({
+			transform: "rotateY(180deg)",
+		});
+	}
+	function flipCard2() {
+		$(".flip-card-inner").css({
+			transform: "rotateY(0deg)",
+		});
+	}
+</script>
+
+<style>
+	.flip-card-inner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transition: transform 0.6s;
+		transform-style: preserve-3d;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	}
+
+	.flip-card-front,
+	.flip-card-back {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		backface-visibility: hidden;
+	}
+
+	.flip-card-front {
+		color: black;
+	}
+
+	.flip-card-back {
+		color: black;
+		transform: rotateY(180deg);
+	}
+</style>
+<script>
+	$(document).ready(function () {
+		$(".loader").hide();
+		load();
+	});
+	var courses = {};
+	function loadInfo(id){
+		$('#courseCode').html(`<p>${courses[id]["courseCode"]}</p>`);
+		$('#courseName').html(`<p>${courses[id]["courseName"]}</p>`);
+		$('#department').html(`<p>${courses[id]["department"]}</p>`);
+		$('#instructor').html(`<p>${courses[id]["instructor"]}</p>`);
+		$('#confirm-drop').attr('onclick', `drop('${id}')`)
+	}
+
+	function drop(id){
+		fetch(`/api/courses/drop/${id}`).then(res=>res.json()).then(res=>{
+			$('#exampleModal').modal('hide');
+			if (res.status == 500) {
+				alert(res.message);
+				location.reload();
+			} else {
+				alert("Course dropped successfully");
+				location.replace('/internal/table');
+			}
+		})
+	}
+
+	function load() {
+		$("#courseList").hide();
+		$(".loader").show();
+		fetch("/api/courses/myCourse")
+			.then((response) => response.json())
+			.then((res) => {
+                let HTMLString = '';
+                for (let c of res){
+                    if(c.selected){
+						let course = c.courseID;
+						courses[c.courseID._id] = course;
+                        HTMLString += `
+                            <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+                                <div class="col-6">
+                                    <div class="fw-bold">${course.courseCode}</div>
+                                    <div class="text-muted">${course.courseName}</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="fw-light fst-italic">${course.department}</div>
+                                    <div class="fst-italic">${course.instructor}</div>
+                                </div>
+                                <a class="btn btn-link col-1" data-mdb-ripple-color="dark" href="/internal/course/info/${course._id}">Info</a>
+                                <a class="btn btn-danger col-1" data-mdb-ripple-color="dark" href="/internal/course/info/${course._id}" data-toggle="modal" data-target="#exampleModal" onclick="loadInfo('${course._id}')">Drop</a>
+                            </li>
+                            `;
+                    }
+                }
+				console.log(courses)
+               
+                if (HTMLString == '') {
+                    HTMLString = '<li class="list-group-item d-flex justify-content-between align-items-center ps-4">No courses selected!</li>';
+                }
+                $('#courseList').html(HTMLString);
+                $('.loader').hide();
+                $('#courseList').show();
+			});
+	}
 
 </script>
+
+<%- include('./nav_end.ejs') %>

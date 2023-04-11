@@ -322,29 +322,25 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 
 module.exports.dropCourse = async function dropCourse(req, res) {
 	try {
-		let { courses } = req.body;
-		// for (let course of courses) {
-		// 	// if (!isValidObjectId(course)) throw error.CourseIDNotValid;
-		// }
 		let toDrop = await extractRegIdByFilter({
-			courseID: { $in: courses },
+			courseID: req.params.id,
 			studentID: req.user._id,
 		});
-		if (toDrop.length != courses.length) {
+		if (toDrop.length == 0) {
 			throw error.RegistrationNotValid;
 		}
 		await deleteRegByFilter({
-			courseID: { $in: courses },
+			courseID: req.params.id,
 			studentID: req.user._id,
 		});
 		let courseList = await findAllCoursesByFilter({
-			_id: { $in: courses },
+			_id: req.params.id,
 		});
 		await Email.sendMail(req.user.email, {
 			mode: Email.MODE_DROP,
 			courses: courseList,
 		});
-		res.status(200).send("ok");
+		res.status(200).json({status: 'success'});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status || 500).send(err);

@@ -12,6 +12,13 @@
     >
         Updated successfully.
     </div>
+	<div
+        class="alert alert-danger fade show text-center"
+        id="meeterr"
+        style="display: none; border-radius: 0"
+    >
+		Incorrect meetings information.
+	</div>
 	  <!-- <div class="mask d-flex align-items-center h-100"> -->
 		<div class="container">
 			<div class="row justify-content-center">
@@ -26,46 +33,53 @@
 										<h4 class="text-muted" style="display: inline">Basic Information</h4>
 											<div class="col-12 col-md-6 mb-4">
 												<div class="form-outline">
-													<input type="text" id="ccode" class="form-control" value="<%=c.courseCode%>"/>
+													<input type="text" id="ccode" class="form-control needs-validation mb-0" maxlength="8" value="<%=c.courseCode%>" oninput="checkEmptyInput(this)" required/>
 													<label class="form-label" for="ccode" >Course Code</label>
+													<div class="invalid-feedback">Required</div>
 												</div>
 											</div>
 											<div class="col-12 col-md-6 mb-4">
 												<div class="form-outline">
-													<input type="text" id="cname" class="form-control" value="<%=c.courseName%>"/>
+													<input type="text" id="cname" class="form-control needs-validation mb-0" value="<%=c.courseName%>" oninput="checkEmptyInput(this)" required/>
 													<label class="form-label" for="cname">Course Name</label>
+													<div class="invalid-feedback">Required</div>
 												</div>
 											</div>
 										</div>
 
 										<!-- Text input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cdepartment" class="form-control" value="<%=c.department%>"/>
+											<input type="text" id="cdepartment" class="form-control needs-validation mb-0" value="<%=c.department%>" oninput="checkEmptyInput(this)" required/>
 											<label class="form-label" for="cdepartment">Department</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 
 										<!-- Text input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cinstructor" class="form-control" value="<%=c.instructor%>"/>
+											<input type="text" id="cinstructor" class="form-control needs-validation mb-0" value="<%=c.instructor%>" oninput="checkEmptyInput(this)" required/>
 											<label class="form-label" for="cinstructor">Instructor</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 
 										<!-- Email input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cvenue" class="form-control" value="<%=c.venue%>"/>
+											<input type="text" id="cvenue" class="form-control needs-validation mb-0" value="<%=c.venue%>" oninput="checkEmptyInput(this)" required/>
 											<label class="form-label" for="cvenue">Venue</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 
 										<!-- Number input -->
 										<div class="form-outline mb-4">
-											<input type="number" id="cseat" class="form-control" value="<%=c.seat%>"/>
+											<input type="number" id="cseat" class="form-control needs-validation mb-0" value="<%=c.seat%>" oninput="checkEmptyInput(this)" required/>
 											<label class="form-label" for="cseat">Capacity</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 
 										<!-- Message input -->
 										<div class="form-outline mb-4">
 											<textarea class="form-control" id="cdescription" rows="4"><%=c.description%></textarea>
 											<label class="form-label" for="cdescription">Description</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 										<div class="row mb-1">
 											<div class="col-10 d-flex aligns-items-center">
@@ -201,6 +215,16 @@
             }, false);
         });
         })();
+
+	function checkEmptyInput(input) {
+		if (input.value == "") {
+			input.classList.remove("is-valid");
+			input.classList.add("is-invalid");
+		} else {
+			input.classList.remove("is-invalid");
+			input.classList.add("is-valid");
+		}
+    }
 	$("#add").click(()=>{
 		$("#meetbody").append(
 			`<tr name="meets">
@@ -262,6 +286,7 @@
 	//save changes for submit
 	$("[name='submit']").click(function() {
 		var meetings=[];
+		var pass =true;
 		$("[name='meets']").each(function(){
 			var melement={};
 			var ts=[];
@@ -269,77 +294,116 @@
 			melement.day=$(this).find("[name='wday'] option:selected").val()
 			ts.push($(this).find("[name='start'] option:selected").val());
 			ts.push($(this).find("[name='end'] option:selected").val());
-			ts[1]=ts[1]-1;
-			if (ts[0]==ts[1]) {
-				ts.pop();
-			}else if (ts[0]<=ts[1]-2){
-				var count=ts[1]-ts[0]-1;
-				for(var i=1;i<=count;i++){
-					var y=parseInt(ts[0])+parseInt(i);
-					ts.splice(i,0,y);
-				}
-			}
-			for (var i=0; i<ts.length;i++){
-				ts[i]=parseInt(ts[i]);
-				if (ts[i]>=10){
-					ts[i]=ts[i].toString();
-				}else{
-					ts[i]=ts[i].toString();
-					ts[i]=ts[i].padStart(2,'0');
-				}
-			}
-			melement.timeSlot=ts;
-			meetings.push(melement);
-		})
-		var course={
-			_id:$("[name='submit']").attr('id'),
-			courseCode: $("#ccode").val(),
-			courseName: $("#cname").val(),
-			department: $("#cdepartment").val(),
-			instructor: $("#cinstructor").val(),
-			venue: $("#cvenue").val(),
-			seat: $("#cseat").val(),
-			description: $("#cdescription").val(),
-			meetings:meetings,
-		}	
-		console.log(course);
-		const options = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(course),
-		}
-        function submitInfo() {
-			fetch(
-				"/api/courses/update",
-				options
-			).then(async (data) => {
-				if (data.status == "200") {
-					document.getElementById(
+			if ((ts[0]==ts[1])||(ts[0]>ts[1])){
+				document.getElementById(
 						"err"
 					).style.display = "none";
 					document.getElementById(
-						"success"
+						"meeterr"
 					).style.display = "block";
-					setTimeout(
-						() =>
-							window.location.replace(
-								"/admin/courses"
-							),
-							2000
-					);
-				} else {
-					let res = await data.json();
-					document.getElementById("err").textContent =
-						res.message;
 					document.getElementById(
-						"err"
-					).style.display = "block";
+						"success"
+					).style.display = "none";
+				pass=false;
+			}else{
+				ts[1]=ts[1]-1;
+				if (ts[0]==ts[1]) {
+					ts.pop();
+				}else if (ts[0]<=ts[1]-2){
+					var count=ts[1]-ts[0]-1;
+					for(var i=1;i<=count;i++){
+						var y=parseInt(ts[0])+parseInt(i);
+						ts.splice(i,0,y);
+					}
 				}
-			});
+				for (var i=0; i<ts.length;i++){
+					ts[i]=parseInt(ts[i]);
+					if (ts[i]>=10){
+						ts[i]=ts[i].toString();
+					}else{
+						ts[i]=ts[i].toString();
+						ts[i]=ts[i].padStart(2,'0');
+					}
+				}
+				melement.timeSlot=ts;
+				meetings.push(melement);
+			}
+		})
+		//use indexof
+		for (var i=0;i<7;i++){
+			var count =0;
+			for (let meeting of meetings){
+				if (meeting.day==i){
+					if(count <2){
+						count+=1;
+					}else{
+
+					}
+				}
+			}
 		}
-		submitInfo();
+		$(".needs-validation").each(function(){
+			if ($(this).val()==""){
+				pass=false;
+			}
+		});
+		if (pass==false){
+			$(window).scrollTop(0);
+		}else{
+			var course={
+				_id:$("[name='submit']").attr('id'),
+				courseCode: $("#ccode").val(),
+				courseName: $("#cname").val(),
+				department: $("#cdepartment").val(),
+				instructor: $("#cinstructor").val(),
+				venue: $("#cvenue").val(),
+				seat: $("#cseat").val(),
+				description: $("#cdescription").val(),
+				meetings:meetings,
+			}	
+			console.log(course);
+			const options = {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(course),
+			}
+			function submitInfo() {
+				fetch(
+					"/api/courses/update",
+					options
+				).then(async (data) => {
+					if (data.status == "200") {
+						document.getElementById(
+							"err"
+						).style.display = "none";
+						document.getElementById(
+							"meeterr"
+						).style.display = "none";
+						document.getElementById(
+							"success"
+						).style.display = "block";
+						setTimeout(
+							() =>
+								window.location.replace(
+									"/admin/courses"
+								),
+								2000
+						);
+					} else {
+						let res = await data.json();
+						document.getElementById("err").textContent =
+							res.message;
+						document.getElementById(
+							"err"
+						).style.display = "block";
+					}
+				});
+			}
+			submitInfo();
+
+		}
 	})
 </script>
 <%- include('./nav_end.ejs') %>

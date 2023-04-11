@@ -24,7 +24,7 @@ const {
 	getCourseAvailability,
 } = require("../services/registration");
 
-const {createEval} =  require("../services/evaluation");
+const {createEval, deleteEvalByFilter} =  require("../services/evaluation");
 
 module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;
@@ -385,13 +385,25 @@ module.exports.myCourse = async function myCourse(req, res) {
 };
 
 
-module.exports.AddEvaluation = async function AddEvaluation(req, res){
+module.exports.addEvaluation = async function addEvaluation(req, res){
 	try{
 		const cid = req.params.id;
 		const {text} = req.body;
 		var filter = {userID: req.user._id, courseID: cid, text: text};
-		console.log(filter)
 		await createEval(filter);
+		res.status(200).json({status: 'success'});
+	}catch(error){
+		console.log(error);
+		res.status(error.status).send(error);
+	}
+}
+
+module.exports.deleteEvaluation = async function deleteEvaluation(req, res){
+	try{
+		var filter = {_id: req.params.id};
+		console.log(`filter:`);
+		console.log(filter)
+		await deleteEvalByFilter(filter);
 		res.status(200).json({status: 'success'});
 	}catch(error){
 		console.log(error);

@@ -32,10 +32,15 @@ module.exports.upsertCourse = async function upsertCourse(lesson) {
 
 module.exports.findAllCoursesByFilter = async function (
 	filter = {},
-	limit = 10
+	limit = null
 ) {
+	let course;
 	try {
-		let courses = await Course.find(filter).limit(limit);
+		if (!limit) {
+			courses = await Course.find(filter);
+		} else {
+			courses = await Course.find(filter).limit(limit);
+		}
 		return courses;
 	} catch (err) {
 		console.log("🚀 ~ file: courses.js:20 ~ err:", err);

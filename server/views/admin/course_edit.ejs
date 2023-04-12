@@ -434,7 +434,7 @@
 	});
 
 	//save changes for submit
-	$("#sumbit").click(function() {
+	$("#submit").click(function() {
 		var meetings=[];
 		var pass =true;
 		$("[name='meets']").each(function(){
@@ -569,7 +569,7 @@
 				});
 			}
 			submitInfo();
-
+			$(window).scrollTop(0);
 		}
 	})
 	$("[name='edit']").click(function() {

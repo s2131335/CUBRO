@@ -30,7 +30,7 @@
 					<td style="vertical-align: middle">
 						<%=course.courseCode%>
 					</td>
-					<td style="vertical-align: middle">
+					<td style="vertical-align: middle; width: 15%;">
 						<%=course.courseName%>
 					</td>
 					<td style="vertical-align: middle">
@@ -54,16 +54,17 @@
 							>
 							Edit
 						</button>
-						<a class="btn btn-link btn-rounded btn-sm fw-bold" href="/admin/course/evaluation/<%=course._id%>"
-							>
-							Evaluations
-					</a>
+						
 						<button class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-toggle="modal"
 							data-mdb-target=#<%=course.courseCode %>D
 							type="button"
 							>
 							Delete
 						</button>
+						<a class="btn btn-link btn-rounded btn-sm fw-bold" href="/admin/course/evaluation/<%=course._id%>"
+							>
+							Evaluations
+					</a>
 						<div class="modal fade" id=<%=course.courseCode%>D tabindex="-1"
 							aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog">

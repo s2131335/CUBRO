@@ -55,7 +55,6 @@
 								</div>
 
 								<!-- Text input -->
-								<%var department = ["LSB"] %>
 										<div class="row justify-content-md-center">
 											<div class="col">
 												<select
@@ -362,7 +361,7 @@
 			}).then(res => {
 				console.log(res)
 				if (res.status === 200) {
-					alert(res.data);
+					alert("Outline uploaded successfully!");
 					location.reload()
 				} else {
 					alert(`Something went wrong!\n

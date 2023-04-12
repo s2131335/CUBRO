@@ -25,8 +25,10 @@ router.get("/add_user", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 router.get("/courses", Auth.checkAuth(Auth.ADMIN), manageCourse);
 
 router.get("/add_course",Auth.checkAuth(Auth.ADMIN),function (req, res, next) {
+	console.log(global.CUBRO);
 	res.render("admin/add_course", {
 		title: "New Course",
+		department: global.CUBRO.DEPARTMENT
 	});
 });
 

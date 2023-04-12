@@ -7,7 +7,7 @@ const passport = require("passport");
 const cors = require("cors");
 require("dotenv").config({ path: `${__dirname}/.env` });
 const Auth = require("./middleware/auth");
-const {department, venue, timeslots} = require("./global_var")
+const {departments, venue, timeslots} = require("./global_var")
 
 ///////////////// setup global //////////////////
 let CUBRO = {};
@@ -22,7 +22,7 @@ try {
 }
 
 global.CUBRO.TIMESLOTS = timeslots
-global.CUBRO.DEPARTMENT = department
+global.CUBRO.DEPARTMENT = departments
 global.CUBRO.VENUE = venue
 
 /////////////// complete global setup //////////////////////////////////

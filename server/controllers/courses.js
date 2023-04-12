@@ -178,6 +178,7 @@ module.exports.editPage = async function editPage(req, res) {
 	res.render("admin/course_edit", {
 		title: "Course Edit",
 		c,
+		department: global.CUBRO.DEPARTMENT
 	});
 };
 

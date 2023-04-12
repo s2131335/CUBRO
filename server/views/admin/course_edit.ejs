@@ -64,7 +64,7 @@
 													required disabled
 												>
 												<% for (let i=0; i<department.length; i++){ %>
-													<option  value=<%= i %> <%if (c.department==i){ %>selected<% } %>>
+													<option  value=<%= department[i] %> <%if (c.department==department[i]){ %>selected<% } %>>
 														<%= department[i] %>
 													</option>
 												  <% } %>

@@ -33,8 +33,11 @@ const courses = require("../database/models/courses");
 module.exports.exportCourse = async function exportCourse(req, res) {
 	try {
 		let courses = await findAllCoursesByFilter({});
+		res.setHeader('Content-disposition', 'attachment; filename=courses.csv');
+		
 		res.status(200).send(toCsv(courses));
 	} catch (err) {
+		console.log(err)
 		res.status(err.status || 500).send(err);
 	}
 };
@@ -270,6 +273,7 @@ module.exports.deleteCourse = async (req, res) => {
 	try {
 		let course = await findCourseByFilter({ _id });
 		await deleteCoursesByFilter({ _id });
+		await deleteRegByFilter({courseID: _id})
 		let key = `${course.courseCode}`;
 
 		delete global.CUBRO.CourseFile[key];

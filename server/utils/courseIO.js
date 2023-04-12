@@ -136,15 +136,13 @@ module.exports.toCsv = function toCsv(courses) {
 	const { parse } = require("json2csv");
 	//courses come from db
 	let data = [];
-
 	for (let course of courses) {
 		course.time = getTimeSlots(course.meetings);
-		for (field in course) {
-			if (!HEADERS.includes(field)) {
-				delete course[field];
-			}
+		let dict = {};
+		for (let field of HEADERS) {
+			dict[field] = course[field]
 		}
-		data.push(course);
+		data.push(dict);
 	}
 
 	try {

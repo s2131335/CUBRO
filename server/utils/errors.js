@@ -97,13 +97,18 @@ module.exports = {
 	},
 	RegistrationExists: {
 		status: 500,
-		code: 6001,
+		code: 5003,
 		message: "Registration Already Exists",
 	},
 	CourseExists: {
 		status: 500,
-		code: 6002,
+		code: 5004,
 		message: "Course Already Exists",
+	},
+	ParseExcelError: {
+		status: 500,
+		code: 7001,
+		message: "Fail to parse excel",
 	},
 };
 

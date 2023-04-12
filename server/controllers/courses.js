@@ -29,34 +29,51 @@ const {
 const { createEval, deleteEvalByFilter } = require("../services/evaluation");
 
 module.exports.importCourse = async function importCourse(req, res) {
-	let filename = req.file.originalname;
-	let courses = parseExcel(filename);
-	if (courses.length === 0) return res.status(200).send("No update needed");
+	try {
+		let filename = req.file.originalname;
+		let { size, mimetype, path } = req.file;
+		let types = ["pdf"]; // file type
+		let tmpType = mimetype.split("/")[1];
+		if (size > 500000) throw error.FileSizeError;
+		if (types.indexOf(tmpType) == -1) throw error.FileTypeError;
+		let courses = parseExcel(filename);
+		if (courses.length === 0)
+			return res.status(200).send("No update needed");
 
-	let failed = [];
-	for (let course of courses) {
-		try {
-			await upsertCourse(course);
-		} catch (err) {
-			console.log("🚀 ~ file: courses.js:30 ~ importCourse ~ err:", err);
-			failed.push(`${course.courseCode}`);
-			continue;
+		let failed = [];
+		for (let course of courses) {
+			try {
+				await upsertCourse(course);
+			} catch (err) {
+				console.log(
+					"🚀 ~ file: courses.js:30 ~ importCourse ~ err:",
+					err
+				);
+				failed.push(`${course.courseCode}`);
+				continue;
+			}
 		}
-	}
-	if (!(failed.length === 0)) {
-		for (let key of failed) {
-			delete global.CUBRO.CourseFile[key];
+		if (!(failed.length === 0)) {
+			for (let key of failed) {
+				delete global.CUBRO.CourseFile[key];
+			}
+			writeJSON(
+				path.join(__dirname, "../courses.json"),
+				global.CUBRO.CourseFile
+			);
+
+			if (failed.length === courses.length)
+				return res.status(500).send("All failed");
+			else return res.status(500).send(`failed:${failed}`);
 		}
 		writeJSON(
 			path.join(__dirname, "../courses.json"),
 			global.CUBRO.CourseFile
 		);
-
-		if (failed.length === courses.length)
-			return res.status(500).send("All failed");
-		else return res.status(500).send(`failed:${failed}`);
+	} catch (err) {
+		console.warn("❗️ ~ importCourse ~ err:", err);
+		return res.status(err.status).send(err);
 	}
-	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	res.status(200).send("All successful");
 };
 

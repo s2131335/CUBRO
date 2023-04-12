@@ -71,40 +71,45 @@ module.exports.updateCourseFile = function updateCourseFile(course) {
 module.exports.parseExcel = function parseExcel(
 	filename = path.join(__dirname, "../uploads/import.xlsx")
 ) {
-	// Keep information about saved entries
+	try {
+		let workbook = XLSX.readFile(
+			path.join(__dirname, "../uploads/" + filename)
+		);
+		let name = workbook.SheetNames[0];
+		let worksheet = workbook.Sheets[name];
+		let rowNum = XLSX.utils.decode_range(worksheet["!ref"]).e.r;
+		delete worksheet["!ref"];
+		delete worksheet["!margins"];
 
-	let workbook = XLSX.readFile(
-		path.join(__dirname, "../uploads/" + filename)
-	);
-	let name = workbook.SheetNames[0];
-	let worksheet = workbook.Sheets[name];
-	let rowNum = XLSX.utils.decode_range(worksheet["!ref"]).e.r;
-	delete worksheet["!ref"];
-	delete worksheet["!margins"];
+		let courses = [];
 
-	let courses = [];
-
-	for (let i = 0; i < rowNum; i++) {
-		let course = {};
-		for (let j = 0; j < HEADERS.length; j++) {
-			let s = `${intToChar(charToInt("A") + j)}${i + 2}`;
-			let value = worksheet[s].v;
-			if (!IGNORE_SPACE.includes(HEADERS[j]) && typeof value == "string")
-				value = value.replaceAll(" ", "");
-			course[HEADERS[j]] = value;
+		for (let i = 0; i < rowNum; i++) {
+			let course = {};
+			for (let j = 0; j < HEADERS.length; j++) {
+				let s = `${intToChar(charToInt("A") + j)}${i + 2}`;
+				let value = worksheet[s].v;
+				if (
+					!IGNORE_SPACE.includes(HEADERS[j]) &&
+					typeof value == "string"
+				)
+					value = value.replaceAll(" ", "");
+				course[HEADERS[j]] = value;
+			}
+			// Keep information about saved entries
+			//If entry is already saved, skip it
+			if (!exports.updateCourseFile(course)) {
+				console.log("skip");
+				continue;
+			}
 		}
-
-		//If entry is already saved, skip it
-		if (!exports.updateCourseFile(course)) {
-			console.log("skip");
-			continue;
-		}
-
-		// Key example: CSCI13100L1
-		course["meetings"] = exports.getMeeting(course.courseCode, course.time);
-		delete course.time;
-		courses.push(course);
+	} catch (e) {
+		console.log(e);
+		throw error.ParseExcelError;
 	}
+	// Key example: CSCI13100L1
+	course["meetings"] = exports.getMeeting(course.courseCode, course.time);
+	delete course.time;
+	courses.push(course);
 
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	// global.CUBRO.CourseFile = CourseFile;

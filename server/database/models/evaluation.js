@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const evaluationSchema = new Schema({
-	userId: {
+	userID: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "user",
 	},
@@ -11,11 +11,10 @@ const evaluationSchema = new Schema({
 		ref: "course",
 	},
 	text: {
-		type: string,
+		type: String,
 	},
 	rating: {
-		type: number,
-		required: true,
+		type: Number,
 		max: 5,
 		min: 0,
 	},

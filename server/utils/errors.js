@@ -85,6 +85,11 @@ module.exports = {
 		code: 5002,
 		message: "Record Not Found",
 	},
+	RegistrationExists: {
+		status: 500,
+		code: 6001,
+		message: "Registration Already Exists",
+	},
 };
 
 module.exports.overrideError = function overrideError(error, message) {

@@ -1,4 +1,4 @@
-const { Evaluation } = require("../database/models/evaluation");
+const Evaluation = require("../database/models/evaluation");
 const error = require("../utils/errors");
 
 module.exports.createEval = async function createEval(eval) {
@@ -13,8 +13,9 @@ module.exports.createEval = async function createEval(eval) {
 };
 
 module.exports.findAllEvalByFilter = async function (filter = {}) {
+	console.log(filter)
 	try {
-		let eval = await Evaluation.find(filter);
+		let eval = await Evaluation.find(filter).populate('userID').sort('-createTime');
 		return eval;
 	} catch (err) {
 		console.log("🚀 ~ file: evaluation.js:20 ~ err:", err);

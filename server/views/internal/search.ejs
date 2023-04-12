@@ -1,48 +1,23 @@
 <%- include('./nav.ejs') %>
 
+<div class="container w-50">
     <div class="container pt-4 pb-1">
-        <!-- <div class="row pt-5 justify-content-center w-75 me-0">
-            <div class="col form-check form-check-inline d-flex justify-content-center p-0">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="option1" />
-                <label class="form-check-label" for="option1"> By Course Code </label>
-            </div>
-            <div class="col form-check form-check-inline d-flex justify-content-center p-0">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="option2" />
-                <label class="form-check-label" for="option2"> By Course Name </label>
-            </div>
-            <div class="col form-check form-check-inline d-flex justify-content-center p-0">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="option3" />
-                <label class="form-check-label" for="option3"> By Timeslot </label>
-            </div>
-            <div class="col form-check form-check-inline d-flex justify-content-center p-0">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="option4" />
-                <label class="form-check-label" for="option3"> By Department </label>
-            </div>
-        </div> -->
         <div class="d-flex row justify-content-center pt-3 pb-0 px-5 ">
-            <div class="row w-50">
-                <div class="col-10">
-                    <div class="input-group ">
-                        <div class="form-outline border ">
-                            <input type="search" id="form1" class="form-control" name="form1" />
-                            <label class="form-label" for="form1">Search</label>
-                        </div>
-                        <button type="button" class="btn btn-primary">
-                            <i class="fas fa-search"></i>
-                        </button>
+            <div class="">
+                <div class="input-group ">
+                    <div class="form-outline border ">
+                        <input type="search" id="form1" class="form-control" name="form1" />
+                        <label class="form-label" for="form1">Search</label>
                     </div>
+                    <button type="button" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-                <div class="col-2">
-                    <select class="form-select" aria-label="Default select example" id="limit">
-                        <option value="5" selected>5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                    </select>
-                </div>
+
             </div>
         </div>
         <div class="d-flex row justify-content-center pt-0 pb-0 px-5 ">
-            <div class="row w-50 ">
+            <div class="row ">
                 <a type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
                     aria-controls="collapseExample" style="text-align:right;">
                     Advance Search With Filters <i class="fa fa-angle-down"></i>
@@ -75,93 +50,118 @@
 
     <div class="row d-flex justify-content-center">
         <div class="loader"></div>
-        <ul class="list-group list-group-light justify-content-center w-50 border" id="courseList">
+        <ul class="list-group list-group-light justify-content-center border mb-3" id="courseList">
         </ul>
+        <div class="row justify-content-end">
+            <div class="col-4">
+                <span style="display:inline">
+                    showing
+                </span>
+                <select class="form-select" aria-label="Default select example" id="limit"
+                    style="display:inline; width: 30%;">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+                <span style="display:inline">
+                    entries
+                </span>
+            </div>
+        </div>
     </div>
+</div>  
 
-    <div class="d-flex row justify-content-center pt-3 pb-4">
-        <button type="button" class="btn btn-primary w-25 me-3">Add to cart</button>
-        <button type="button" class="btn btn-secondary w-25 ms-3">Clear</button>
-    </div>
+<script>
+    $(document).ready(function () {
+        $('.loader').hide();
+        load()
+    });
 
-    <style>
-        .loader {
-            border: 16px solid #f3f3f3;
-            /* Light grey */
-            border-top: 16px solid #3498db;
-            /* Blue */
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
-        }
+    var courses = {};
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+    function load() {
+        $('#courseList').hide();
+        $('.loader').show();
+        fetch('/api/courses/browse?' + new URLSearchParams({
+            keyword: $('#form1').val(),
+            department: $('#dept').val(),
+            instructor: $('#instructor').val(),
+            limit: $('#limit').val(),
+        })).then(response => response.json())
+            .then((res) => {
+                let HTMLString = '';
+                courses = {};
+                for (const course of res) {
+                    courses[course._id] = course;
+                    HTMLString += `
+                <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+                    <div class="col-6">
+                        <div class="fw-bold">${course.courseCode}</div>
+                        <div class="text-muted">${course.courseName}</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="fw-light fst-italic">${course.department}</div>
+                        <div class="fst-italic">${course.instructor}</div>
+                    </div>
+                    <a class="btn btn-link col-2" data-mdb-ripple-color="dark" href="/internal/course/info/${course._id}">More Info</a>
+                </li>
+                `;
+                }
+                if (HTMLString == '') {
+                    HTMLString = '<li class="list-group-item d-flex justify-content-between align-items-center ps-4">No courses found!</li>';
+                }
+                $('#courseList').html(HTMLString);
+                $('.loader').hide();
+                $('#courseList').show();
+            })
+    }
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+    $('#form1').change(() => {
+        load()
+    })
+    $('#dept').change(() => {
+        load()
+    })
+    $('#instructor').change(() => {
+        load()
+    })
+    $('#limit').change(() => {
+        load()
+    })
 
-    <script>
-        $(document).ready(function () {
-            $('.loader').hide();
-            load()
+    var checkedIds = [];
+    $('#add').click(() => {
+        checkedIds = [];
+        let HTMLString = '';
+        $('.select-course:checked').each(function () {
+            checkedIds.push($(this).attr('id'));
         });
-
-        function load() {
-            $('#courseList').hide();
-            $('.loader').show();
-            fetch('/api/courses/browse?' + new URLSearchParams({
-                keyword: $('#form1').val(),
-                department: $('#dept').val(),
-                instructor: $('#instructor').val(),
-                limit: $('#limit').val(),
-            })).then(response => response.json())
-                .then((res) => {
-                    let HTMLString = '';
-                    for (const course of res) {
-                        HTMLString += `
-                        <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
-                            <div class="form-check col-1">
-                                <input class="form-check-input" type="checkbox" value="" id="${course._id}"/>
-                            </div>
-                            <div class="col-6">
-                                <div class="fw-bold">${course.courseCode}</div>
-                                <div class="text-muted">${course.courseName}</div>
-                            </div>
-                            <div class="col-3">
-                                <div class="fw-light fst-italic">${course.department}</div>
-                                <div class="fst-italic">${course.instructor}</div>
-                            </div>
-                            <a class="btn btn-link col-2" data-mdb-ripple-color="dark" href="/internal/course/info/${course._id}">More Info</a>
-                        </li>
-                        `;
-                    }
-                    if (HTMLString == '') {
-                        HTMLString = '<li class="list-group-item d-flex justify-content-between align-items-center ps-4">No courses found!</li>';
-                    }
-                    $('#courseList').html(HTMLString);
-                    $('.loader').hide();
-                    $('#courseList').show();
-                })
+        for (let id of checkedIds) {
+            course = courses[id];
+            if (course) {
+                HTMLString += `
+                <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+                    <div class="col-8">
+                        <div class="fw-bold">${course.courseCode}</div>
+                        <div class="text-muted">${course.courseName}</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="fw-light fst-italic">${course.department}</div>
+                        <div class="fst-italic">${course.instructor}</div>
+                    </div>
+                </li>
+                `;
+            }
         }
+        if (HTMLString == '') {
+            HTMLString = '<li class="list-group-item d-flex justify-content-between align-items-center ps-4">No courses selected!</li>';
+            $('#confirm-add').prop("disabled", true);
+        } else {
+            $('#confirm-add').prop("disabled", false);
+        }
+        $('#shoppingcart').html(HTMLString);
+        // console.log(courses);
+    });
+</script>
 
-        $('#form1').change(() => {
-            load()
-        })
-        $('#dept').change(() => {
-            load()
-        })
-        $('#instructor').change(() => {
-            load()
-        })
-        $('#limit').change(() => {
-            load()
-        })
-    </script>
-    </body>
+<%- include('./nav_end.ejs') %>

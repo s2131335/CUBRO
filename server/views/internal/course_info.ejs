@@ -1,78 +1,139 @@
 <%- include('./nav.ejs') %>
-
-	<body>
-		<div class="container pt-4 pb-5">
-			<div class="row">
-				<div class="col-10">
-					<h3 style="display: inline">
-						<%=course.courseCode%>-<%= course.classNo %>
-					</h3>
-					<h3 style="display: inline" class="ps-3 text-muted">
-						<%=course.courseName%>
-					</h3>
-				</div>
-				<div class="col-2">
-					<button class="btn btn-primary float-end">Select</button>
-				</div>
-			</div>
-			<hr class="my-2" />
-			<p class="text-muted">
-				<%=course.description%>
-			</p>
-			<table class="table">
-				<thead>
+<div class="container pt-4 pb-5">
+	<div class="row">
+		<div class="col-10">
+			<h3 style="display: inline">
+				<%=course.courseCode%>-<%= course.classNo %>
+			</h3>
+			<h3 style="display: inline" class="ps-3 text-muted">
+				<%=course.courseName%>
+			</h3>
+			<a
+				class="btn btn-link"
+				href="/internal/course/evaluation/<%=course._id%>"
+				style="display: inline"
+				>View Evaluations</a
+			>
+		</div>
+		<div class="col-2">
+			<button class="btn btn-primary float-end" id="addToCart" data-toggle="modal"
+				data-target="#exampleModal">Add to cart</button>
+		</div>
+	</div>
+	<hr class="my-2" />
+	<p class="text-muted">
+		<%=course.description%>
+	</p>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Instructor</th>
+				<th scope="col">Department</th>
+				<th scope="col">Seats</th>
+				<th scope="col">Venue</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<%=course.instructor%>
+				</td>
+				<td>
+					<%=course.department%>
+				</td>
+				<td>
+					<%=course.availableSeat.available%>/<%=course.seat%>
+				</td>
+				<td>
+					<%=course.venue%>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<h4 class="text-muted">Meetings</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Weekday</th>
+				<th scope="col">Time</th>
+			</tr>
+		</thead>
+		<% var weekdays=["Sunday", "Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" ] %>
+			<tbody>
+				<% for (let meeting of course.meetings) { %>
 					<tr>
-						<th scope="col">Instructor</th>
-						<th scope="col">Department</th>
-						<th scope="col">Seats</th>
-						<th scope="col">Venue</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
 						<td>
-							<%=course.instructor%>
+							<%= weekdays[meeting.day]%>
 						</td>
 						<td>
-							<%=course.department%>
-						</td>
-						<td>
-							<%=course.seat%>
-						</td>
-						<td>
-							<%=course.venue%>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<h4 class="text-muted">Meetings</h4>
-			<table class="table">
-				<thead>
-					<tr>
-						<th scope="col">Weekday</th>
-						<th scope="col">Time</th>
-						<th scope="col">Dates</th>
-					</tr>
-				</thead>
-				<% var weekdays=["Sunday", "Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" ] %>
-					<tbody>
-						<% for (let meeting of course.meetings) { %>
-							<tr>
-								<td>
-									<%= weekdays[meeting.day]%>
-								</td>
-								<td>
-									<%=meeting.start%> - <%=meeting.end%>
-								</td>
-								<td>
-									<%=meeting.dates%>
-								</td>
-							</tr>
+							<%for (var ts of meeting.timeSlot){%>
+								<%=(parseInt(ts) + 8).toString().padStart(2, "0")%>:30 - <%=(parseInt(ts) + 9).toString().padStart(2, "0")%>:30,
 							<%}%>
-					</tbody>
-			</table>
-			<div class="float-center d-flex justify-content-center">
-				<button class="btn btn-link" onclick="history.back()">back</button>
+						</td>
+					</tr>
+					<%}%>
+			</tbody>
+	</table>
+	<div class="float-center d-flex justify-content-center">
+		<button class="btn btn-link" onclick="history.back()">back</button>
+	</div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Confirmation: Add to shopping
+					cart?</h5>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group list-group-light justify-content-center border" id="shoppingcart">
+					<li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+						<div class="col-8">
+							<div class="fw-bold">
+								<%=course.courseCode%>
+							</div>
+							<div class="text-muted">
+								<%=course.courseName%>
+							</div>
+						</div>
+						<div class="col-4">
+							<div class="fw-light fst-italic">
+								<%=course.department%>
+							</div>
+							<div class="fst-italic">
+								<%=course.instructor%>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" id="confirm-add">Confirm</button>
 			</div>
 		</div>
-	</body>
+	</div>
+</div>
+<script>
+	$('#confirm-add').on('click', function () {
+		fetch("/api/courses/addToCart", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				course: "<%=course._id %>"
+			})
+		}).then(res => res.json()).then(res => {
+			$('#exampleModal').modal('hide');
+			if (res.status == 500) {
+				alert(res.message);
+			} else {
+				alert("Add to cart successfully");
+				location.replace('/internal/regcourse');
+			}
+		});
+	});
+</script>
+<%- include('./nav_end.ejs') %>

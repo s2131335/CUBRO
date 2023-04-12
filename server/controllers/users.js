@@ -5,6 +5,7 @@ const Auth = require("../middleware/auth");
 const { validationResult } = require("express-validator");
 const Email = require("../utils/sendMail");
 const Token = require("../utils/tokenUtil");
+const { deleteRegByFilter } = require("../services/registration");
 
 module.exports.login = function (req, res, next) {
 	// If user already logged in
@@ -145,8 +146,8 @@ module.exports.deleteUser = async (req, res) => {
 		if (req.body._id == req.user._id) {
 			throw error.Unknown;
 		}
-
 		await userService.deleteUsersByFilter({ _id });
+		await deleteRegByFilter({studentID: _id})
 	} catch (error) {
 		console.error(error);
 		return res.status(error.status).send(error);

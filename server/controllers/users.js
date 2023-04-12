@@ -135,7 +135,7 @@ module.exports.showAllUsers = async function (req, res, next) {
 	let users = await userService.findAllUserByFilter();
 	return res.render("admin/user_management", {
 		title: "User Management",
-		data: { users },
+		data: { users, self: req.user._id },
 	});
 	// res.status(200).json(users);
 };

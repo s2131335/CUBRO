@@ -5,6 +5,7 @@ const { manageCourse } = require("../controllers/courses");
 const { showAllUsers } = require("../controllers/users");
 const { findCourseByFilter } = require("../services/courses");
 const {findAllEvalByFilter} = require("../services/evaluation");
+const { findUserByFilter } = require("../services/users");
 /* GET admin home page */
 router.get("/home", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 	res.render("admin/home", {
@@ -44,4 +45,14 @@ router.get("/course/evaluation/:id", Auth.checkAuth(Auth.ADMIN), async function 
 		res.status(err.status).send(err);
 	}
 });
+
+router.get("/reset-password/:id", Auth.checkAuth(Auth.ADMIN), async (req, res)=>{
+	try{
+		let user = await findUserByFilter({_id: req.params.id});
+		res.render("admin/reset_password", {title: "User Reset Password", user})
+	}catch (err) {
+		console.error(err);
+		res.status(err.status).send(err);
+	}
+})
 module.exports = router;

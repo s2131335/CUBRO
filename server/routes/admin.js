@@ -3,7 +3,8 @@ var router = express.Router();
 const Auth = require("../middleware/auth");
 const { manageCourse } = require("../controllers/courses");
 const { showAllUsers } = require("../controllers/users");
-
+const { findCourseByFilter } = require("../services/courses");
+const {findAllEvalByFilter} = require("../services/evaluation");
 /* GET admin home page */
 router.get("/home", Auth.checkAuth(Auth.ADMIN), function (req, res, next) {
 	res.render("admin/home", {
@@ -26,5 +27,21 @@ router.get("/add_course",Auth.checkAuth(Auth.ADMIN),function (req, res, next) {
 	res.render("admin/add_course", {
 		title: "New Course",
 	});
+});
+
+router.get("/course/evaluation/:id", Auth.checkAuth(Auth.ADMIN), async function (req, res, next) {
+	try {
+		const cid = req.params.id;
+		let c = await findCourseByFilter({ _id: cid });
+		let e = await findAllEvalByFilter({courseID: cid});
+		res.render("admin/course_evaluation", {
+			title: "Course Evaluation",
+			course: c,
+			evaluations: e
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(err.status).send(err);
+	}
 });
 module.exports = router;

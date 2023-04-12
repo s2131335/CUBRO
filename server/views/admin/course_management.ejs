@@ -54,6 +54,10 @@
 							>
 							Edit
 						</button>
+						<a class="btn btn-link btn-rounded btn-sm fw-bold" href="/admin/course/evaluation/<%=course._id%>"
+							>
+							Evaluations
+					</a>
 						<button class="btn btn-danger btn-rounded btn-sm fw-bold" data-mdb-toggle="modal"
 							data-mdb-target=#<%=course.courseCode %>D
 							type="button"
@@ -173,12 +177,14 @@
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					}
-				}).then(res => res.json()).then(res => {
+				}).then(res => {
+					console.log(res)
 					if (res.status === 200) {
-						alert("Success!");
+						alert(res.data);
 						location.reload()
 					} else {
-						alert("Something went wrong!");
+						alert(`Something went wrong!\n
+						${res.data}`);
 						location.reload()
 					}
 				})

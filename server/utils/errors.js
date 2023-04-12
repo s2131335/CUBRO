@@ -90,6 +90,11 @@ module.exports = {
 		code: 6001,
 		message: "Registration Already Exists",
 	},
+	CourseExists: {
+		status: 500,
+		code: 6002,
+		message: "Course Already Exists",
+	},
 };
 
 module.exports.overrideError = function overrideError(error, message) {

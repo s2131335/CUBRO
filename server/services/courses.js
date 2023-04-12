@@ -5,7 +5,19 @@ module.exports.countCourseByFilter = async function (filter) {
 	return await Course.countDocuments(filter);
 };
 
-module.exports.upsertLesson = async function upsertLesson(lesson) {
+module.exports.createCourse = async function (course) {
+	try {
+		let course = await Course.find({ courseCode: course.courseCode });
+		if (course) throw error.CourseExists;
+		await Course.create(course);
+	} catch (error) {
+		console.warn("❗️ ~ error:", error);
+		if (error === error.CourseExists) throw error;
+		throw error.DatabaseUpdate;
+	}
+};
+
+module.exports.upsertCourse = async function upsertCourse(lesson) {
 	try {
 		await Course.updateOne({ courseCode: lesson.courseCode }, lesson, {
 			upsert: true,

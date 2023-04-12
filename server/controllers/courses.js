@@ -10,7 +10,8 @@ const {
 } = require("../utils/courseIO");
 
 const {
-	upsertLesson,
+	upsertCourse,
+	createCourse,
 	findAllCoursesByFilter,
 	findCourseByFilter,
 	deleteCoursesByFilter,
@@ -25,7 +26,7 @@ const {
 	getCourseAvailability,
 } = require("../services/registration");
 
-const {createEval, deleteEvalByFilter} =  require("../services/evaluation");
+const { createEval, deleteEvalByFilter } = require("../services/evaluation");
 
 module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;
@@ -35,7 +36,7 @@ module.exports.importCourse = async function importCourse(req, res) {
 	let failed = [];
 	for (let course of courses) {
 		try {
-			await upsertLesson(course);
+			await upsertCourse(course);
 		} catch (err) {
 			console.log("🚀 ~ file: courses.js:30 ~ importCourse ~ err:", err);
 			failed.push(`${course.courseCode}`);
@@ -179,9 +180,8 @@ module.exports.createCourse = (req, res) => {
 	delete course.time;
 
 	try {
-		if (updateCourseFile(course)) {
-			upsertLesson(course);
-		}
+		createCourse(course);
+		updateCourseFile(course);
 	} catch (err) {
 		delete global.CUBRO.CourseFile[`${course.courseCode}`];
 		return res.status(err.status).send(err);
@@ -295,7 +295,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 				courses: courseList,
 			});
 		}
-		res.status(200).json({status: "success"});
+		res.status(200).json({ status: "success" });
 	} catch (err) {
 		console.error(err);
 		res.status(err.status || 500).send(err);
@@ -322,7 +322,7 @@ module.exports.dropCourse = async function dropCourse(req, res) {
 			mode: Email.MODE_DROP,
 			courses: courseList,
 		});
-		res.status(200).json({status: 'success'});
+		res.status(200).json({ status: "success" });
 	} catch (err) {
 		console.error(err);
 		res.status(err.status || 500).send(err);
@@ -364,29 +364,28 @@ module.exports.myCourse = async function myCourse(req, res) {
 	}
 };
 
-
-module.exports.addEvaluation = async function addEvaluation(req, res){
-	try{
+module.exports.addEvaluation = async function addEvaluation(req, res) {
+	try {
 		const cid = req.params.id;
-		const {text} = req.body;
-		var filter = {userID: req.user._id, courseID: cid, text: text};
+		const { text } = req.body;
+		var filter = { userID: req.user._id, courseID: cid, text: text };
 		await createEval(filter);
-		res.status(200).json({status: 'success'});
-	}catch(error){
+		res.status(200).json({ status: "success" });
+	} catch (error) {
 		console.log(error);
 		res.status(error.status).send(error);
 	}
-}
+};
 
-module.exports.deleteEvaluation = async function deleteEvaluation(req, res){
-	try{
-		var filter = {_id: req.params.id};
+module.exports.deleteEvaluation = async function deleteEvaluation(req, res) {
+	try {
+		var filter = { _id: req.params.id };
 		console.log(`filter:`);
-		console.log(filter)
+		console.log(filter);
 		await deleteEvalByFilter(filter);
-		res.status(200).json({status: 'success'});
-	}catch(error){
+		res.status(200).json({ status: "success" });
+	} catch (error) {
 		console.log(error);
 		res.status(error.status).send(error);
 	}
-}
+};

@@ -55,11 +55,23 @@
 								</div>
 
 								<!-- Text input -->
-								<div class="form-outline mb-4">
-									<input type="text" id="cdepartment" class="form-control needs-validation mb-0" value="<%=c.department%>" oninput="checkEmptyInput(this)" required disabled/>
-									<label class="form-label" for="cdepartment">Department</label>
-									<div class="invalid-feedback mt-0">Required</div>
-								</div>
+								<%var department = ["LSB"] %>
+										<div class="row justify-content-md-center">
+											<div class="col">
+												<select
+													class="form-select mb-4 "
+													name="dept"
+													style="border-radius: 4px; height: 35.81px"
+													required disabled
+												>
+												<% for (let i=0; i<department.length; i++){ %>
+													<option  value=<%= i %>>
+														<%= department[i] %>
+													</option>
+												  <% } %>
+												</select>
+											</div>
+										</div>
 
 								<!-- Text input -->
 								<div class="form-outline mb-4">
@@ -601,6 +613,7 @@
 		$("[name='wday']").removeAttr('disabled');
 		$("[name='start']").removeAttr('disabled');
 		$("[name='end']").removeAttr('disabled');
+		$("[name='dept']").removeAttr('disabled');
 	})
 </script>
 <%- include('./nav_end.ejs') %>

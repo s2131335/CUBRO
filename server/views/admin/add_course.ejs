@@ -48,10 +48,21 @@
 										</div>
 
 										<!-- Text input -->
-										<div class="form-outline mb-4">
-											<input type="text" id="cdepartment" class="form-control needs-validation mb-0" value="" oninput="checkEmptyInput(this)" required/>
-											<label class="form-label" for="cdepartment">Department</label>
-											<div class="invalid-feedback mt-0">Required</div>
+										<%var department = ["LSB"] %>
+										<div class="row justify-content-md-center">
+											<div class="col">
+												<select
+													class="form-select mb-4 "
+													name="dept"
+													style="border-radius: 4px; height: 35.81px"
+												>
+												<% for (let i=0; i<department.length; i++){ %>
+													<option  value=<%= i %>>
+														<%= department[i] %>
+													</option>
+												  <% } %>
+												</select>
+											</div>
 										</div>
 
 										<!-- Instructor input -->
@@ -62,21 +73,10 @@
 										</div>
 
 										<!-- venue input -->
-										<%var venue = ["LSB"] %>
-										<div class="row justify-content-md-center">
-											<div class="col">
-												<select
-													class="form-select mb-4 "
-													name="dept"
-													style="border-radius: 4px; height: 35.81px"
-												>
-												<% for (let i=0; i<venue.length; i++){ %>
-													<option  value=<%= i %>>
-														<%= venue[i] %>
-													</option>
-												  <% } %>
-												</select>
-											</div>
+										<div class="form-outline mb-4">
+											<input type="text" id="cinstructor" class="form-control needs-validation mb-0" value="" oninput="checkEmptyInput(this)" required/>
+											<label class="form-label" for="cinstructor">Venue</label>
+											<div class="invalid-feedback mt-0">Required</div>
 										</div>
 
 										<!-- Number input -->
@@ -91,6 +91,7 @@
 											<textarea class="form-control" id="cdescription" rows="4"></textarea>
 											<label class="form-label" for="cdescription">Description</label>
 										</div>
+
 										<div class="row mb-1">
 											<div class="col-10 d-flex aligns-items-center">
 												<h4 class="text-muted" style="display: inline">Meetings</h4>

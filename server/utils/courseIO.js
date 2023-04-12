@@ -71,6 +71,8 @@ module.exports.updateCourseFile = function updateCourseFile(course) {
 module.exports.parseExcel = function parseExcel(
 	filename = path.join(__dirname, "../uploads/import.xlsx")
 ) {
+	
+	let courses = [];
 	try {
 		let workbook = XLSX.readFile(
 			path.join(__dirname, "../uploads/" + filename)
@@ -81,7 +83,6 @@ module.exports.parseExcel = function parseExcel(
 		delete worksheet["!ref"];
 		delete worksheet["!margins"];
 
-		let courses = [];
 
 		for (let i = 0; i < rowNum; i++) {
 			let course = {};
@@ -101,15 +102,14 @@ module.exports.parseExcel = function parseExcel(
 				console.log("skip");
 				continue;
 			}
+			course["meetings"] = exports.getMeeting(course.courseCode, course.time);
+			delete course.time;
+			courses.push(course);
 		}
 	} catch (e) {
 		console.log(e);
 		throw error.ParseExcelError;
 	}
-	// Key example: CSCI13100L1
-	course["meetings"] = exports.getMeeting(course.courseCode, course.time);
-	delete course.time;
-	courses.push(course);
 
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	// global.CUBRO.CourseFile = CourseFile;

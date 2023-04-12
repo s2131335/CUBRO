@@ -32,8 +32,9 @@ const courses = require("../database/models/courses");
 module.exports.importCourse = async function importCourse(req, res) {
 	try {
 		let filename = req.file.originalname;
-		let { size, mimetype, path } = req.file;
-		let types = ["pdf"]; // file type
+		let { size, mimetype} = req.file;
+		// console.log(mimetype);
+		let types = ["xlsx","xls","vnd.openxmlformats-officedocument.spreadsheetml.sheet"]; // file type
 		let tmpType = mimetype.split("/")[1];
 		if (size > 500000) throw error.FileSizeError;
 		if (types.indexOf(tmpType) == -1) throw error.FileTypeError;
@@ -73,7 +74,7 @@ module.exports.importCourse = async function importCourse(req, res) {
 		);
 	} catch (err) {
 		console.warn("❗️ ~ importCourse ~ err:", err);
-		return res.status(err.status).send(err);
+		return res.status(err.status||500).send(err);
 	}
 	res.status(200).send("All successful");
 };
@@ -213,7 +214,7 @@ module.exports.uploadOutline = async (req, res) => {
 	let types = ["pdf"]; // file type
 	let tmpType = mimetype.split("/")[1];
 	try {
-		if (size > 500000) throw error.FileSizeError;
+		if (size > 5000000) throw error.FileSizeError;
 		if (types.indexOf(tmpType) == -1) throw error.FileTypeError;
 
 		await findCourseAndUpdate({ _id }, { file: req.file.buffer });
@@ -242,7 +243,7 @@ module.exports.deleteOutline = async (req, res) => {
 	let _id = req.params.id;
 	console.log("id: " + _id)
 	try {
-		await findCourseAndUpdate({ _id }, { outline: null });
+		await findCourseAndUpdate({ _id }, { file: null });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(error);

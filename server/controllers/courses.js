@@ -312,7 +312,7 @@ module.exports.addToCart = async function addToCart(req, res) {
 
 module.exports.selectCourse = async function selectCourse(req, res) {
 	try {
-		const { select, courses } = req.body;
+		const { courses } = req.body;
 		if (courses.length == 0) throw error.CourseIDNotValid;
 		let toSelect = await countCourseByFilter({ _id: { $in: courses } });
 		console.log(toSelect);
@@ -343,20 +343,20 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 				{
 					courseID: course,
 					studentID: req.user._id,
-					selected: select,
+					selected: true,
 				}
 			);
 		}
 		// send email to student if it is a course registration
-		if (select == "true") {
-			let courseList = await findAllCoursesByFilter({
-				_id: { $in: courses },
-			});
-			await Email.sendMail(req.user.email, {
-				mode: Email.MODE_SELECT,
-				courses: courseList,
-			});
-		}
+
+		let courseList = await findAllCoursesByFilter({
+			_id: { $in: courses },
+		});
+		await Email.sendMail(req.user.email, {
+			mode: Email.MODE_SELECT,
+			courses: courseList,
+		});
+		
 		res.status(200).json({ status: "success" });
 	} catch (err) {
 		console.error(err);

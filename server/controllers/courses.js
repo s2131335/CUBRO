@@ -27,6 +27,7 @@ const {
 } = require("../services/registration");
 
 const { createEval, deleteEvalByFilter } = require("../services/evaluation");
+const courses = require("../database/models/courses");
 
 module.exports.importCourse = async function importCourse(req, res) {
 	try {
@@ -215,7 +216,7 @@ module.exports.uploadOutline = async (req, res) => {
 		if (size > 500000) throw error.FileSizeError;
 		if (types.indexOf(tmpType) == -1) throw error.FileTypeError;
 
-		await findCourseAndUpdate({ _id }, { outline: req.file.buffer });
+		await findCourseAndUpdate({ _id }, { file: req.file.buffer });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(error);
@@ -223,10 +224,25 @@ module.exports.uploadOutline = async (req, res) => {
 	res.status(200).send("ok");
 };
 
+module.exports.viewOutline = async function viewOutline(req,res){
+    try{
+        const course = await findCourseByFilter({"_id":req.params.id});
+        var tmp = course.file;
+        if(tmp==null) return res.send('No course outline uploaded');
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename="js.pdf"');
+        res.status(200).send(tmp);
+    }catch(error){
+        console.log(error);
+        return res.status(500).send("failed");
+    }
+}
+
 module.exports.deleteOutline = async (req, res) => {
-	let _id = req.body._id;
+	let _id = req.params.id;
+	console.log("id: " + _id)
 	try {
-		await findCourseAndUpdate({ _id }, { outline: "" });
+		await findCourseAndUpdate({ _id }, { outline: null });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(error);

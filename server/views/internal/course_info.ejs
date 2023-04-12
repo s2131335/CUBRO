@@ -8,10 +8,12 @@
 			<h3 style="display: inline" class="ps-3 text-muted">
 				<%=course.courseName%>
 			</h3>
+			<% if(course.file != null){ %>
+				<a class="btn btn-link" type="button" href="/api/courses/outline/<%=course._id%>" target="_blank">View Outline</a>
+			<%}%>
 			<a
 				class="btn btn-link"
 				href="/internal/course/evaluation/<%=course._id%>"
-				style="display: inline"
 				>View Evaluations</a
 			>
 		</div>

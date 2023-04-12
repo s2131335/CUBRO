@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const {
 	uploadOutline,
+	viewOutline,
+	deleteOutline,
 	editPage,
 	createCourse,
 	deleteCourse,
@@ -39,7 +41,9 @@ router.get("/myCourse", Auth.checkAuth(), myCourse);
 
 router.get("/getTimetableInfo", getTimetableInfo);
 
-router.post("/upload", Auth.checkAuth(), uploadDb, uploadOutline);
+router.post("/upload", Auth.checkAuth(Auth.ADMIN), uploadDb, uploadOutline);
+router.get("/outline/:id", Auth.checkAuth(), viewOutline);
+router.get("/delete-outline/:id", Auth.checkAuth(), deleteOutline);
 // router.get("/excel");
 
 // evaluations

@@ -173,12 +173,14 @@
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					}
-				}).then(res => res.json()).then(res => {
+				}).then(res => {
+					console.log(res)
 					if (res.status === 200) {
-						alert("Success!");
+						alert(res.data);
 						location.reload()
 					} else {
-						alert("Something went wrong!");
+						alert(`Something went wrong!\n
+						${res.data}`);
 						location.reload()
 					}
 				})

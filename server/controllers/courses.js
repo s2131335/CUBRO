@@ -5,6 +5,7 @@ const { checkCollision, getTimetable } = require("../utils/planner");
 const Email = require("../utils/sendMail");
 const {
 	parseExcel,
+	toCsv,
 	getMeeting,
 	updateCourseFile,
 } = require("../utils/courseIO");
@@ -29,12 +30,25 @@ const {
 const { createEval, deleteEvalByFilter } = require("../services/evaluation");
 const courses = require("../database/models/courses");
 
+module.exports.exports.exportCourse = async function exportCourse(req, res) {
+	try {
+		let courses = await findAllCoursesByFilter({});
+		res.status(200).send(toCsv(courses));
+	} catch (err) {
+		res.status(err.status || 500).send(err);
+	}
+};
+
 module.exports.importCourse = async function importCourse(req, res) {
 	try {
 		let filename = req.file.originalname;
-		let { size, mimetype} = req.file;
+		let { size, mimetype } = req.file;
 		// console.log(mimetype);
-		let types = ["xlsx","xls","vnd.openxmlformats-officedocument.spreadsheetml.sheet"]; // file type
+		let types = [
+			"xlsx",
+			"xls",
+			"vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+		]; // file type
 		let tmpType = mimetype.split("/")[1];
 		if (size > 500000) throw error.FileSizeError;
 		if (types.indexOf(tmpType) == -1) throw error.FileTypeError;
@@ -74,7 +88,7 @@ module.exports.importCourse = async function importCourse(req, res) {
 		);
 	} catch (err) {
 		console.warn("❗️ ~ importCourse ~ err:", err);
-		return res.status(err.status||500).send(err);
+		return res.status(err.status || 500).send(err);
 	}
 	res.status(200).send("All successful");
 };
@@ -225,23 +239,23 @@ module.exports.uploadOutline = async (req, res) => {
 	res.status(200).send("ok");
 };
 
-module.exports.viewOutline = async function viewOutline(req,res){
-    try{
-        const course = await findCourseByFilter({"_id":req.params.id});
-        var tmp = course.file;
-        if(tmp==null) return res.send('No course outline uploaded');
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename="js.pdf"');
-        res.status(200).send(tmp);
-    }catch(error){
-        console.log(error);
-        return res.status(500).send("failed");
-    }
-}
+module.exports.viewOutline = async function viewOutline(req, res) {
+	try {
+		const course = await findCourseByFilter({ _id: req.params.id });
+		var tmp = course.file;
+		if (tmp == null) return res.send("No course outline uploaded");
+		res.setHeader("Content-Type", "application/pdf");
+		res.setHeader("Content-Disposition", 'inline; filename="js.pdf"');
+		res.status(200).send(tmp);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).send("failed");
+	}
+};
 
 module.exports.deleteOutline = async (req, res) => {
 	let _id = req.params.id;
-	console.log("id: " + _id)
+	console.log("id: " + _id);
 	try {
 		await findCourseAndUpdate({ _id }, { file: null });
 	} catch (error) {
@@ -321,10 +335,9 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 		}
 
 		let fullList = [];
-		for (let course of courses){
+		for (let course of courses) {
 			let ca = await getCourseAvailability(course);
-			if(ca.available === 0)
-				fullList.push(ca.courseCode)
+			if (ca.available === 0) fullList.push(ca.courseCode);
 		}
 
 		let collision = await checkCollision(req.user, courses);
@@ -355,7 +368,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 			mode: Email.MODE_SELECT,
 			courses: courseList,
 		});
-		
+
 		res.status(200).json({ status: "success" });
 	} catch (err) {
 		console.error(err);

@@ -16,15 +16,22 @@ const {
 	myCourse,
 	addToCart,
 	addEvaluation,
-	deleteEvaluation
+	deleteEvaluation,
+	exportCourse,
+	importCourse,
 } = require("../../controllers/courses");
 const { uploadLocal, uploadDb } = require("../../middleware/upload");
-const { importCourse } = require("../../controllers/courses");
 const Auth = require("../../middleware/auth");
 
 // router.post("/add");
 
-router.post("/import-courses", Auth.checkAuth(), uploadLocal, importCourse);
+router.post(
+	"/import-courses",
+	Auth.checkAuth(Auth.ADMIN),
+	uploadLocal,
+	importCourse
+);
+router.get("/export-courses", Auth.checkAuth(Auth.ADMIN), exportCourse);
 
 router.get("/browse", Auth.checkAuth(), browseCourse);
 router.get("/info/:id", Auth.checkAuth(), courseInfo);
@@ -47,7 +54,7 @@ router.get("/delete-outline/:id", Auth.checkAuth(), deleteOutline);
 // router.get("/excel");
 
 // evaluations
-router.post("/evaluation/:id", Auth.checkAuth(), addEvaluation)
-router.delete("/evaluation/:id", Auth.checkAuth(), deleteEvaluation)
+router.post("/evaluation/:id", Auth.checkAuth(), addEvaluation);
+router.delete("/evaluation/:id", Auth.checkAuth(), deleteEvaluation);
 
 module.exports = router;

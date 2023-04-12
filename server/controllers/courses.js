@@ -30,7 +30,7 @@ const {
 const { createEval, deleteEvalByFilter } = require("../services/evaluation");
 const courses = require("../database/models/courses");
 
-module.exports.exports.exportCourse = async function exportCourse(req, res) {
+module.exports.exportCourse = async function exportCourse(req, res) {
 	try {
 		let courses = await findAllCoursesByFilter({});
 		res.status(200).send(toCsv(courses));

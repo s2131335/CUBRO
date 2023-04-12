@@ -85,6 +85,16 @@ module.exports = {
 		code: 5002,
 		message: "Record Not Found",
 	},
+	FileSizeError: {
+		status: 400,
+		code: 6001,
+		message: "File size too big",
+	},
+	FileTypeError: {
+		status: 400,
+		code: 6002,
+		message: "Wrong file type",
+	},
 	RegistrationExists: {
 		status: 500,
 		code: 6001,

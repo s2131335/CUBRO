@@ -189,6 +189,23 @@ module.exports.createCourse = (req, res) => {
 	writeJSON(path.join(__dirname, "../courses.json"), global.CUBRO.CourseFile);
 	res.status(200).send("ok");
 };
+module.exports.uploadOutline = async (req, res) => {
+	let _id = req.body.id;
+	let { size, mimetype, path } = req.file;
+	let types = ["pdf"]; // file type
+	let tmpType = mimetype.split("/")[1];
+	try {
+		if (size > 500000) throw error.FileSizeError;
+		if (types.indexOf(tmpType) == -1) throw error.FileTypeError;
+
+		await findCourseAndUpdate({ _id }, { outline: req.file.buffer });
+	} catch (error) {
+		console.log(error);
+		return res.status(500).send(error);
+	}
+	res.status(200).send("ok");
+};
+
 module.exports.deleteCourse = async (req, res) => {
 	const _id = req.body._id;
 	try {

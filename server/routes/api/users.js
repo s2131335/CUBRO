@@ -14,6 +14,7 @@ const {
 	addUser,
 	showUsers,
 	deleteUser,
+	resetUserPassword
 } = require("../../controllers/users");
 const Auth = require("../../middleware/auth");
 
@@ -31,6 +32,8 @@ router.post(
 	validation.password,
 	changePassword
 );
+
+router.post("/reset-user-password/:id",Auth.checkAuth(Auth.ADMIN),validation.password,resetUserPassword);
 
 // router.get("/show-students", Auth.checkAuth(Auth.ADMIN), showStudents);
 

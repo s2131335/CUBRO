@@ -176,6 +176,27 @@ module.exports.changePassword = async function (req, res, next) {
 	res.status(200).send("ok");
 };
 
+module.exports.resetUserPassword = async function (req, res, next) {
+	let err = validationResult(req);
+	if (!err.isEmpty()) {
+		// console.log(err);
+		let validatorError = err.errors[0].msg;
+		console.log(
+			"🚀 ~ file: users.js:119 ~ validatorError:",
+			validatorError
+		);
+
+		if (validatorError)
+			return res.status(validatorError.status).send(validatorError);
+	}
+	try {
+		await userService.updatePassword(req.params.id, req.body.password);
+	} catch (err) {
+		return res.status(err.status).send(err);
+	}
+	res.status(200).send("ok");
+};
+
 module.exports.modRoles = async function (req, res, next) {
 	try {
 		console.log(req.body.role);

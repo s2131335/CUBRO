@@ -320,13 +320,12 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 			throw error.CourseIDNotValid;
 		}
 
-		let fullList = courses
-			.map((course) => {
-				return getCourseAvailability(course);
-			})
-			.filter((course) => {
-				return course.available === 0;
-			});
+		let fullList = [];
+		for (let course of courses){
+			let ca = await getCourseAvailability(course);
+			if(ca.available === 0)
+				fullList.push(ca.courseCode)
+		}
 
 		let collision = await checkCollision(req.user, courses);
 		console.log("collision:", collision);

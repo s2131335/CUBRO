@@ -1,10 +1,29 @@
 module.exports.departments = [
-	"Engineering",
-	"Science",
-	"Business",
-	"Education",
-	"Social Science",
-	"Art",
+	"Computer Science",
+	"Electrical Engineering",
+	"Mechanical Engineering",
+	"Civil Engineering",
+	"Chemical Engineering",
+	"Physics",
+	"Mathematics",
+	"Biology",
+	"Chemistry",
+	"Environmental Science",
+	"Psychology",
+	"Sociology",
+	"Anthropology",
+	"History",
+	"Political Science",
+	"English",
+	"Foreign Languages",
+	"Philosophy",
+	"Arts and Humanities",
+	"Music",
+	"Economics",
+	"Linguistics",
+	"Accounting",
+	"Management",
+	
 ];
 
 module.exports.locations = [
@@ -19,7 +38,7 @@ module.exports.locations = [
 	"SLT",
 	"SCL",
 	"WFY",
-	"WMY"
+	"WMY",
 ];
 
 module.exports.timeslots = [

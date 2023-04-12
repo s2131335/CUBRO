@@ -127,9 +127,13 @@
 				},
 				body: JSON.stringify({courses:checkedIds, select: true}),
 			}).then(res=>res.json()).then(res=>{
-                if (res.status == 500) {
-                    alert(res.message);
-                    location.reload();
+                if (Object.keys(res).length != 1) {
+                    if(res.collision.length != 0){
+                        alert(`The following courses have collision:\n${res.collision.join(', ')}`)
+                    }
+                    if(res.full?.length != 0){
+                        alert(`The following courses are full:\n${res.full.join(', ')}`)
+                    }
                 } else {
                     alert("Course selected successfully");
                     location.replace('/internal/table');

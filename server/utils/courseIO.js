@@ -71,7 +71,6 @@ module.exports.updateCourseFile = function updateCourseFile(course) {
 module.exports.parseExcel = function parseExcel(
 	filename = path.join(__dirname, "../uploads/import.xlsx")
 ) {
-	
 	let courses = [];
 	try {
 		let workbook = XLSX.readFile(
@@ -82,7 +81,6 @@ module.exports.parseExcel = function parseExcel(
 		let rowNum = XLSX.utils.decode_range(worksheet["!ref"]).e.r;
 		delete worksheet["!ref"];
 		delete worksheet["!margins"];
-
 
 		for (let i = 0; i < rowNum; i++) {
 			let course = {};
@@ -102,7 +100,10 @@ module.exports.parseExcel = function parseExcel(
 				console.log("skip");
 				continue;
 			}
-			course["meetings"] = exports.getMeeting(course.courseCode, course.time);
+			course["meetings"] = exports.getMeeting(
+				course.courseCode,
+				course.time
+			);
 			delete course.time;
 			courses.push(course);
 		}
@@ -131,7 +132,7 @@ function getTimeSlots(meetings) {
 	return timeSlots;
 }
 
-function toCsv(courses) {
+module.exports.toCsv = function toCsv(courses) {
 	const { parse } = require("json2csv");
 	//courses come from db
 	let data = [];
@@ -154,8 +155,10 @@ function toCsv(courses) {
 		});
 		return result;
 		// console.log(data);
-	} catch (error) {}
-}
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 //dummy data for testing purposes
 const c = {

@@ -10,6 +10,10 @@ const {
 	selectCourse,
 	dropCourse,
 	getTimetableInfo,
+	myCourse,
+	addToCart,
+	addEvaluation,
+	deleteEvaluation
 } = require("../../controllers/courses");
 const upload = require("../../middleware/upload");
 const { importCourse } = require("../../controllers/courses");
@@ -23,13 +27,20 @@ router.get("/browse", Auth.checkAuth(), browseCourse);
 router.get("/info/:id", Auth.checkAuth(), courseInfo);
 router.get("/edit/:id", Auth.checkAuth(), editPage);
 router.post("/select", Auth.checkAuth(), selectCourse);
-router.post("/drop", Auth.checkAuth(), dropCourse);
+router.get("/drop/:id", Auth.checkAuth(), dropCourse);
 
 router.post("/create", Auth.checkAuth(), createCourse);
 router.post("/delete", Auth.checkAuth(), deleteCourse);
 router.post("/update", Auth.checkAuth(), editCourse);
 
+router.post("/addToCart", Auth.checkAuth(), addToCart);
+router.get("/myCourse", Auth.checkAuth(), myCourse);
+
 router.get("/getTimetableInfo", getTimetableInfo);
 // router.get("/excel");
+
+// evaluations
+router.post("/evaluation/:id", Auth.checkAuth(), addEvaluation)
+router.delete("/evaluation/:id", Auth.checkAuth(), deleteEvaluation)
 
 module.exports = router;

@@ -1,180 +1,140 @@
 <%- include('./nav.ejs') %>
-    <!-- <body> -->
-
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="schedule-table pt-5">
-                <table class="bg-white">
-                    <thead class="border border-end-0 border-primary">
-                        <tr>
-                            <th>Routine</th>
-                            <th>Mon</th>
-                            <th>Tue</th>
-                            <th>Wed</th>
-                            <th>Thu</th>
-                            <th>Fri</th>
-                            <th>Sat</th>
-                            <th class="last">Sun</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="day">08:30</td>
-                            <% for (var i=0; i<7; i++) { %>
-                                <td class="td" id=<%= i %>00></td>
-                            <% } %>
-                        </tr>
-                        <tr>
-                            <td class="day">09:30</td>
-                            <% for (var i=0; i<7; i++) { %>
-                                <td class="td" id=<%= i %>01></td>
-                            <% } %>
-                        </tr>
-                        <tr>
-                            <td class="day">10:30</td>
-                            <% for (var i=0; i<7; i++) { %>
-                                <td class="td" id=<%= i %>02></td>
-                            <% } %>
-                        </tr>
-                        <tr>
-                            <td class="day">11:30</td>
-                            <% for (var i=0; i<7; i++) { %>
-                                <td class="td" id=<%= i %>03></td>
-                            <% } %>
-                        </tr>
-                        <tr>
-                            <td class="day">12:30</td>
-                            <% for (var i=0; i<7; i++) { %>
-                                <td class="td" id=<%= i %>04></td>
-                            <% } %>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="list-group list-group-light">
-
-            <% data.course.forEach((c)=>{%>
-                <% if (c.type=="Lecture"){ %>
-            <li class="list-group-item" >
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=<%= c.courseCode %><%= c.class %>
-                    id=<%= c.courseCode %><%= c.class %><%= c.type %>
-                    />
-                <label
-                    class="form-check-label"
-                    for=<%= c.courseCode %><%= c.class %><%= c.type%>>
-                    <div
-                        class="d-flex
-                        flex-row">
-                        <div>
-                            <%= c.courseCode %><%= c.class %>
-                        </div>
-
-                    </div>
-                </label>
-            </li>
-                <% } %>
-            <% }) %>
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <button type="button" class="btn btn-primary" id="valid">Validate</button>
-                <button type="button" class="btn btn-secondary" id="submit">Submit</button>
-                <button type="button" class="btn btn-link" data-mdb-ripple-color="dark" id="reset">Reset</button>
-            </div>
+<div class="container">
+    <div class="loader"></div>
+    <div class="row">
+        <ul
+        class="list-group list-group-light justify-content-center border my-3"
+        id="courseList"
+        ></ul>
+    </div>
+    <div class="row">
+        <div>
+            <!-- <button type="button" class="btn btn-primary" id="valid">Validate</button> -->
+            <button type="button" class="btn btn-primary" id="submit" onclick="getCheckedIds()"  data-toggle="modal" data-target="#exampleModal">Select</button>
+            <button type="button" class="btn btn-link" data-mdb-ripple-color="dark" id="reset" onclick="deselectCheckboxes()">Reset</button>
         </div>
     </div>
-    </body>
-    <script>
-    var data = <%- JSON.stringify(data) %>;
-    var course = data.course.map(c =>{
-        return {
-            courseCode: c.courseCode,
-            venue: c.venue,
-            class: c.class,
-            timeSlot: c.timeSlot,
-            type: c.type,
-            displayed: false,
-        };
-    });
-    function separateTimeSlots(arr) {
-        let result = [];
-        arr.forEach(obj => {
-            for(var i=0; i<obj.timeSlot.length; i++){
-                let firstChar = obj.timeSlot[i][0];
-                let newObj = {...obj};
-                newObj.timeSlot = obj.timeSlot.filter(slot => slot[0] === firstChar);
-                if (i>0){
-                    if (obj.timeSlot[i-1][0]!=firstChar){
-                        result.push(newObj);
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Confirmation: Course Selection</h5>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group list-group-light justify-content-center border" id="selection">
+					
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-success" id="confirm-select" onclick="select()">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    $(document).ready(function () {
+		$(".loader").hide();
+		load();
+	});
+	var courses = {};
+
+	function load() {
+		$("#courseList").hide();
+		$(".loader").show();
+		fetch("/api/courses/myCourse")
+			.then((response) => response.json())
+			.then((res) => {
+                let HTMLString = '';
+                for (let c of res){
+                    if(!c.selected){
+						let course = c.courseID;
+						courses[c.courseID._id] = course;
+                        HTMLString += `
+                            <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+                                <div class="form-check col-1">
+                                    <input class="form-check-input" type="checkbox" value="" id="c-${course._id}" />
+                                </div>
+                                <div class="col-5">
+                                    <div class="fw-bold">${course.courseCode}</div>
+                                    <div class="text-muted">${course.courseName}</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="fw-light fst-italic">${course.department}</div>
+                                    <div class="fst-italic">${course.instructor}</div>
+                                </div>
+                                <a class="btn btn-link col-2" data-mdb-ripple-color="dark" href="/internal/course/info/${course._id}">Info</a>
+                            </li>
+                            `;
                     }
-                }else if(i==0){
-                    result.push(newObj);
                 }
-            }
+               
+                if (HTMLString == '') {
+                    HTMLString = '<li class="list-group-item d-flex justify-content-between align-items-center ps-4">No courses selected!</li>';
+                }
+                $('#courseList').html(HTMLString);
+                $('.loader').hide();
+                $('#courseList').show();
+			});
+	}
+
+    var checkedIds = [];
+    function getCheckedIds() {
+        let arr = []
+        $('input[id^="c-"]:checked').each(function() {
+            arr.push($(this).attr('id').split('-').pop());
         });
-        return result;
+        checkedIds = arr;
+        let HTMLString = '';
+        if(arr.length > 0) {
+            for (let id of arr){
+                let course = courses[id];
+                HTMLString += `
+                    <li class="list-group-item d-flex justify-content-between align-items-center ps-4">
+                        <div class="col-8">
+                            <div class="fw-bold">${course.courseCode}</div>
+                            <div class="text-muted">${course.courseName}</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="fw-light fst-italic">${course.department}</div>
+                            <div class="fst-italic">${course.instructor}</div>
+                        </div>
+                    </li>
+                    `;
+            }
+            $('#confirm-select').prop("disabled", false);
+        }else{
+            $('#confirm-select').prop("disabled", true);
+        }
+        $('#selection').html(HTMLString);
     }
 
-    var courses= separateTimeSlots(course);
-    console.log(courses);
-    $("#valid").click(()=>{
-        var list=[];
-        $('input[type="checkbox"]:checked').each(function() {
-    // Do something with each checked checkbox
-            list.push($(this).val());
-        });
-        console.log(list);
-        list.forEach((code)=>{
-            courses.forEach((c)=>{
-                if ((c.class==code.charAt(8))&&(c.courseCode== code.slice(0,8))) {
-                    if(c.displayed==false){
-                        var span=c.timeSlot.length;
-                        $(`#${c.timeSlot[0]}`).html(`<h4>${c.courseCode}</h4><p>${c.type}</p>`);
-                        $(`#${c.timeSlot[0]}`).attr({
-                            "rowspan" : `${span}`,
-                            "class" : "active",
-                        });
-                        c.timeSlot.shift();
-                        c.timeSlot.forEach((id)=>{
-                            $(`#${id}`).hide();
-                        });
-                        c.displayed=true;
+    function deselectCheckboxes() {
+        const checkboxes = document.querySelectorAll('[id^="c-"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+    }
 
-                    }
+    function select(){
+        fetch('/api/courses/select' ,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({courses:checkedIds, select: true}),
+			}).then(res=>res.json()).then(res=>{
+                if (res.status == 500) {
+                    alert(res.message);
+                    location.reload();
+                } else {
+                    alert("Course selected successfully");
+                    location.replace('/internal/table');
                 }
             })
-        });
-        console.log(courses);
-    })
-    $("#reset").click(()=>{
-            $(".td:hidden").show();
-            $(".active").text(" ");
-            $(".active").attr({
-                "rowspan" : "1"
-            });
-            $(".active").removeClass("active");
-            var course = data.course.map(c =>{
-                return {
-                    courseCode: c.courseCode,
-                    venue: c.venue,
-                    class: c.class,
-                    timeSlot: c.timeSlot,
-                    type: c.type,
-                    displayed: false,
-                };
-            });
-            courses= separateTimeSlots(course);
-            // $('input[type="checkbox"]:checked').each(function(button) {
-            //     button.attr({
-            //                 checked
-            //             });
-            // });
-    })
-    </script>
+    }
+</script>
+<%- include('./nav_end.ejs') %>

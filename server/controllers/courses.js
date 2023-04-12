@@ -24,6 +24,8 @@ const {
 	getCourseAvailability,
 } = require("../services/registration");
 
+const {createEval, deleteEvalByFilter} =  require("../services/evaluation");
+
 module.exports.importCourse = async function importCourse(req, res) {
 	let filename = req.file.originalname;
 	let courses = parseExcel(filename);
@@ -111,6 +113,7 @@ module.exports.courseInfo = async function courseInfo(req, res) {
 		// 	throw error.CourseIDNotValid;
 		// }
 		c = await findCourseByFilter({ _id: cid });
+		c.availableSeat = await getCourseAvailability(cid);
 	} catch (err) {
 		console.error(err);
 		res.status(err.status).send(err);
@@ -167,13 +170,11 @@ module.exports.createCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		dates,
-		time,
+		meeting,
 		description,
 	} = req.body);
 	console.log(course);
-	course.meeting = getMeeting(course.courseCode, course.dates, course.time);
-	delete course.dates;
+	course.meeting = getMeeting(course.courseCode, course.time);
 	delete course.time;
 
 	try {
@@ -213,14 +214,13 @@ module.exports.editCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		dates,
 		time,
 		description,
 	} = req.body;
 
 	let meeting;
-	if (time && dates) {
-		meeting = getMeeting(courseCode, dates, time);
+	if (time) {
+		meeting = getMeeting(courseCode, time);
 	}
 	try {
 		findCourseAndUpdate(
@@ -230,7 +230,6 @@ module.exports.editCourse = (req, res) => {
 				venue,
 				instructor,
 				seat,
-				dates,
 				description,
 				meeting,
 			}
@@ -239,6 +238,34 @@ module.exports.editCourse = (req, res) => {
 		return res.status(error.status).send(error);
 	}
 	res.status(200).send("ok");
+};
+
+module.exports.addToCart = async function addToCart(req, res) {
+	try {
+		const { course } = req.body;
+		let reg = await findRegByFilter({
+			courseID: course,
+			studentID: req.user._id,
+		});
+		if (reg.length > 0) throw error.RegistrationExists;
+
+		await upsertReg(
+			{
+				courseID: course,
+				studentID: req.user._id,
+			},
+			{
+				courseID: course,
+				studentID: req.user._id,
+				selected: false,
+			}
+		);
+
+		res.status(200).json({});
+	} catch (err) {
+		console.error(err);
+		res.status(err.status || 500).send(err);
+	}
 };
 
 module.exports.selectCourse = async function selectCourse(req, res) {
@@ -256,7 +283,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 				return getCourseAvailability(course);
 			})
 			.filter((course) => {
-				return course.isFull;
+				return course.available === 0;
 			});
 
 		let collision = await checkCollision(req.user, courses);
@@ -288,7 +315,7 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 				courses: courseList,
 			});
 		}
-		res.status(200).send("ok");
+		res.status(200).json({status: "success"});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status || 500).send(err);
@@ -297,29 +324,25 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 
 module.exports.dropCourse = async function dropCourse(req, res) {
 	try {
-		let { courses } = req.body;
-		// for (let course of courses) {
-		// 	// if (!isValidObjectId(course)) throw error.CourseIDNotValid;
-		// }
 		let toDrop = await extractRegIdByFilter({
-			courseID: { $in: courses },
+			courseID: req.params.id,
 			studentID: req.user._id,
 		});
-		if (toDrop.length != courses.length) {
+		if (toDrop.length == 0) {
 			throw error.RegistrationNotValid;
 		}
 		await deleteRegByFilter({
-			courseID: { $in: courses },
+			courseID: req.params.id,
 			studentID: req.user._id,
 		});
 		let courseList = await findAllCoursesByFilter({
-			_id: { $in: courses },
+			_id: req.params.id,
 		});
 		await Email.sendMail(req.user.email, {
 			mode: Email.MODE_DROP,
 			courses: courseList,
 		});
-		res.status(200).send("ok");
+		res.status(200).json({status: 'success'});
 	} catch (err) {
 		console.error(err);
 		res.status(err.status || 500).send(err);
@@ -349,3 +372,41 @@ module.exports.getTimetableInfo = async function (req, res) {
 	}
 	res.status(200).send(timetableInfo);
 };
+
+module.exports.myCourse = async function myCourse(req, res) {
+	let myCourse;
+	try {
+		myCourse = await findRegByFilter({ studentID: req.user._id });
+		return res.status(200).json(myCourse);
+	} catch (error) {
+		console.warn("❗️ ~ myCourse ~ error:", error);
+		res.status(error.status).send(error);
+	}
+};
+
+
+module.exports.addEvaluation = async function addEvaluation(req, res){
+	try{
+		const cid = req.params.id;
+		const {text} = req.body;
+		var filter = {userID: req.user._id, courseID: cid, text: text};
+		await createEval(filter);
+		res.status(200).json({status: 'success'});
+	}catch(error){
+		console.log(error);
+		res.status(error.status).send(error);
+	}
+}
+
+module.exports.deleteEvaluation = async function deleteEvaluation(req, res){
+	try{
+		var filter = {_id: req.params.id};
+		console.log(`filter:`);
+		console.log(filter)
+		await deleteEvalByFilter(filter);
+		res.status(200).json({status: 'success'});
+	}catch(error){
+		console.log(error);
+		res.status(error.status).send(error);
+	}
+}

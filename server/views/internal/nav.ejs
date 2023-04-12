@@ -30,6 +30,28 @@
 </head>
 
 <body class="mt-0">
+	<style>
+		.loader {
+			border: 16px solid #f3f3f3;
+			/* Light grey */
+			border-top: 16px solid #3498db;
+			/* Blue */
+			border-radius: 50%;
+			width: 120px;
+			height: 120px;
+			animation: spin 2s linear infinite;
+		}
+	
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+	
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+	</style>
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
 		<div class="container-fluid">
@@ -41,10 +63,10 @@
 			<div class="collapse navbar-collapse" id="navbarText">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
-						<% if (title=="My Courses" ) { %>
-							<a class="nav-link active" href="/internal/table">My Courses </a>
+						<% if (title=="Timetable" ) { %>
+							<a class="nav-link active" href="/internal/table">Timetable</a>
 							<%}else{%>
-								<a class="nav-link" href="/internal/table"> My Courses </a>
+								<a class="nav-link" href="/internal/table">Timetable</a>
 								<%}%>
 					</li>
 					<li class="nav-item">
@@ -59,10 +81,10 @@
 								<%}%>
 					</li>
 					<li class="nav-item">
-						<% if (title=='Timetable Planner' ) { %>
-							<a class="nav-link active" href="/internal/regcourse">Timetable</a>
+						<% if (title=='Shopping Cart' ) { %>
+							<a class="nav-link active" href="/internal/regcourse">Shopping Cart</a>
 							<%}else{%>
-								<a class="nav-link" href="/internal/regcourse">Timetable
+								<a class="nav-link" href="/internal/regcourse">Shopping Cart
 								</a>
 								<%}%>
 					</li>

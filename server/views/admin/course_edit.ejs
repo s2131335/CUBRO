@@ -118,16 +118,51 @@
 					  "22:30"
 				  ] %>
 					  <tbody id="meetbody">
+						<% var newmeetings=[]; %>
 						<% for (let meeting of c.meetings) { %>
 							<% for (var i = 0; i < meeting.timeSlot.length; i++) { %>
-							<%	meeting.timeSlot[i] = parseInt(meeting.timeSlot[i]); %>
-							<%	} %>
+								<%	meeting.timeSlot[i] = parseInt(meeting.timeSlot[i]); %>
+								<%	} %>
+						<%	let tempArr = []; %>
+						<%	const separatedArr = meeting.timeSlot.reduce((result, currentValue, currentIndex) => { %>
+						<%	if (currentIndex === 0) { %>
+						<%		tempArr.push(currentValue); %>
+						<%		return result; %>
+						<%	} %>
+						<%	if (currentValue === meeting.timeSlot[currentIndex-1] + 1) { %>
+						<%		tempArr.push(currentValue); %>
+						<%		if (currentIndex === meeting.timeSlot.length-1) { %>
+						<%		result.push(tempArr); %>
+						<%		} %>
+						<%	} else { %>
+						<%		result.push(tempArr); %>
+						<%		tempArr = [currentValue]; %>
+						<%		if (currentIndex === meeting.timeSlot.length-1) { %>
+						<%		result.push(tempArr); %>
+						<%		} %>
+						<%	} %>
+						<%	return result; %>
+						<%	}, []); %>
+						<%	separatedArr.forEach((e)=>{ %>
+						<%		var melement={day:meeting.day, timeSlot:e}; %>
+						<%		console.log(melement); %>
+						<%		newmeetings.push(melement); %>
+						<%	}) %>
+						<%	c.meetings.splice(c.meetings.indexOf(meeting),1); %>
+						<%} %>
+						<%c.meetings=newmeetings; %>	
+						<% console.log(newmeetings);%>
+						<% for (let meeting of c.meetings) { %>
+							<% for (var i = 0; i < meeting.timeSlot.length; i++) { %>
+								<%	meeting.timeSlot[i] = parseInt(meeting.timeSlot[i]); %>
+								<%	} %>
 							<%  if (meeting.timeSlot.length > 1) { %>
 							<%	meeting.timeSlot.splice(1, meeting.timeSlot.length - 2); %>
 							<%  	} else { %>
 							<%	meeting.timeSlot.push(meeting.timeSlot[0]); %>
 							<%  } %>
-							<%  meeting.timeSlot[meeting.timeSlot.length - 1] += 1; %>
+							<%  meeting.timeSlot[meeting.timeSlot.length - 1] = parseInt(meeting.timeSlot[meeting.timeSlot.length - 1])+1; %>
+							<% console.log(meeting); %>
 						  <tr name="meets">
 							  <td>
 								  <div class="form">
@@ -329,19 +364,27 @@
 				meetings.push(melement);
 			}
 		})
-		//use indexof
+		//merge different meeting timeslot into 1 meeting timeslot
 		for (var i=0;i<7;i++){
 			var count =0;
-			for (let meeting of meetings){
-				if (meeting.day==i){
-					if(count <2){
+			var flag =0;
+			for (var j=0;j<meetings.length;j++){
+				if (meetings[j].day==i){
+					if(count <1){
 						count+=1;
+						flag=j;
+						console.log(flag);
 					}else{
-
+						console.log(meetings[j].timeSlot);
+						meetings[flag].timeSlot=meetings[flag].timeSlot.concat(meetings[j].timeSlot);
+						console.log(meetings[flag].timeSlot);
+						meetings.splice(j,1);
 					}
 				}
 			}
 		}
+
+		// console.log(meetings);
 		$(".needs-validation").each(function(){
 			if ($(this).val()==""){
 				pass=false;

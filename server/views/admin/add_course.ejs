@@ -12,74 +12,74 @@
     >
         Added course successfully.
     </div>
+	<div
+        class="alert alert-danger fade show text-center"
+        id="meeterr"
+        style="display: none; border-radius: 0"
+    >
+		Incorrect meetings information.
+	</div>
 	  <!-- <div class="mask d-flex align-items-center h-100"> -->
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-12 col-lg-10">
 					<div class="card" style="border-radius: 1rem;">
-						
 						<div class="card-body p-5">
 							<a href="/admin/courses">Back</a>
-								<h1 class="mb-5 text-center">Add Course</h1>
+								<h1 class="mb-5 text-center">Edit Course</h1>
 									<form>
 					<!-- 2 column grid layout with text inputs for the first and last names -->
 										<div class="row">
 										<h4 class="text-muted" style="display: inline">Basic Information</h4>
 											<div class="col-12 col-md-6 mb-4">
 												<div class="form-outline">
-													<input type="text" id="ccode" class="form-control" value=""/>
+													<input type="text" id="ccode" class="form-control needs-validation mb-0" maxlength="8" value="" oninput="checkEmptyInput(this)" required/>
 													<label class="form-label" for="ccode" >Course Code</label>
+													<div class="invalid-feedback">Required</div>
 												</div>
 											</div>
-
-											<!-- Course name input -->
 											<div class="col-12 col-md-6 mb-4">
 												<div class="form-outline">
-													<input type="text" id="cname" class="form-control" value=""/>
+													<input type="text" id="cname" class="form-control needs-validation mb-0" value="" oninput="checkEmptyInput(this)" required/>
 													<label class="form-label" for="cname">Course Name</label>
+													<div class="invalid-feedback">Required</div>
 												</div>
 											</div>
 										</div>
-									
-										<!-- Department input -->
-										<%var department = ["MATH", "CSCI", "BMED", "GESC", "STAT", "PHYS", "CHEM"] %>
-										<div class="row justify-content-md-center">
-											<div class="col">
-												<select
-													class="form-select mb-4 "
-													name="dept"
-													style="border-radius: 4px; height: 35.81px"
-												>
-												<% for (let i=0; i<department.length; i++){ %>
-													<option  value=<%= i %>>
-														<%= department[i] %>
-													</option>
-												  <% } %>
-												</select>
-											</div>
-										</div>
-										<!-- Instructor input -->
+
+										<!-- Text input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cinstructor" class="form-control" value=""/>
+											<input type="text" id="cdepartment" class="form-control needs-validation mb-0" value="" oninput="checkEmptyInput(this)" required/>
+											<label class="form-label" for="cdepartment">Department</label>
+											<div class="invalid-feedback">Required</div>
+										</div>
+
+										<!-- Text input -->
+										<div class="form-outline mb-4">
+											<input type="text" id="cinstructor" class="form-control needs-validation mb-0" value="" oninput="checkEmptyInput(this)" required/>
 											<label class="form-label" for="cinstructor">Instructor</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 
-										<!-- venue input -->
+										<!-- Email input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cvenue" class="form-control" value=""/>
+											<input type="text" id="cvenue" class="form-control needs-validation mb-0" value="" oninput="checkEmptyInput(this)" required/>
 											<label class="form-label" for="cvenue">Venue</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 
-										<!-- Capacity input -->
+										<!-- Number input -->
 										<div class="form-outline mb-4">
-											<input type="number" id="cseat" class="form-control" value=""/>
+											<input type="number" id="cseat" class="form-control needs-validation mb-0" value="" oninput="checkEmptyInput(this)" required/>
 											<label class="form-label" for="cseat">Capacity</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 
-										<!-- Description input -->
+										<!-- Message input -->
 										<div class="form-outline mb-4">
 											<textarea class="form-control" id="cdescription" rows="4"></textarea>
 											<label class="form-label" for="cdescription">Description</label>
+											<div class="invalid-feedback">Required</div>
 										</div>
 										<div class="row mb-1">
 											<div class="col-10 d-flex aligns-items-center">
@@ -117,14 +117,13 @@
 					  "21:30",
 					  "22:30"
 				  ] %>
-				  
 					  <tbody id="meetbody">
 						  <tr name="meets">
 							  <td>
 								  <div class="form">
 									  <select class="form-select form-select-lg" type="select" name="wday">
 										  <% for (let i=0; i<7; i++){ %>
-											<option  value=<%= i %>>
+											<option  value=<%= i %> >
 												<%= weekdays[i] %>
 											</option>
 										  <% } %>
@@ -135,7 +134,7 @@
 								<div class="form">
 									<select class="form-select form-select-lg" type="select" name="start">
 										<% for (let i=0; i<14; i++){ %>
-										  <option  value=<%= i %>>
+										  <option  value=<%= i %> >
 											  <%= timeslots[i] %>
 										  </option>
 										<% } %>
@@ -146,7 +145,7 @@
 								<div class="form">
 									<select class="form-select form-select-lg" type="select" name="end">
 										<% for (let i=0; i<15; i++){ %>
-										  <option  value=<%= i %>>
+										  <option  value=<%= i %> >
 											  <%= timeslots[i] %>
 										  </option>
 										<% } %>
@@ -171,7 +170,7 @@
 							<button type="submit" class="btn btn-secondary btn-rounded btn-block" id="reset">Reset</button>
 						</div>
 						<div class="col-12 col-md-6 mb-4">
-							<button type="button" class="btn btn-primary btn-rounded btn-block" name="submit">Add Course</button>
+							<button type="button" class="btn btn-primary btn-rounded btn-block" id="" name="submit">Save Change</button>
 						</div>
 					</div>
 				  </form>
@@ -205,6 +204,16 @@
             }, false);
         });
         })();
+
+	function checkEmptyInput(input) {
+		if (input.value == "") {
+			input.classList.remove("is-valid");
+			input.classList.add("is-invalid");
+		} else {
+			input.classList.remove("is-invalid");
+			input.classList.add("is-valid");
+		}
+    }
 	$("#add").click(()=>{
 		$("#meetbody").append(
 			`<tr name="meets">
@@ -256,92 +265,141 @@
 		$("[name='del']").click(function() {
 			$(this).closest("tr").remove();
 		});
+
 	});
 	//for delete a meeting
 	$("[name='del']").click(function() {
 		$(this).closest("tr").remove();
 	});
 
-	//trigger add course button
+	//save changes for submit
 	$("[name='submit']").click(function() {
 		var meetings=[];
+		var pass =true;
 		$("[name='meets']").each(function(){
 			var melement={};
 			var ts=[];
+			melement.courseCode=$("#ccode").val();
 			melement.day=$(this).find("[name='wday'] option:selected").val()
 			ts.push($(this).find("[name='start'] option:selected").val());
 			ts.push($(this).find("[name='end'] option:selected").val());
-			ts[1]=ts[1]-1;
-			if (ts[0]==ts[1]) {
-				ts.pop();
-			}else if (ts[0]<=ts[1]-2){
-				var count=ts[1]-ts[0]-1;
-				for(var i=1;i<=count;i++){
-					var y=parseInt(ts[0])+parseInt(i);
-					ts.splice(i,0,y);
-				}
-			}
-			for (var i=0; i<ts.length;i++){
-				ts[i]=parseInt(ts[i]);
-				if (ts[i]>=10){
-					ts[i]=ts[i].toString();
-				}else{
-					ts[i]=ts[i].toString();
-					ts[i]=ts[i].padStart(2,'0');
-				}
-			}
-			melement.timeSlot=ts;
-			meetings.push(melement);
-		})
-		var course={
-			courseCode: $("#ccode").val(),
-			courseName: $("#cname").val(),
-			department: $("#cdepartment").val(),
-			instructor: $("#cinstructor").val(),
-			venue: $("#cvenue").val(),
-			seat: $("#cseat").val(),
-			description: $("#cdescription").val(),
-			meetings:meetings,
-		}	
-		console.log(course);
-		//fetch add course api
-		const options = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(course),
-		}
-        function submitInfo() {
-			fetch(
-				"",
-				options
-			).then(async (data) => {
-				if (data.status == "200") {
-					document.getElementById(
+			if ((ts[0]==ts[1])||(ts[0]>ts[1])){
+				document.getElementById(
 						"err"
 					).style.display = "none";
 					document.getElementById(
-						"success"
+						"meeterr"
 					).style.display = "block";
-					setTimeout(
-						() =>
-							window.location.replace(
-								"/admin/courses"
-							),
-							2000
-					);
-				} else {
-					let res = await data.json();
-					document.getElementById("err").textContent =
-						res.message;
 					document.getElementById(
-						"err"
-					).style.display = "block";
+						"success"
+					).style.display = "none";
+				pass=false;
+			}else{
+				ts[1]=ts[1]-1;
+				if (ts[0]==ts[1]) {
+					ts.pop();
+				}else if (ts[0]<=ts[1]-2){
+					var count=ts[1]-ts[0]-1;
+					for(var i=1;i<=count;i++){
+						var y=parseInt(ts[0])+parseInt(i);
+						ts.splice(i,0,y);
+					}
 				}
-			});
+				for (var i=0; i<ts.length;i++){
+					ts[i]=parseInt(ts[i]);
+					if (ts[i]>=10){
+						ts[i]=ts[i].toString();
+					}else{
+						ts[i]=ts[i].toString();
+						ts[i]=ts[i].padStart(2,'0');
+					}
+				}
+				melement.timeSlot=ts;
+				meetings.push(melement);
+			}
+		})
+		//merge different meeting timeslot into 1 meeting timeslot
+		for (var i=0;i<7;i++){
+			var count =0;
+			var flag =0;
+			for (var j=0;j<meetings.length;j++){
+				if (meetings[j].day==i){
+					if(count <1){
+						count+=1;
+						flag=j;
+						console.log(flag);
+					}else{
+						console.log(meetings[j].timeSlot);
+						meetings[flag].timeSlot=meetings[flag].timeSlot.concat(meetings[j].timeSlot);
+						console.log(meetings[flag].timeSlot);
+						meetings.splice(j,1);
+					}
+				}
+			}
 		}
-		submitInfo();
+
+		console.log(meetings);
+		// $(".needs-validation").each(function(){
+		// 	if ($(this).val()==""){
+		// 		pass=false;
+		// 	}
+		// });
+		// if (pass==false){
+		// 	$(window).scrollTop(0);
+		// }else{
+		// 	var course={
+		// 		courseCode: $("#ccode").val(),
+		// 		courseName: $("#cname").val(),
+		// 		department: $("#cdepartment").val(),
+		// 		instructor: $("#cinstructor").val(),
+		// 		venue: $("#cvenue").val(),
+		// 		seat: $("#cseat").val(),
+		// 		description: $("#cdescription").val(),
+		// 		meetings:meetings,
+		// 	}	
+		// 	console.log(course);
+		// 	const options = {
+		// 		method: "POST",
+		// 		headers: {
+		// 			"Content-Type": "application/json",
+		// 		},
+		// 		body: JSON.stringify(course),
+		// 	}
+		// 	function submitInfo() {
+		// 		fetch(
+		// 			"/api/courses/update",
+		// 			options
+		// 		).then(async (data) => {
+		// 			if (data.status == "200") {
+		// 				document.getElementById(
+		// 					"err"
+		// 				).style.display = "none";
+		// 				document.getElementById(
+		// 					"meeterr"
+		// 				).style.display = "none";
+		// 				document.getElementById(
+		// 					"success"
+		// 				).style.display = "block";
+		// 				setTimeout(
+		// 					() =>
+		// 						window.location.replace(
+		// 							"/admin/courses"
+		// 						),
+		// 						2000
+		// 				);
+		// 			} else {
+		// 				let res = await data.json();
+		// 				document.getElementById("err").textContent =
+		// 					res.message;
+		// 				document.getElementById(
+		// 					"err"
+		// 				).style.display = "block";
+		// 			}
+		// 		});
+		// 	}
+		// 	submitInfo();
+
+		// }
 	})
 </script>
 <%- include('./nav_end.ejs') %>

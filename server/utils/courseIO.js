@@ -42,7 +42,7 @@ module.exports.parseTime = function parseTime() {};
 
 module.exports.getMeeting = function getMeeting(courseCode, timeSlot) {
 	let meetings = [];
-	for (let t of timeSlot.split(",")) {
+	for (let t of timeSlot.split(";")) {
 		slots = t.split("-");
 		let day = Number(slots.shift());
 
@@ -120,7 +120,7 @@ function getTimeSlots(meetings) {
 		for (let t of m.timeSlot) {
 			string += `-${t}`;
 		}
-		timeSlots += `${string},`;
+		timeSlots += `${string};`;
 	}
 	// console.log(timeSlots);
 	return timeSlots;

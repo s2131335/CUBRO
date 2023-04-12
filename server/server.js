@@ -7,6 +7,7 @@ const passport = require("passport");
 const cors = require("cors");
 require("dotenv").config({ path: `${__dirname}/.env` });
 const Auth = require("./middleware/auth");
+const {department, venue, timeslots} = require("./global_var")
 
 ///////////////// setup global //////////////////
 let CUBRO = {};
@@ -20,21 +21,9 @@ try {
 	}
 }
 
-global.CUBRO.TIMESLOTS = [
-	"08:30-09:30", //0
-	"09:30-10:30",
-	"10:30-11:30",
-	"11:30-12:30",
-	"12:30-13:30",
-	"13:30-14:30",
-	"14:30-15:30",
-	"15:30-16:30",
-	"16:30-17:30",
-	"17:30-18:30",
-	"18:30-19:30",
-	"19:30-20:30",
-	"20:30-21:30", //12
-];
+global.CUBRO.TIMESLOTS = timeslots
+global.CUBRO.DEPARTMENT = department
+global.CUBRO.VENUE = venue
 
 /////////////// complete global setup //////////////////////////////////
 // view engine setup

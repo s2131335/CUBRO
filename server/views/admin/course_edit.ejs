@@ -146,7 +146,6 @@
 									<%	if (currentIndex === 0) { %>
 									<%		tempArr.push(currentValue); %>
 									<%		return result; %>
-									<%		console.log("FKFKFKFFKFKFKFKFKFKFKFKFKFK"); %>
 									<%	} %>
 									<%	if (currentValue === meeting.timeSlot[currentIndex-1] + 1) { %>
 									<%		tempArr.push(currentValue); %>
@@ -162,7 +161,6 @@
 									<%	} %>
 									<%	return result; %>
 									<%	}, []); %>
-								<%	console.log("separatedArr",separatedArr); %>
 								<%	separatedArr.forEach((e)=>{ %>
 								<%		var melement={day:meeting.day, timeSlot:e}; %>
 								<%		console.log("melement",melement); %>
@@ -170,12 +168,10 @@
 								<%	}) %>
 								<%	c.meetings.splice(c.meetings.indexOf(meeting),1); %>
 							<%	}else{ %>
-									
 								<%	newmeetings.push(meeting); %>
 							<%	} %>
 						<%	} %>
 						<%c.meetings=newmeetings; %>	
-						<% console.log(newmeetings);%>
 						<% for (let meeting of c.meetings) { %>
 							<% for (var i = 0; i < meeting.timeSlot.length; i++) { %>
 								<%	meeting.timeSlot[i] = parseInt(meeting.timeSlot[i]); %>
@@ -186,7 +182,6 @@
 							<%	meeting.timeSlot.push(meeting.timeSlot[0]); %>
 							<%  } %>
 							<%  meeting.timeSlot[meeting.timeSlot.length - 1] = parseInt(meeting.timeSlot[meeting.timeSlot.length - 1])+1; %>
-							<% console.log(meeting); %>
 						<tr name="meets">
 							<td>
 								<div class="form">
@@ -337,7 +332,6 @@
         // Loop over them and prevent submission
         Array.prototype.slice.call(forms).forEach((form) => {
             form.addEventListener('submit', (event) => {
-                //- console.log(event);
                 form.checkValidity();
                 event.preventDefault();
                 event.stopPropagation();
@@ -526,7 +520,6 @@
 			).style.display = "none";
 		}
 
-		// console.log(meetings);
 		$(".needs-validation").each(function(){
 			if ($(this).val()==""){
 				pass=false;
@@ -600,7 +593,6 @@
 		document.getElementById(
 			"add"
 		).style.display = "inline";
-		$("#ccode").removeAttr('disabled');
 		$("#cname").removeAttr('disabled');
 		$("#cdepartment").removeAttr('disabled');
 		$("#cinstructor").removeAttr('disabled');

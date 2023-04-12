@@ -126,36 +126,43 @@
 					<tbody id="meetbody">
 						<% var newmeetings=[]; %>
 						<% for (let meeting of c.meetings) { %>
-							<% for (var i = 0; i < meeting.timeSlot.length; i++) { %>
+							<%  for (var i = 0; i < meeting.timeSlot.length; i++) { %>
 								<%	meeting.timeSlot[i] = parseInt(meeting.timeSlot[i]); %>
-								<%	} %>
-						<%	let tempArr = []; %>
-						<%	const separatedArr = meeting.timeSlot.reduce((result, currentValue, currentIndex) => { %>
-						<%	if (currentIndex === 0) { %>
-						<%		tempArr.push(currentValue); %>
-						<%		return result; %>
+							<%	} %>
+							<%  if (meeting.timeSlot.length>1) { %>		
+								<%	let tempArr = []; %>
+								<%	const separatedArr = meeting.timeSlot.reduce((result, currentValue, currentIndex) => { %>
+									<%	if (currentIndex === 0) { %>
+									<%		tempArr.push(currentValue); %>
+									<%		return result; %>
+									<%		console.log("FKFKFKFFKFKFKFKFKFKFKFKFKFK"); %>
+									<%	} %>
+									<%	if (currentValue === meeting.timeSlot[currentIndex-1] + 1) { %>
+									<%		tempArr.push(currentValue); %>
+									<%		if (currentIndex === meeting.timeSlot.length-1) { %>
+									<%		result.push(tempArr); %>
+									<%		} %>
+									<%	} else { %>
+									<%		result.push(tempArr); %>
+									<%		tempArr = [currentValue]; %>
+									<%		if (currentIndex === meeting.timeSlot.length-1) { %>
+									<%		result.push(tempArr); %>
+									<%		} %>
+									<%	} %>
+									<%	return result; %>
+									<%	}, []); %>
+								<%	console.log("separatedArr",separatedArr); %>
+								<%	separatedArr.forEach((e)=>{ %>
+								<%		var melement={day:meeting.day, timeSlot:e}; %>
+								<%		console.log("melement",melement); %>
+								<%		newmeetings.push(melement); %>
+								<%	}) %>
+								<%	c.meetings.splice(c.meetings.indexOf(meeting),1); %>
+							<%	}else{ %>
+									
+								<%	newmeetings.push(meeting); %>
+							<%	} %>
 						<%	} %>
-						<%	if (currentValue === meeting.timeSlot[currentIndex-1] + 1) { %>
-						<%		tempArr.push(currentValue); %>
-						<%		if (currentIndex === meeting.timeSlot.length-1) { %>
-						<%		result.push(tempArr); %>
-						<%		} %>
-						<%	} else { %>
-						<%		result.push(tempArr); %>
-						<%		tempArr = [currentValue]; %>
-						<%		if (currentIndex === meeting.timeSlot.length-1) { %>
-						<%		result.push(tempArr); %>
-						<%		} %>
-						<%	} %>
-						<%	return result; %>
-						<%	}, []); %>
-						<%	separatedArr.forEach((e)=>{ %>
-						<%		var melement={day:meeting.day, timeSlot:e}; %>
-						<%		console.log(melement); %>
-						<%		newmeetings.push(melement); %>
-						<%	}) %>
-						<%	c.meetings.splice(c.meetings.indexOf(meeting),1); %>
-						<%} %>
 						<%c.meetings=newmeetings; %>	
 						<% console.log(newmeetings);%>
 						<% for (let meeting of c.meetings) { %>

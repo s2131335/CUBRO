@@ -17,7 +17,14 @@
         id="meeterr"
         style="display: none; border-radius: 0"
     >
-		Incorrect meetings information.
+		Incorrect meetings information. 
+	</div>
+	<div
+        class="alert alert-danger fade show text-center"
+        id="caperr"
+        style="display: none; border-radius: 0"
+    >
+		Invalid course capacity.
 	</div>
 	  <!-- <div class="mask d-flex align-items-center h-100"> -->
 		<div class="container">
@@ -26,65 +33,64 @@
 					<div class="card" style="border-radius: 1rem;">
 						<div class="card-body p-5">
 							<a href="/admin/courses">Back</a>
-								<h1 class="mb-5 text-center">Edit Course</h1>
+								<h1 class="mb-5 text-center">Course Info</h1>
 									<form>
 					<!-- 2 column grid layout with text inputs for the first and last names -->
 										<div class="row">
 										<h4 class="text-muted" style="display: inline">Basic Information</h4>
 											<div class="col-12 col-md-6 mb-4">
 												<div class="form-outline">
-													<input type="text" id="ccode" class="form-control needs-validation mb-0" maxlength="8" value="<%=c.courseCode%>" oninput="checkEmptyInput(this)" required/>
+													<input type="text" id="ccode" class="form-control needs-validation mb-0" maxlength="8" value="<%=c.courseCode%>" oninput="checkEmptyInput(this)" required disabled/>
 													<label class="form-label" for="ccode" >Course Code</label>
-													<div class="invalid-feedback">Required</div>
+													<div class="invalid-feedback mt-0">Required</div>
 												</div>
 											</div>
 											<div class="col-12 col-md-6 mb-4">
-												<div class="form-outline">
-													<input type="text" id="cname" class="form-control needs-validation mb-0" value="<%=c.courseName%>" oninput="checkEmptyInput(this)" required/>
+												<div class="form-outline"> 
+													<input type="text" id="cname" class="form-control needs-validation mb-0" value="<%=c.courseName%>" oninput="checkEmptyInput(this)" required disabled/>
 													<label class="form-label" for="cname">Course Name</label>
-													<div class="invalid-feedback">Required</div>
+													<div class="invalid-feedback mt-0">Required</div>
 												</div>
 											</div>
 										</div>
 
 										<!-- Text input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cdepartment" class="form-control needs-validation mb-0" value="<%=c.department%>" oninput="checkEmptyInput(this)" required/>
+											<input type="text" id="cdepartment" class="form-control needs-validation mb-0" value="<%=c.department%>" oninput="checkEmptyInput(this)" required disabled/>
 											<label class="form-label" for="cdepartment">Department</label>
-											<div class="invalid-feedback">Required</div>
+											<div class="invalid-feedback mt-0">Required</div>
 										</div>
 
 										<!-- Text input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cinstructor" class="form-control needs-validation mb-0" value="<%=c.instructor%>" oninput="checkEmptyInput(this)" required/>
+											<input type="text" id="cinstructor" class="form-control needs-validation mb-0" value="<%=c.instructor%>" oninput="checkEmptyInput(this)" required disabled/>
 											<label class="form-label" for="cinstructor">Instructor</label>
-											<div class="invalid-feedback">Required</div>
+											<div class="invalid-feedback mt-0">Required</div>
 										</div>
 
 										<!-- Email input -->
 										<div class="form-outline mb-4">
-											<input type="text" id="cvenue" class="form-control needs-validation mb-0" value="<%=c.venue%>" oninput="checkEmptyInput(this)" required/>
+											<input type="text" id="cvenue" class="form-control needs-validation mb-0" value="<%=c.venue%>" oninput="checkEmptyInput(this)" required disabled/>
 											<label class="form-label" for="cvenue">Venue</label>
-											<div class="invalid-feedback">Required</div>
+											<div class="invalid-feedback mt-0">Required</div>
 										</div>
 
 										<!-- Number input -->
 										<div class="form-outline mb-4">
-											<input type="number" id="cseat" class="form-control needs-validation mb-0" value="<%=c.seat%>" oninput="checkEmptyInput(this)" required/>
+											<input type="number" id="cseat" class="form-control needs-validation mb-0" value="<%=c.seat%>" oninput="checkEmptyInput(this)" required disabled/>
 											<label class="form-label" for="cseat">Capacity</label>
-											<div class="invalid-feedback">Required</div>
+											<div class="invalid-feedback mt-0">Required</div>
 										</div>
 
 										<!-- Message input -->
 										<div class="form-outline mb-4">
-											<textarea class="form-control" id="cdescription" rows="4"><%=c.description%></textarea>
+											<textarea class="form-control" id="cdescription" rows="4" disabled><%=c.description%></textarea>
 											<label class="form-label" for="cdescription">Description</label>
-											<div class="invalid-feedback">Required</div>
 										</div>
 										<div class="row mb-1">
 											<div class="col-10 d-flex aligns-items-center">
 												<h4 class="text-muted" style="display: inline">Meetings</h4>
-												<button class="btn btn-link btn-floating" type="button" id="add">
+												<button class="btn btn-link btn-floating" type="button" id="add" style="display: none">
 													<i class="fa-solid fa-plus"></i>
 												</button>
 											</div>
@@ -92,32 +98,32 @@
 										<table class="table">
 											<thead>
 												<tr>
-							  <th scope="col">Weekday</th>
-							  <th scope="col">Start</th>
-							  <th scope="col">End</th>
-							  <th scope="col">Action</th>
-						  </tr>
-					  </thead>
-					  <% var weekdays = ["Monday", "Tuesday", "Wednesday",
-					  "Thursday", "Friday", "Saturday","Sunday"] %>
-					  <% var timeslots = [
-					  "08:30",
-					  "09:30",
-					  "10:30",
-					  "11:30",
-					  "12:30",
-					  "13:30",
-					  "14:30",
-					  "15:30",
-					  "16:30",
-					  "17:30",
-					  "18:30",
-					  "19:30",
-					  "20:30",
-					  "21:30",
-					  "22:30"
-				  ] %>
-					  <tbody id="meetbody">
+							<th scope="col">Weekday</th>
+							<th scope="col">Start</th>
+							<th scope="col">End</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<% var weekdays = ["Monday", "Tuesday", "Wednesday",
+					"Thursday", "Friday", "Saturday","Sunday"] %>
+					<% var timeslots = [
+					"08:30",
+					"09:30",
+					"10:30",
+					"11:30",
+					"12:30",
+					"13:30",
+					"14:30",
+					"15:30",
+					"16:30",
+					"17:30",
+					"18:30",
+					"19:30",
+					"20:30",
+					"21:30",
+					"22:30"
+				] %>
+					<tbody id="meetbody">
 						<% var newmeetings=[]; %>
 						<% for (let meeting of c.meetings) { %>
 							<% for (var i = 0; i < meeting.timeSlot.length; i++) { %>
@@ -163,63 +169,73 @@
 							<%  } %>
 							<%  meeting.timeSlot[meeting.timeSlot.length - 1] = parseInt(meeting.timeSlot[meeting.timeSlot.length - 1])+1; %>
 							<% console.log(meeting); %>
-						  <tr name="meets">
-							  <td>
-								  <div class="form">
-									  <select class="form-select form-select-lg" type="select" name="wday">
-										  <% for (let i=0; i<7; i++){ %>
-											<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
-												<%= weekdays[i] %>
-											</option>
-										  <% } %>
-									  </select>
-								  </div>
-							  </td>
-							  <td>
+						<tr name="meets">
+							<td>
 								<div class="form">
-									<select class="form-select form-select-lg" type="select" name="start">
-										<% for (let i=0; i<14; i++){ %>
-										  <option  value=<%= i %> <%if (meeting.timeSlot[0]==i){ %>selected<% } %>>
-											  <%= timeslots[i] %>
-										  </option>
+									<select class="form-select form-select-lg" type="select" name="wday" disabled>
+										<% for (let i=0; i<7; i++){ %>
+										<option  value=<%= i %> <%if (meeting.day==i){ %>selected<% } %>>
+											<%= weekdays[i] %>
+										</option>
 										<% } %>
 									</select>
 								</div>
 							</td>
 							<td>
 								<div class="form">
-									<select class="form-select form-select-lg" type="select" name="end">
-										<% for (let i=0; i<15; i++){ %>
-										  <option  value=<%= i %> <%if (meeting.timeSlot[1]==i){ %>selected<% } %>>
-											  <%= timeslots[i] %>
-										  </option>
+									<select class="form-select form-select-lg" type="select" name="start" disabled>
+										<% for (let i=0; i<14; i++){ %>
+										<option  value=<%= i %> <%if (meeting.timeSlot[0]==i){ %>selected<% } %>>
+											<%= timeslots[i] %>
+										</option>
 										<% } %>
 									</select>
 								</div>
 							</td>
-							  <td>
-								  <button
-									  class="btn btn-danger btn-rounded btn-sm fw-bold"
-									  type="button"
-									  name="del"
-								  >
-									  Delete
-								  </button>
-							  </td>
-						  </tr>
-						  <%}%>
-					  </tbody>
-				  </table>
+							<td>
+								<div class="form">
+									<select class="form-select form-select-lg" type="select" name="end" disabled>
+										<% for (let i=0; i<15; i++){ %>
+										<option  value=<%= i %> <%if (meeting.timeSlot[1]==i){ %>selected<% } %>>
+											<%= timeslots[i] %>
+										</option>
+										<% } %>
+									</select>
+								</div>
+							</td>
+							<td>
+								<button
+									class="btn btn-danger btn-rounded btn-sm fw-bold"
+									type="button"
+									name="del"
+									style="display: none"
+								>
+									Delete
+								</button>
+							</td>
+						</tr>
+						<%}%>
+					</tbody>
+				</table>
 					<!-- Submit button -->
-					<div class="row">
+					<div class="row aligns-items-center">
 						<div class="col-12 col-md-6 mb-4">
-							<button type="submit" class="btn btn-secondary btn-rounded btn-block" id="reset">Reset</button>
+							<button type="submit" class="btn btn-secondary btn-rounded btn-block" style="display:none" id="reset">Reset</button>
 						</div>
 						<div class="col-12 col-md-6 mb-4">
-							<button type="button" class="btn btn-primary btn-rounded btn-block" id="<%=c._id %>" name="submit">Save Change</button>
+							<button type="button" class="btn btn-primary btn-rounded btn-block" style="display:none" name="<%=c._id %>" id="submit">Save Change</button>
 						</div>
 					</div>
-				  </form>
+					<div class="row">
+							<button
+								class="col align-self-center btn btn-secondary btn-rounded btn-sm fw-bold "
+								type="button"
+								name="edit"
+							>
+							Edit
+							</button>
+					</div>
+				</form>
   
 				</div>
 			  </div>
@@ -319,7 +335,7 @@
 	});
 
 	//save changes for submit
-	$("[name='submit']").click(function() {
+	$("#sumbit").click(function() {
 		var meetings=[];
 		var pass =true;
 		$("[name='meets']").each(function(){
@@ -383,6 +399,15 @@
 				}
 			}
 		}
+		if ($("#cseat").val()<0){
+			pass=false;
+			document.getElementById(
+				"caperr"
+			).style.display = "block";
+			document.getElementById(
+				"success"
+			).style.display = "none";
+		}
 
 		// console.log(meetings);
 		$(".needs-validation").each(function(){
@@ -394,7 +419,7 @@
 			$(window).scrollTop(0);
 		}else{
 			var course={
-				_id:$("[name='submit']").attr('id'),
+				_id:$("#submit").attr('name'),
 				courseCode: $("#ccode").val(),
 				courseName: $("#cname").val(),
 				department: $("#cdepartment").val(),
@@ -447,6 +472,29 @@
 			submitInfo();
 
 		}
+	})
+	$("[name='edit']").click(function() {
+		document.getElementById(
+			"reset"
+		).style.display = "block";
+		document.getElementById(
+			"submit"
+		).style.display = "block";
+		document.getElementById(
+			"add"
+		).style.display = "inline";
+		$("#ccode").removeAttr('disabled');
+		$("#cname").removeAttr('disabled');
+		$("#cdepartment").removeAttr('disabled');
+		$("#cinstructor").removeAttr('disabled');
+		$("#cvenue").removeAttr('disabled');
+		$("#cseat").removeAttr('disabled');
+		$("#cdescription").removeAttr('disabled');
+		$("[name='del']").show();
+		$("[name='edit']").hide();
+		$("[name='wday']").removeAttr('disabled');
+		$("[name='start']").removeAttr('disabled');
+		$("[name='end']").removeAttr('disabled');
 	})
 </script>
 <%- include('./nav_end.ejs') %>

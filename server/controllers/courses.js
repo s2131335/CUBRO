@@ -172,12 +172,11 @@ module.exports.createCourse = (req, res) => {
 		venue,
 		instructor,
 		seat,
-		meeting,
+		meetings,
 		description,
 	} = req.body);
 	console.log(course);
-	course.meeting = getMeeting(course.courseCode, course.time);
-	delete course.time;
+	course.meetings = meetings;
 
 	try {
 		createCourse(course);

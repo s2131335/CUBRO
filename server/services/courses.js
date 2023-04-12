@@ -7,8 +7,9 @@ module.exports.countCourseByFilter = async function (filter) {
 
 module.exports.createCourse = async function (course) {
 	try {
-		let course = await Course.find({ courseCode: course.courseCode });
-		if (course) throw error.CourseExists;
+		let c = await Course.findOne({ courseCode: course.courseCode });
+		console.log("ccccc",c);
+		if (c) throw error.CourseExists;
 		await Course.create(course);
 	} catch (error) {
 		console.warn("❗️ ~ error:", error);

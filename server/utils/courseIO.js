@@ -43,6 +43,7 @@ module.exports.parseTime = function parseTime() {};
 module.exports.getMeeting = function getMeeting(courseCode, timeSlot) {
 	let meetings = [];
 	for (let t of timeSlot.split(";")) {
+		if (t === "") break;
 		slots = t.split("-");
 		let day = Number(slots.shift());
 
@@ -140,7 +141,7 @@ module.exports.toCsv = function toCsv(courses) {
 		course.time = getTimeSlots(course.meetings);
 		let dict = {};
 		for (let field of HEADERS) {
-			dict[field] = course[field]
+			dict[field] = course[field];
 		}
 		data.push(dict);
 	}

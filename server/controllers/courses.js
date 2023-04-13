@@ -381,6 +381,28 @@ module.exports.selectCourse = async function selectCourse(req, res) {
 	}
 };
 
+module.exports.removeFromCart = async function removeFromCart(req, res) {
+	try {
+		const { courses } = req.body;
+		if (courses.length == 0) throw error.CourseIDNotValid;
+		let toDrop = await countCourseByFilter({ _id: { $in: courses } });
+		console.log(toDrop);
+		if (toDrop != courses.length) {
+			throw error.CourseIDNotValid;
+		}
+		for (let course of courses) {
+			await deleteRegByFilter({
+				courseID: course,
+				studentID: req.user._id,
+			});
+		}
+		res.status(200).json({ status: "success" });
+	} catch (err) {
+		console.error(err);
+		res.status(err.status || 500).send(err);
+	}
+};
+
 module.exports.dropCourse = async function dropCourse(req, res) {
 	try {
 		let toDrop = await extractRegIdByFilter({

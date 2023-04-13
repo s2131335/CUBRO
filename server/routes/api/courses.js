@@ -19,6 +19,7 @@ const {
 	deleteEvaluation,
 	exportCourse,
 	importCourse,
+	removeFromCart,
 } = require("../../controllers/courses");
 const { uploadLocal, uploadDb } = require("../../middleware/upload");
 const Auth = require("../../middleware/auth");
@@ -44,6 +45,7 @@ router.post("/delete", Auth.checkAuth(), deleteCourse);
 router.post("/update", Auth.checkAuth(), editCourse);
 
 router.post("/addToCart", Auth.checkAuth(), addToCart);
+router.post("/removeFromCart", Auth.checkAuth(), removeFromCart);
 router.get("/myCourse", Auth.checkAuth(), myCourse);
 
 router.get("/getTimetableInfo", getTimetableInfo);

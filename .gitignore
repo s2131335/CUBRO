@@ -7,6 +7,5 @@ frontend-server/node_modules
 doc
 
 server/courses.json
-uploads/
 import.xlsx
 import.xls

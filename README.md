@@ -11,7 +11,7 @@ After that, the web can be access at http://localhost:8000
 
 ## Folder structure
 
-server
+server  
 ├── config # configuration file for authentication module  
 ├── controllers  
 ├── database  

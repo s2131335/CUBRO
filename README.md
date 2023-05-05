@@ -8,11 +8,36 @@ will be able to create accounts, login/logout, add/drop courses along with some 
 
 ## Ways to run
 
-Please type the following commands in your terminal to run, make sure the current directory under /CUBRO/server.
+1. Please type the following commands in your terminal to install dependencies, make sure the current directory under /CUBRO/server.
+   `npm install`
+   `npm i nodemon -g`
 
-`npm install`
-`npm i nodemon -g`
-`npm start`
+2. Create a new file named `.env` under this folder, namely `server`. Type the following into the file and replace all the <...> variables with your own information:
+
+```
+DB_URI=<YOUR_DATABASE_LINK>
+PORT=<BACKEND_PORT>
+FRONTEND_PORT=<FRONTEND_PORT>
+SECRET=<SECRET_STRING>
+ADMIN_DEFAULT=<ADMIN_DEFAULT_PASSWORD>
+DOMAIN=<DOMAIN_ADDRESS>
+SENDER_EMAIL=<SERVICE_EMAIL_ADDRESS>
+SENDER_PASSWORD=<SERVICE_EMAIL_PASSWORD>
+```
+
+| Field                    | Description                                                         |
+| ------------------------ | ------------------------------------------------------------------- |
+| <YOUR_DATABASE_LINK>     | The link to access your mongoDB                                     |
+| <BACKEND_PORT>           | The port number for this server                                     |
+| <FRONTEND_PORT>          | The port number for your frontend server                            |
+| <SECRET_STRING>          | A random secret string that is used to encrypt your data            |
+| <ADMIN_DEFAULT_PASSWORD> | The default admin password for your system                          |
+| <DOMAIN_ADDRESS>         | The domain of your system, used for sending email                   |
+| <SERVICE_EMAIL_ADDRESS>  | The email address of your service email                             |
+| <SERVICE_EMAIL_PASSWORD> | The password, might also be the app password, of your service email |
+
+3. The server can now be started with:
+   `npm start`
 
 After that, the web can be access at http://localhost:8000
 

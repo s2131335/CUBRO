@@ -11,6 +11,7 @@ will be able to create accounts, login/logout, add/drop courses along with some 
 Please type the following commands in your terminal to run, make sure the current directory under /CUBRO/server.
 
 `npm install`
+`npm i nodemon -g`
 `npm start`
 
 After that, the web can be access at http://localhost:8000

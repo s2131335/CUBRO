@@ -1,5 +1,11 @@
 # CSCI3100-GroupB3-Project-CUBRO
 
+## Description
+
+Our group will be creating a course selection system that resembles the course selection system in
+CUSIS and hence the name - CUBRO, acronym for Chinese University Basic Registration Operator. Users
+will be able to create accounts, login/logout, add/drop courses along with some other advanced features like email sending system, advanced timetable, and file I/O, and more.
+
 ## Ways to run
 
 Please type the following commands in your terminal to run, make sure the current directory under /CUBRO/server.
